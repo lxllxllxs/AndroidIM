@@ -75,6 +75,7 @@ public class WebSocketUtil {
 	 * @param payload
      */
 	private static void parseCommonCallBackJson(String payload) {
+		LogUtil.d("parseCommonCallBackJson",payload);
 		try {
 			JSONObject jsonObject = new JSONObject(payload);
 			commonCallBack.commonCallBack(jsonObject);
