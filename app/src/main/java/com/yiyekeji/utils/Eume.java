@@ -5,6 +5,6 @@ package com.yiyekeji.utils;
  */
 public class Eume {
     public static enum MessageType{
-        TextMessage,ImageMessage,RedPocketMessage,AddFriendMessage;
+        Login,TextMessage,ImageMessage,RedPocketMessage,AddFriendMessage;
     }
 }

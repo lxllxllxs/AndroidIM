@@ -11,6 +11,7 @@ import com.yiyekeji.autobahn.WebSocketException;
 import com.yiyekeji.iminterface.CommonCallBack;
 import com.yiyekeji.iminterface.SendMessageCallBack;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -50,7 +51,7 @@ public class WebSocketUtil {
 					}
 					@Override
 					public void onTextMessage(String payload) {
-						Log.d(MTAG, "onTextMessage: "+payload);
+						parseCommonCallBackJson(payload);
 					}
 					@Override
 					public void onRawTextMessage(byte[] payload) {
@@ -68,7 +69,20 @@ public class WebSocketUtil {
 			connection = null;
 		}
 	}
-	
+
+	/**
+	 * 只解析登录验证返回
+	 * @param payload
+     */
+	private static void parseCommonCallBackJson(String payload) {
+		try {
+			JSONObject jsonObject = new JSONObject(payload);
+			commonCallBack.commonCallBack(jsonObject);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * 发送信息主函数
 	 * @param jsonObject
@@ -89,6 +103,18 @@ public class WebSocketUtil {
 		connection.sendBinaryMessage(jsonObject.toString().getBytes());
 	}
 
+	public static void login(@NonNull JSONObject jsonObject,CommonCallBack callBack){
+		if (callBack!=null){
+			commonCallBack=callBack;
+		}
+		if(!isConnected()) {
+			Log.d("WebSocketUtil", "服务断开，发送失败");
+			WebSocketUtil.connect(context);
+			callBackCommon(null);
+			return;
+		}
+		connection.sendBinaryMessage(jsonObject.toString().getBytes());
+	}
 
 	/**
 	 * 对象转数组
