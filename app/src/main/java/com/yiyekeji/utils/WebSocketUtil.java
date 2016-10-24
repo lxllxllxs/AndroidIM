@@ -55,11 +55,16 @@ public class WebSocketUtil {
 					}
 					@Override
 					public void onRawTextMessage(byte[] payload) {
-						Log.d(MTAG, "onRawTextMessage: "+String.valueOf(payload));
+						Log.d(MTAG, "onRawTextMessage: "+new String(payload));
 					}
 					@Override
 					public void onBinaryMessage(byte[] payload) {
 						Log.d(MTAG, "onBinaryMessage: "+new String(payload));
+						if (sendMessageCallBack==null){
+							return;
+						}
+						sendMessageCallBack.sendMessageCallBack(true,payload);
+
 					}
 				});
 			}

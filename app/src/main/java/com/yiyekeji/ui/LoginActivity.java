@@ -6,16 +6,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yiyekeji.bean.User;
 import com.yiyekeji.im.R;
-import com.yiyekeji.iminterface.CommonCallBack;
 import com.yiyekeji.iminterface.SendMessageCallBack;
 import com.yiyekeji.ui.base.BaseActivity;
 import com.yiyekeji.utils.JsonUtil;
 import com.yiyekeji.utils.LogUtil;
 import com.yiyekeji.utils.WebSocketUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +25,7 @@ public class LoginActivity extends BaseActivity {
     EditText edtPassword;
     TextView tvConfirm;
     TextView tvSend;
-
+    ArrayList<User> userArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +41,7 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View v) {
                 Toast.makeText(LoginActivity.this,"login",Toast.LENGTH_SHORT).show();
                 login(edtUsername.getText().toString(),edtPassword.getText().toString());
+
             }
         });
 
@@ -52,8 +50,7 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View v) {
                 WebSocketUtil.chat(JsonUtil.sendTextMessage("lxl", "123","hello"), new SendMessageCallBack() {
                     @Override
-                    public void sendMessageCallBack(boolean isSucceed, String messageId, JSONObject contentJson) {
-                        LogUtil.d("parseCommonCallBackJson",""+isSucceed+messageId);
+                    public void sendMessageCallBack(boolean isSucceed,byte[] payload) {
                     }
                 });
             }
@@ -69,25 +66,14 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void login(final String name,String pwd) {
-        WebSocketUtil.login(JsonUtil.login(name,pwd), new CommonCallBack() {
+        WebSocketUtil.chat(JsonUtil.login(name, pwd), new SendMessageCallBack() {
             @Override
-            public void commonCallBack(JSONObject rootJson) {
-                String result= null;
-                if (rootJson==null){
-                    return;
-                }
-                try {
-                    result = rootJson.getString(JsonUtil.RESULT);
-                    if (result.equals("true")){
-                        LogUtil.d("parseCommonCallBackJson",name+"登录成功");
-                    }else {
-                        LogUtil.d("parseCommonCallBackJson",name+"登录失败");
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            public void sendMessageCallBack(boolean isSucceed, byte[] payload) {
+                LogUtil.d("parseCommonCallBackJson", "" + new String(payload));
+                userArrayList = (ArrayList<User>) JsonUtil.receive(payload);
+                LogUtil.d("userListSize",userArrayList.size());
             }
         });
     }
+
 }

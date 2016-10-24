@@ -11,8 +11,6 @@ import com.yiyekeji.utils.JsonUtil;
 import com.yiyekeji.utils.LogUtil;
 import com.yiyekeji.utils.WebSocketUtil;
 
-import org.json.JSONObject;
-
 public class ChatActivity extends Activity implements View.OnClickListener {
 
     private final String TAG = "ChatAcitvity";
@@ -42,8 +40,8 @@ public class ChatActivity extends Activity implements View.OnClickListener {
     private void sendMessage() {
         WebSocketUtil.chat(JsonUtil.sendTextMessage("tomcat", "321", "春江潮水连海平，海上明月共潮生"), new SendMessageCallBack() {
             @Override
-            public void sendMessageCallBack(boolean isSucceed, String messageId, JSONObject contentJson) {
-                LogUtil.d("sendMessage",isSucceed+"=="+messageId+contentJson);
+            public void sendMessageCallBack(boolean isSucceed,byte[] payload) {
+                LogUtil.d("sendMessage", isSucceed + "==" + new String(payload));
             }
         });
 
