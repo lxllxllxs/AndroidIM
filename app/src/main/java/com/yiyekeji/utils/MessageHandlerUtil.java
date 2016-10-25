@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
+ * 尽量去除无用数据
  * Created by Administrator on 2016/10/21.
  */
-public class JsonUtil {
+public class MessageHandlerUtil {
     public final static String MESSAG_TYPE="messageType";
 
     public final static String CONTENT="content";
@@ -28,15 +29,15 @@ public class JsonUtil {
 
     public final static String RESULT="result";
 
-    public static JSONObject  sendTextMessage(String receiver,String receiverId,String content){
+    public static JSONObject  sendTextMessage(User user,String content){
         JSONObject jsonObject=new JSONObject();
         try {
             jsonObject.put(MESSAG_TYPE, Eume.MessageType.TextMessage);
 
             jsonObject.put(SENDER,"lxl");
             jsonObject.put(SENDER_ID,"123");
-            jsonObject.put(RECEIVER,receiver);
-            jsonObject.put(RECEIVER_ID,receiverId);
+            jsonObject.put(RECEIVER,user.getUsernName());
+            jsonObject.put(RECEIVER_ID,user.getUserId());
             jsonObject.put(CONTENT,content);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -60,11 +61,11 @@ public class JsonUtil {
 
 
     /**************************Receive***************************************/
-    public static Object receive(byte[] payload){
+    public static Object receive(String jsonString){
         JSONObject jsonObject=null;
         Eume.MessageType type=null;
         try {
-            jsonObject = new JSONObject(new String(payload));
+            jsonObject = new JSONObject(jsonString);
             type= Eume.MessageType.valueOf(jsonObject.getString(MESSAG_TYPE));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -82,23 +83,28 @@ public class JsonUtil {
         return null;
     }
 
+    /**
+     * 解析返回的好友列表，暂时只有用户id和用户名
+     * @param jo
+     * @return
+     */
     private static ArrayList<User> parseLinkListJson(JSONObject jo) {
         ArrayList<User> userList = new ArrayList<>();
         Iterator<String> it=jo.keys();
         User user;
         while (it.hasNext()){
             String key=it.next();
-            if (LinkList.equals(key)) {
-                user = new User();
-                try {
-                    String userinfo = jo.getString(key);
-                    String [] users=userinfo.split(",");
-                    user.setUserId(users[0]);
-                    user.setUsernName(users[1]);
-                    userList.add(user);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            if ("messageType".equals(key)) {
+               continue;
+            }
+            user = new User();
+            try {
+                String userName = jo.getString(key);
+                user.setUserId(key);
+                user.setUsernName(userName);
+                userList.add(user);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
         return userList;

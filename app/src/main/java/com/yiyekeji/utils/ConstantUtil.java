@@ -5,8 +5,8 @@ package com.yiyekeji.utils;
  */
 public class ConstantUtil {
 
+    public static   final String USER="user";
 
-
-
+    public static   final String USER_LIST="userList";
 
 }

@@ -7,15 +7,18 @@
         android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true">
-        <activity android:name="com.yiyekeji.ui.ChatActivity">
 
-        </activity>
         <activity android:name="com.yiyekeji.ui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+
+        <activity android:name="com.yiyekeji.ui.ChatActivity"/>
+        <activity android:name="com.yiyekeji.ui.ContactsActivity"/>
+
     </application>
 
 

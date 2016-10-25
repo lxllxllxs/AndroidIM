@@ -59,11 +59,12 @@ public class WebSocketUtil {
 					}
 					@Override
 					public void onBinaryMessage(byte[] payload) {
-						Log.d(MTAG, "onBinaryMessage: "+new String(payload));
+						String jsonString = new String(payload);
+						Log.d(MTAG, "onBinaryMessage: " + jsonString);
 						if (sendMessageCallBack==null){
 							return;
 						}
-						sendMessageCallBack.sendMessageCallBack(true,payload);
+						sendMessageCallBack.sendMessageCallBack(true,jsonString);
 
 					}
 				});
@@ -109,18 +110,6 @@ public class WebSocketUtil {
 		connection.sendBinaryMessage(jsonObject.toString().getBytes());
 	}
 
-	public static void login(@NonNull JSONObject jsonObject,CommonCallBack callBack){
-		if (callBack!=null){
-			commonCallBack=callBack;
-		}
-		if(!isConnected()) {
-			Log.d("WebSocketUtil", "服务断开，发送失败");
-			WebSocketUtil.connect(context);
-			callBackCommon(null);
-			return;
-		}
-		connection.sendBinaryMessage(jsonObject.toString().getBytes());
-	}
 
 	/**
 	 * 对象转数组

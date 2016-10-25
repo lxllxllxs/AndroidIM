@@ -1,5 +1,6 @@
 package com.yiyekeji.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -10,12 +11,12 @@ import com.yiyekeji.bean.User;
 import com.yiyekeji.im.R;
 import com.yiyekeji.iminterface.SendMessageCallBack;
 import com.yiyekeji.ui.base.BaseActivity;
-import com.yiyekeji.utils.JsonUtil;
+import com.yiyekeji.utils.ConstantUtil;
 import com.yiyekeji.utils.LogUtil;
+import com.yiyekeji.utils.MessageHandlerUtil;
 import com.yiyekeji.utils.WebSocketUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Administrator on 2016/10/23.
@@ -30,7 +31,6 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        WebSocketUtil.connect(this);
 
         edtPassword=(EditText)findViewById(R.id.edt_password);
         edtUsername = (EditText) findViewById(R.id.edt_username);
@@ -45,33 +45,20 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        tvSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WebSocketUtil.chat(JsonUtil.sendTextMessage("lxl", "123","hello"), new SendMessageCallBack() {
-                    @Override
-                    public void sendMessageCallBack(boolean isSucceed,byte[] payload) {
-                    }
-                });
-            }
-        });
     }
 
-    public void addList(){
-        List<String> useinfo=new ArrayList<>();
-        useinfo.add("lxl");
-        useinfo.add("lxl1");
-        useinfo.add("lxl2");
 
-    }
-
+    @SuppressWarnings("unchecked")
     public void login(final String name,String pwd) {
-        WebSocketUtil.chat(JsonUtil.login(name, pwd), new SendMessageCallBack() {
+        WebSocketUtil.chat(MessageHandlerUtil.login(name, pwd), new SendMessageCallBack() {
             @Override
-            public void sendMessageCallBack(boolean isSucceed, byte[] payload) {
-                LogUtil.d("parseCommonCallBackJson", "" + new String(payload));
-                userArrayList = (ArrayList<User>) JsonUtil.receive(payload);
-                LogUtil.d("userListSize",userArrayList.size());
+            public void sendMessageCallBack(boolean isSucceed, String jsonString) {
+                LogUtil.d("sendMessageCallBack", "" +jsonString);
+                userArrayList = (ArrayList<User>) MessageHandlerUtil.receive(jsonString);
+                LogUtil.d("userListSize",userArrayList.size()+"");
+                Intent intent=new Intent(LoginActivity.this,ContactsActivity.class);
+                intent.putParcelableArrayListExtra(ConstantUtil.USER_LIST, userArrayList);
+                startActivity(intent);
             }
         });
     }
