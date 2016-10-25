@@ -2,6 +2,7 @@ package com.yiyekeji.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -53,6 +54,10 @@ public class LoginActivity extends BaseActivity {
         WebSocketUtil.chat(MessageHandlerUtil.login(name, pwd), new SendMessageCallBack() {
             @Override
             public void sendMessageCallBack(boolean isSucceed, String jsonString) {
+                if (TextUtils.isEmpty(jsonString)) {
+                    LogUtil.d("sendMessageCallBack", "" +"信息异常 为空");
+                    return;
+                }
                 LogUtil.d("sendMessageCallBack", "" +jsonString);
                 userArrayList = (ArrayList<User>) MessageHandlerUtil.receive(jsonString);
                 LogUtil.d("userListSize",userArrayList.size()+"");

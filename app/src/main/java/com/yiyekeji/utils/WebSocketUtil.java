@@ -60,10 +60,10 @@ public class WebSocketUtil {
 					@Override
 					public void onBinaryMessage(byte[] payload) {
 						String jsonString = new String(payload);
-						Log.d(MTAG, "onBinaryMessage: " + jsonString);
 						if (sendMessageCallBack==null){
 							return;
 						}
+						Log.d(MTAG, "onBinaryMessage: " + jsonString);
 						sendMessageCallBack.sendMessageCallBack(true,jsonString);
 
 					}
