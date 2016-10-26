@@ -1,5 +1,6 @@
 package com.yiyekeji.handler;
 
+import com.yiyekeji.imenum.MainType;
 import com.yiyekeji.imenum.SysMessType;
 
 import org.json.JSONException;
@@ -17,7 +18,6 @@ public class SysMessageHandler {
     public final static String RESULT="result";
 
 
-
     /**
      * 发送登录信息
      * @param username
@@ -27,7 +27,8 @@ public class SysMessageHandler {
     public static JSONObject login(String username, String password){
         JSONObject jsonObject=new JSONObject();
         try {
-            jsonObject.put(MESSAG_TYPE, SysMessType.Login);
+            jsonObject.put(MainType.getName(), MainType.SysMessType);
+            jsonObject.put(SysMessType.getName(), SysMessType.Login);
 
             jsonObject.put(USER_NAME,username);
             jsonObject.put(PASSWORD,password);

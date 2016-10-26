@@ -62,6 +62,7 @@ public class ReceiverHandler {
     public static Object  ChatMessage(ChatMessageType type,JSONObject jsonObject){
         switch (type) {
             case TextMessage:
+                unReceiveMessage(jsonObject);
                 break;
             case ImageMessage:
                 break;
@@ -72,7 +73,7 @@ public class ReceiverHandler {
         return null;
     }
 
-    public static Object  SysMessage(SysMessType type,JSONObject jsonObject){
+    public static Object SysMessage(SysMessType type,JSONObject jsonObject){
         switch (type) {
             case Login:
                parseLinkListJson(jsonObject);
@@ -88,7 +89,7 @@ public class ReceiverHandler {
 
 
     /**
-     * 解析返回的好友列表，暂时只有用户id和用户名
+     * 解析返回的好友列表，和用户本身信息，暂时只有用户id和用户名
      * @param jo
      * @return
      */
@@ -120,5 +121,22 @@ public class ReceiverHandler {
 //        intent.putExtra(ConstantUtil.USER_LIST,rm);
 //        context.sendBroadcast(intent);
     }
+
+
+    private static void unReceiveMessage(JSONObject jo) {
+        ReceiveMessage rm=null;
+        try {
+            rm=new ReceiveMessage();
+            rm.setReceiverID(jo.getString(ChatMessageHandler.RECEIVER_ID));
+            rm.setReceiver(jo.getString(ChatMessageHandler.RECEIVER));
+            rm.setContent(jo.getString(ChatMessageHandler.CONTENT));
+            rm.setSender(jo.getString(ChatMessageHandler.SENDER));
+            rm.setSenderId(jo.getString(ChatMessageHandler.SENDER_ID));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        callBack.receiverCallBack(rm);
+    }
+
 
 }

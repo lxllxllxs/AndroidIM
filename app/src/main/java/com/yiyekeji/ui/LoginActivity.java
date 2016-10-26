@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.ReceiveMessage;
 import com.yiyekeji.bean.User;
 import com.yiyekeji.handler.SysMessageHandler;
@@ -59,6 +60,11 @@ public class LoginActivity extends BaseActivity {
                     return;
                 }
                 LogUtil.d("receiveMessage",receiveMessage.toString());
+                for (User user:receiveMessage.getUsers()){
+                    if (user.getUsernName().equals(name)) {
+                        IMApp.user=user;
+                    }
+                }
                 Intent intent=new Intent(LoginActivity.this,ContactsActivity.class);
                 intent.putExtra(ConstantUtil.RECEIVER_MESSAGE, receiveMessage);
                 startActivity(intent);

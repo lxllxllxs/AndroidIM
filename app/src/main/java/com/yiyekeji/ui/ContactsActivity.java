@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+/**
+ * 在联系人界面才 接收离线消息
+ */
 public class ContactsActivity extends BaseActivity {
 
     private final String TAG = "ContactsActivity";
@@ -54,6 +57,8 @@ public class ContactsActivity extends BaseActivity {
         rm=getIntent().getParcelableExtra(ConstantUtil.RECEIVER_MESSAGE);
         userArrayList=rm.getUsers();
     }
+
+
 
     private void initView() {
         ca=new ContactsAdapter(this,userArrayList);

@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
 
 
 public class WebSocketUtil {
@@ -60,13 +61,18 @@ public class WebSocketUtil {
 					}
 					@Override
 					public void onBinaryMessage(byte[] payload) {
-						String jsonString = new String(payload);
+						String jsonString = null;
+						try {
+							jsonString = new String(payload,"utf-8");
+						} catch (UnsupportedEncodingException e) {
+							e.printStackTrace();
+						}
 						if (receiverCallBack==null){
 							return;
 						}
 						Log.d(MTAG, "onBinaryMessage: " + jsonString);
 						ReceiverHandler.receive(jsonString,receiverCallBack);
-
+						receiverCallBack=null;
 					}
 				});
 			}

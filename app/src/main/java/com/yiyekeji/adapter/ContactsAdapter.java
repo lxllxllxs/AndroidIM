@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.yiyekeji.bean.User;
 import com.yiyekeji.im.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,14 +20,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         {
 
     private LayoutInflater mInflater;
-    private List<User> userList=new ArrayList<>();
+    private List<User> userList;
     public ContactsAdapter(Context context, List<User> userList) {
         this.userList=userList;
         mInflater = LayoutInflater.from(context);
 
     }
-
-
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
         public ViewHolder(View arg0)
@@ -39,7 +36,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         TextView tvName;
         LinearLayout llContainer;
     }
-
         @Override
         public int getItemCount()
         {

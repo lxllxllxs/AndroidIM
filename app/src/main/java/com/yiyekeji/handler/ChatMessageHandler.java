@@ -2,6 +2,7 @@ package com.yiyekeji.handler;
 
 import com.yiyekeji.bean.User;
 import com.yiyekeji.imenum.ChatMessageType;
+import com.yiyekeji.imenum.MainType;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +34,8 @@ public class ChatMessageHandler {
     public static JSONObject sendTextMessage(User user, String content){
         JSONObject jsonObject=new JSONObject();
         try {
-            jsonObject.put(MESSAG_TYPE, ChatMessageType.TextMessage);
+            jsonObject.put(MainType.getName(), MainType.ChatMessageType);
+            jsonObject.put(ChatMessageType.getName(),ChatMessageType.TextMessage);
 
             jsonObject.put(SENDER,"lxl");
             jsonObject.put(SENDER_ID,"123");
@@ -46,5 +48,21 @@ public class ChatMessageHandler {
         return jsonObject;
     }
 
-
+    /**
+     * 接收离线信息
+     * @param user
+     * @return
+     */
+    public static JSONObject getUnReceiveMessage(User user){
+        JSONObject jsonObject=new JSONObject();
+        try {
+            jsonObject.put(MainType.getName(),MainType.ChatMessageType);
+            jsonObject.put(ChatMessageType.getName(),ChatMessageType.UnReceiveMessage);
+            jsonObject.put(SENDER,user.getUsernName());
+            jsonObject.put(SENDER_ID,user.getUserId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
 }
