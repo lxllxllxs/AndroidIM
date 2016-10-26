@@ -1,12 +1,16 @@
 package com.yiyekeji.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.yiyekeji.adapter.ContactsAdapter;
+import com.yiyekeji.bean.ReceiveMessage;
 import com.yiyekeji.bean.User;
 import com.yiyekeji.im.R;
 import com.yiyekeji.ui.base.BaseActivity;
@@ -24,6 +28,8 @@ public class ContactsActivity extends BaseActivity {
     RecyclerView recylerView;
     ContactsAdapter ca;
     ArrayList<User> userArrayList;
+    ChatMessageReceiver receiver;
+    ReceiveMessage rm;
     /**
      * 在这里获取系统的传感器
      */
@@ -31,13 +37,22 @@ public class ContactsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
         ButterKnife.inject(this);
+//        register();
         initData();
         initView();
 
     }
 
+    private void register() {
+        receiver = new ChatMessageReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ConstantUtil.USER_LIST);
+        registerReceiver(receiver, filter);
+    }
+
     private void initData() {
-        userArrayList=getIntent().getParcelableArrayListExtra(ConstantUtil.USER_LIST);
+        rm=getIntent().getParcelableExtra(ConstantUtil.RECEIVER_MESSAGE);
+        userArrayList=rm.getUsers();
     }
 
     private void initView() {
@@ -54,4 +69,17 @@ public class ContactsActivity extends BaseActivity {
         });
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        unregisterReceiver(receiver);
+    }
+
+    class ChatMessageReceiver extends BroadcastReceiver {
+        public void onReceive(Context arg0, Intent arg1) {
+            rm=arg1.getParcelableExtra(ConstantUtil.USER_LIST);
+            userArrayList=rm.getUsers();
+        }
+    }
 }

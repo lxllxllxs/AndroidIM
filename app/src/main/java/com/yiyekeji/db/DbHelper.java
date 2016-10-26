@@ -94,7 +94,7 @@ public class DbHelper extends SQLiteOpenHelper{
      * */
     private void createChatTable(SQLiteDatabase db) {
     	String execString = "create table " + CHAT_TABLE_NAME + " (Id integer primary key autoincrement not null,";
-    	execString += "Type integer,";           //1为发送，0为接收
+    	execString += "MainType integer,";           //1为发送，0为接收
     	execString += "State integer,";          //-1为发送失败，0为正在发送，1为发送成功
     	execString += "IsRead integer,"; 
     	execString += "icon varchar(20),";

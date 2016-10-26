@@ -8,10 +8,11 @@ import com.yiyekeji.Config;
 import com.yiyekeji.autobahn.WebSocket;
 import com.yiyekeji.autobahn.WebSocketConnection;
 import com.yiyekeji.autobahn.WebSocketException;
+import com.yiyekeji.handler.ReceiverHandler;
 import com.yiyekeji.iminterface.CommonCallBack;
+import com.yiyekeji.iminterface.ReceiverCallBack;
 import com.yiyekeji.iminterface.SendMessageCallBack;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -27,6 +28,7 @@ public class WebSocketUtil {
 	private static WebSocketConnection connection = null;
 	private static boolean isConnected = false;
 	private static SendMessageCallBack sendMessageCallBack;
+	private static ReceiverCallBack receiverCallBack;
 	private static CommonCallBack commonCallBack;
 	private static final String MTAG="WebSocketUtil";
 	public static void connect(final Context context) {
@@ -51,7 +53,6 @@ public class WebSocketUtil {
 					}
 					@Override
 					public void onTextMessage(String payload) {
-						parseCommonCallBackJson(payload);
 					}
 					@Override
 					public void onRawTextMessage(byte[] payload) {
@@ -60,11 +61,11 @@ public class WebSocketUtil {
 					@Override
 					public void onBinaryMessage(byte[] payload) {
 						String jsonString = new String(payload);
-						if (sendMessageCallBack==null){
+						if (receiverCallBack==null){
 							return;
 						}
 						Log.d(MTAG, "onBinaryMessage: " + jsonString);
-						sendMessageCallBack.sendMessageCallBack(true,jsonString);
+						ReceiverHandler.receive(jsonString,receiverCallBack);
 
 					}
 				});
@@ -75,30 +76,13 @@ public class WebSocketUtil {
 			connection = null;
 		}
 	}
-
 	/**
-	 * 只解析登录验证返回
-	 * @param payload
-     */
-	private static void parseCommonCallBackJson(String payload) {
-		LogUtil.d("parseCommonCallBackJson",payload);
-		try {
-			JSONObject jsonObject = new JSONObject(payload);
-			commonCallBack.commonCallBack(jsonObject);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * 发送信息主函数
+	 * 发送信息主函数 需要清楚 返回的是什么
 	 * @param jsonObject
-	 * @param messageCallBack
+	 * @param CallBack
      */
-	public static void chat(@NonNull JSONObject jsonObject, SendMessageCallBack messageCallBack) {
-		if(messageCallBack != null) {
-			sendMessageCallBack = messageCallBack;
-		}
+	public static void chat(@NonNull JSONObject jsonObject, ReceiverCallBack CallBack) {
+		receiverCallBack = CallBack;
 		if(!isConnected()) {
 			Log.d("WebSocketUtil", "服务断开，发送失败");
 			WebSocketUtil.connect(context);

@@ -2,19 +2,19 @@ package com.yiyekeji.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yiyekeji.bean.ReceiveMessage;
 import com.yiyekeji.bean.User;
+import com.yiyekeji.handler.SysMessageHandler;
 import com.yiyekeji.im.R;
-import com.yiyekeji.iminterface.SendMessageCallBack;
+import com.yiyekeji.iminterface.ReceiverCallBack;
 import com.yiyekeji.ui.base.BaseActivity;
 import com.yiyekeji.utils.ConstantUtil;
 import com.yiyekeji.utils.LogUtil;
-import com.yiyekeji.utils.MessageHandlerUtil;
 import com.yiyekeji.utils.WebSocketUtil;
 
 import java.util.ArrayList;
@@ -51,18 +51,16 @@ public class LoginActivity extends BaseActivity {
 
     @SuppressWarnings("unchecked")
     public void login(final String name,String pwd) {
-        WebSocketUtil.chat(MessageHandlerUtil.login(name, pwd), new SendMessageCallBack() {
+        WebSocketUtil.chat(SysMessageHandler.login(name, pwd), new ReceiverCallBack() {
             @Override
-            public void sendMessageCallBack(boolean isSucceed, String jsonString) {
-                if (TextUtils.isEmpty(jsonString)) {
-                    LogUtil.d("sendMessageCallBack", "" +"信息异常 为空");
+            public void receiverCallBack(ReceiveMessage receiveMessage) {
+                if (receiveMessage==null) {
+                    LogUtil.d("ReceiverCallBack", "" +"信息异常 为空");
                     return;
                 }
-                LogUtil.d("sendMessageCallBack", "" +jsonString);
-                userArrayList = (ArrayList<User>) MessageHandlerUtil.receive(jsonString);
-                LogUtil.d("userListSize",userArrayList.size()+"");
+                LogUtil.d("receiveMessage",receiveMessage.toString());
                 Intent intent=new Intent(LoginActivity.this,ContactsActivity.class);
-                intent.putParcelableArrayListExtra(ConstantUtil.USER_LIST, userArrayList);
+                intent.putExtra(ConstantUtil.RECEIVER_MESSAGE, receiveMessage);
                 startActivity(intent);
             }
         });
