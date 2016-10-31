@@ -16,7 +16,7 @@
  *
  ******************************************************************************/
 
-package com.yiyekeji.autobahn;
+package de.tavendo.autobahn;
 
 import org.apache.http.message.BasicNameValuePair;
 

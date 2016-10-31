@@ -1,11 +1,6 @@
 package com.yiyekeji.handler;
 
-import com.yiyekeji.bean.User;
-import com.yiyekeji.imenum.ChatMessageType;
-import com.yiyekeji.imenum.MainType;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.yiyekeji.bean.IMessageFactory;
 
 /**
  * Created by Administrator on 2016/10/25.
@@ -27,42 +22,16 @@ public class ChatMessageHandler {
 
     /**
      * 普通单人文本信息
-     * @param user
-     * @param content
      * @return
      */
-    public static JSONObject sendTextMessage(User user, String content){
-        JSONObject jsonObject=new JSONObject();
-        try {
-            jsonObject.put(MainType.getName(), MainType.ChatMessageType);
-            jsonObject.put(ChatMessageType.getName(),ChatMessageType.TextMessage);
+    public static IMessageFactory.IMessage sendTextMessage(String content, String receiverId) {
+        IMessageFactory.IMessage.Builder imBuidler=IMessageFactory.IMessage.newBuilder();
+        imBuidler.setContent(content);
+        imBuidler.setMainType("1");
+        imBuidler.setSubType("0");
+        imBuidler.setReceiverId(receiverId);
+        IMessageFactory.IMessage iMessage=imBuidler.build();
 
-            jsonObject.put(SENDER,"lxl");
-            jsonObject.put(SENDER_ID,"123");
-            jsonObject.put(RECEIVER,user.getUsernName());
-            jsonObject.put(RECEIVER_ID,user.getUserId());
-            jsonObject.put(CONTENT,content);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonObject;
-    }
-
-    /**
-     * 接收离线信息
-     * @param user
-     * @return
-     */
-    public static JSONObject getUnReceiveMessage(User user){
-        JSONObject jsonObject=new JSONObject();
-        try {
-            jsonObject.put(MainType.getName(),MainType.ChatMessageType);
-            jsonObject.put(ChatMessageType.getName(),ChatMessageType.UnReceiveMessage);
-            jsonObject.put(SENDER,user.getUsernName());
-            jsonObject.put(SENDER_ID,user.getUserId());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonObject;
+        return iMessage;
     }
 }

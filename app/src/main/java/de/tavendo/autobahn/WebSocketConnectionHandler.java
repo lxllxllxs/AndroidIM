@@ -16,7 +16,7 @@
  *
  ******************************************************************************/
 
-package com.yiyekeji.autobahn;
+package de.tavendo.autobahn;
 
 /**
  * WebSockets event handler. Users will usually provide an instance of a class

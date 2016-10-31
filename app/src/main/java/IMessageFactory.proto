@@ -1,0 +1,22 @@
+	option java_package = "com.yiyekeji.bean" ;
+	option java_outer_classname = "IMessageFactory" ;
+	
+	message IMessage{
+		required  string MainType = 1 ;
+		required  string subType = 2;
+		optional string senderId = 3 ;
+		optional string receiverId =4 ;
+		optional string content =5;
+		optional string result =6 ;
+	
+		repeated User user = 7 ;
+
+
+		message User {
+    		optional string username = 1 ;
+			optional string password = 2 ;
+			optional string userId = 3 ;
+		}
+
+	}
+

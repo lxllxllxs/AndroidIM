@@ -10,15 +10,13 @@ import android.util.Log;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.yiyekeji.Config;
-import com.yiyekeji.autobahn.WebSocket;
-import com.yiyekeji.autobahn.WebSocketConnection;
-import com.yiyekeji.autobahn.WebSocketException;
 import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.handler.ReceiverHandler;
-import com.yiyekeji.iminterface.CommonCallBack;
-import com.yiyekeji.iminterface.ReceiverCallBack;
-import com.yiyekeji.iminterface.SendMessageCallBack;
 import com.yiyekeji.utils.LogUtil;
+
+import de.tavendo.autobahn.WebSocket;
+import de.tavendo.autobahn.WebSocketConnection;
+import de.tavendo.autobahn.WebSocketException;
 
 /**
  * Created by lxl on 2016/10/31.
@@ -28,9 +26,6 @@ public class WebSocketService extends Service {
     private static Context context;
     private static WebSocketConnection connection = null;
     private static boolean isConnected = false;
-    private static SendMessageCallBack sendMessageCallBack;
-    private static ReceiverCallBack receiverCallBack;
-    private static CommonCallBack commonCallBack;
     private static final String MTAG="WebSocketService";
     @Nullable
     @Override
@@ -100,11 +95,11 @@ public class WebSocketService extends Service {
      */
     public static void chat(@NonNull IMessageFactory.IMessage iMessage) {
         if(!isConnected()) {
-            Log.d("WebSocketUtil", "服务断开，发送失败");
+            Log.d("WebSocketService", "服务断开，发送失败");
             connect(context);
             return;
         }
-        Log.d("WebSocketUtil", "chat: JSONObject大小"+iMessage.toString().length());
+        Log.d("WebSocketService", "chat: IMessage大小"+iMessage.toString().length());
         connection.sendBinaryMessage(iMessage.toByteArray());
     }
 

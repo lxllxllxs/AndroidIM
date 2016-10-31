@@ -29,15 +29,22 @@ public class SysMessageHandler {
         builder1.setPassword(password);
         builder1.setUsername(username);
         IMessageFactory.IMessage.User user=builder1.build();
-        IMessageFactory.IMessage message=builder.build();
-        builder.addUser(builder1.build());
-
+        builder.addUser(user);
         IMessageFactory.IMessage iMessage=builder.build();
-
         LogUtil.d("loginSys",iMessage.toString());
+        return iMessage;
+    }
 
 
-
+    public static IMessageFactory.IMessage getLinkManList(){
+        IMessageFactory.IMessage.Builder builder= IMessageFactory.IMessage.newBuilder();
+        IMessageFactory.IMessage.User.Builder builder1= IMessageFactory.IMessage.User.newBuilder();
+        builder.setMainType("0");
+        builder.setSubType("1");
+        IMessageFactory.IMessage.User user=builder1.build();
+        builder.addUser(user);
+        IMessageFactory.IMessage iMessage=builder.build();
+        LogUtil.d("loginSys",iMessage.toString());
         return iMessage;
     }
 }

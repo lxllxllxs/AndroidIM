@@ -7,13 +7,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yiyekeji.Event.LoginEvent;
-import com.yiyekeji.bean.User;
+import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.handler.SysMessageHandler;
 import com.yiyekeji.im.R;
 import com.yiyekeji.service.WebSocketService;
 import com.yiyekeji.ui.base.BaseActivity;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -27,12 +26,11 @@ public class LoginActivity extends BaseActivity {
     EditText edtPassword;
     TextView tvConfirm;
     TextView tvSend;
-    ArrayList<User> userArrayList;
+    ArrayList<IMessageFactory.IMessage.User> userArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        EventBus.getDefault().register(this);
         edtPassword=(EditText)findViewById(R.id.edt_password);
         edtUsername = (EditText) findViewById(R.id.edt_username);
         tvConfirm=(TextView)findViewById(R.id.tv_confirm);
@@ -58,19 +56,11 @@ public class LoginActivity extends BaseActivity {
     public void isLoginSuccess(LoginEvent loginEvent){
         if (loginEvent.isSuccess()){
             showShortToast("login successfully!!");
+            startActivity(ContactsActivity.class);
             return;
-//            Intent intent = new Intent(LoginActivity.this, ContactsActivity.class);
-//            intent.putExtra(ConstantUtil.RECEIVER_MESSAGE,loginEvent.getMessage());
-//            startActivity(intent);
         }else {
             Toast.makeText(this,"password is uncorrect",Toast.LENGTH_SHORT).show();
         }
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
 }

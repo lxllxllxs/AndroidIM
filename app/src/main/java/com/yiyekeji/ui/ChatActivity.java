@@ -4,10 +4,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.yiyekeji.bean.User;
+import com.yiyekeji.Event.ChatMessageEvent;
+import com.yiyekeji.bean.IMessageFactory;
+import com.yiyekeji.handler.ChatMessageHandler;
 import com.yiyekeji.im.R;
+import com.yiyekeji.service.WebSocketService;
 import com.yiyekeji.ui.base.BaseActivity;
 import com.yiyekeji.utils.ConstantUtil;
+import com.yiyekeji.utils.LogUtil;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -22,7 +29,7 @@ public class ChatActivity extends BaseActivity {
     TextView tvSendImage;
     @InjectView(R.id.tv_message)
     TextView tvMessage;
-    private User receriver;
+    private IMessageFactory.IMessage.User receriver;
 
     /**
      * 在这里获取系统的传感器
@@ -31,12 +38,14 @@ public class ChatActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         ButterKnife.inject(this);
-        initView();
         initData();
+        initView();
+
     }
 
     private void initData() {
-        receriver = getIntent().getParcelableExtra(ConstantUtil.USER);
+        receriver = (IMessageFactory.IMessage.User) getIntent().getSerializableExtra(ConstantUtil.USER);
+        LogUtil.d("initData", receriver.toString());
         getUnReceiveMessage();
     }
 
@@ -49,7 +58,7 @@ public class ChatActivity extends BaseActivity {
      * 若要改此方法里面的字段，可能还需要改发红包界面里面的发送红包方法，多一个参数的为语音消息的秒数
      */
     private void sendMessage() {
-
+        WebSocketService.chat(ChatMessageHandler.sendTextMessage("无边落木萧萧下，不尽长江滚滚来",receriver.getUserId()));
     }
 
     @OnClick({R.id.tv_send_text, R.id.tv_send_image})
@@ -61,5 +70,11 @@ public class ChatActivity extends BaseActivity {
             case R.id.tv_send_image:
                 break;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void setTvMessage(ChatMessageEvent event){
+        IMessageFactory.IMessage iMessage=event.getiMessage();
+        tvMessage.setText(iMessage.getContent());
     }
 }
