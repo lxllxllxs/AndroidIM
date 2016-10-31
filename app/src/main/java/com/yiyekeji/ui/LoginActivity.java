@@ -1,22 +1,21 @@
 package com.yiyekeji.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yiyekeji.IMApp;
-import com.yiyekeji.bean.ReceiveMessage;
+import com.yiyekeji.Event.LoginEvent;
 import com.yiyekeji.bean.User;
 import com.yiyekeji.handler.SysMessageHandler;
 import com.yiyekeji.im.R;
-import com.yiyekeji.iminterface.ReceiverCallBack;
+import com.yiyekeji.service.WebSocketService;
 import com.yiyekeji.ui.base.BaseActivity;
-import com.yiyekeji.utils.ConstantUtil;
-import com.yiyekeji.utils.LogUtil;
-import com.yiyekeji.utils.WebSocketUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -33,7 +32,7 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        EventBus.getDefault().register(this);
         edtPassword=(EditText)findViewById(R.id.edt_password);
         edtUsername = (EditText) findViewById(R.id.edt_username);
         tvConfirm=(TextView)findViewById(R.id.tv_confirm);
@@ -52,24 +51,26 @@ public class LoginActivity extends BaseActivity {
 
     @SuppressWarnings("unchecked")
     public void login(final String name,String pwd) {
-        WebSocketUtil.chat(SysMessageHandler.login(name, pwd), new ReceiverCallBack() {
-            @Override
-            public void receiverCallBack(ReceiveMessage receiveMessage) {
-                if (receiveMessage==null) {
-                    LogUtil.d("ReceiverCallBack", "" +"信息异常 为空");
-                    return;
-                }
-                LogUtil.d("receiveMessage",receiveMessage.toString());
-                for (User user:receiveMessage.getUsers()){
-                    if (user.getUsernName().equals(name)) {
-                        IMApp.user=user;
-                    }
-                }
-                Intent intent=new Intent(LoginActivity.this,ContactsActivity.class);
-                intent.putExtra(ConstantUtil.RECEIVER_MESSAGE, receiveMessage);
-                startActivity(intent);
-            }
-        });
+        WebSocketService.chat(SysMessageHandler.login(name, pwd));
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void isLoginSuccess(LoginEvent loginEvent){
+        if (loginEvent.isSuccess()){
+            showShortToast("login successfully!!");
+            return;
+//            Intent intent = new Intent(LoginActivity.this, ContactsActivity.class);
+//            intent.putExtra(ConstantUtil.RECEIVER_MESSAGE,loginEvent.getMessage());
+//            startActivity(intent);
+        }else {
+            Toast.makeText(this,"password is uncorrect",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

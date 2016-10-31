@@ -1,12 +1,14 @@
 package com.yiyekeji.handler;
 
+import com.yiyekeji.Event.LoginEvent;
+import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.bean.ReceiveMessage;
 import com.yiyekeji.bean.User;
 import com.yiyekeji.imenum.ChatMessageType;
 import com.yiyekeji.imenum.MainType;
 import com.yiyekeji.imenum.SysMessType;
-import com.yiyekeji.iminterface.ReceiverCallBack;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,36 +21,32 @@ import java.util.Iterator;
 public class ReceiverHandler {
 
 
-    private static ReceiverCallBack callBack;
     /**************************Receive***************************************/
     /**
      * 头部 MainType
      * MESSAGE_TYPE：ChatMessageType or SysMessType;
-     * @param jsonString
-     * @param callBack1
+     * @param iMessage
      * @return
      */
-    public static Object receive(String jsonString, ReceiverCallBack callBack1){
-        callBack=callBack1;
+    public static Object receive(IMessageFactory.IMessage iMessage){
         JSONObject jsonObject;
         SysMessType sysMessType;
         ChatMessageType chatMessageType;
-        try {
-            jsonObject= new JSONObject(jsonString);
-            MainType type= MainType.valueOf(jsonObject.getString(MainType.getName()));
-            //根据枚举类型获取其键对应的值 再转为枚举类型判断
-            String  secondType=jsonObject.getString(type.toString());
-
-            if (ChatMessageType.contain(secondType)){
-                chatMessageType = ChatMessageType.valueOf(secondType);
-                ChatMessage(chatMessageType,jsonObject);
-            }else {
-                sysMessType = SysMessType.valueOf(secondType);
-                SysMessage(sysMessType,jsonObject);
+        if (iMessage.getMainType().equals("0")){
+            switch (iMessage.getSubType()){
+                case "0":
+                    LoginEvent loginEvent=new LoginEvent();
+                    if (iMessage.getResult().equals("1")){
+                        loginEvent.setSuccess(true);
+                    }else {
+                        loginEvent.setSuccess(false);
+                    }
+                    EventBus.getDefault().post(loginEvent);
+                    break;
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
+
+
         return null;
     }
 
@@ -94,6 +92,16 @@ public class ReceiverHandler {
      * @return
      */
     private static void parseLinkListJson(JSONObject jo) {
+        try {
+            if (jo.getString("result").equals("false")){
+                LoginEvent loginEvent=new LoginEvent();
+                loginEvent.setSuccess(false);
+                EventBus.getDefault().post(loginEvent);
+                return;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         ArrayList<User> userList = new ArrayList<>();
         Iterator<String> it=jo.keys();
         User user;
@@ -115,7 +123,10 @@ public class ReceiverHandler {
         }
         ReceiveMessage rm=new ReceiveMessage();
         rm.setUsers(userList);
-        callBack.receiverCallBack(rm);
+        LoginEvent loginEvent=new LoginEvent();
+        loginEvent.setSuccess(true);
+        loginEvent.setMessage(rm);
+        EventBus.getDefault().post(loginEvent);
 //        rm.setUsers(userList);
 //        Intent intent =new Intent(ConstantUtil.USER_LIST);
 //        intent.putExtra(ConstantUtil.USER_LIST,rm);
@@ -135,7 +146,6 @@ public class ReceiverHandler {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        callBack.receiverCallBack(rm);
     }
 
 

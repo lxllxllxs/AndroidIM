@@ -19,7 +19,8 @@
         <activity android:name="com.yiyekeji.ui.ChatActivity"/>
         <activity android:name="com.yiyekeji.ui.ContactsActivity"/>
 
+
+
+        <service android:name="com.yiyekeji.service.WebSocketService"/>
     </application>
-
-
 </manifest>

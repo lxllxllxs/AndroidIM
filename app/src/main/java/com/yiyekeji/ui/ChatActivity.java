@@ -4,16 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.yiyekeji.IMApp;
-import com.yiyekeji.bean.ReceiveMessage;
 import com.yiyekeji.bean.User;
-import com.yiyekeji.handler.ChatMessageHandler;
 import com.yiyekeji.im.R;
-import com.yiyekeji.iminterface.ReceiverCallBack;
 import com.yiyekeji.ui.base.BaseActivity;
 import com.yiyekeji.utils.ConstantUtil;
-import com.yiyekeji.utils.LogUtil;
-import com.yiyekeji.utils.WebSocketUtil;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -39,7 +33,6 @@ public class ChatActivity extends BaseActivity {
         ButterKnife.inject(this);
         initView();
         initData();
-        WebSocketUtil.connect(this);
     }
 
     private void initData() {
@@ -51,28 +44,12 @@ public class ChatActivity extends BaseActivity {
     }
 
     private void getUnReceiveMessage() {
-        WebSocketUtil.chat(ChatMessageHandler.getUnReceiveMessage(IMApp.user), new ReceiverCallBack() {
-            @Override
-            public void receiverCallBack(ReceiveMessage message) {
-                tvMessage.setText(message.getContent());
-            }
-        });
     }
     /**
      * 若要改此方法里面的字段，可能还需要改发红包界面里面的发送红包方法，多一个参数的为语音消息的秒数
      */
     private void sendMessage() {
-        WebSocketUtil.chat(ChatMessageHandler.sendTextMessage(receriver, "春江潮水连海平，海上明月共潮生"),
-                new ReceiverCallBack() {
-                    @Override
-                    public void receiverCallBack(ReceiveMessage receiveMessage) {
-                        if (receiveMessage == null) {
-                            return;
-                        }
-                        LogUtil.d("receiverCallBack", receiveMessage.toString());
 
-                    }
-                });
     }
 
     @OnClick({R.id.tv_send_text, R.id.tv_send_image})
