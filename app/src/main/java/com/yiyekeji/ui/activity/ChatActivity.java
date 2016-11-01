@@ -1,4 +1,4 @@
-package com.yiyekeji.ui;
+package com.yiyekeji.ui.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,10 +9,11 @@ import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.handler.ChatMessageHandler;
 import com.yiyekeji.im.R;
 import com.yiyekeji.service.WebSocketService;
-import com.yiyekeji.ui.base.BaseActivity;
+import com.yiyekeji.ui.activity.base.BaseActivity;
 import com.yiyekeji.utils.ConstantUtil;
 import com.yiyekeji.utils.LogUtil;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -38,6 +39,7 @@ public class ChatActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         ButterKnife.inject(this);
+        EventBus.getDefault().register(this);
         initData();
         initView();
 
@@ -76,5 +78,13 @@ public class ChatActivity extends BaseActivity {
     public void setTvMessage(ChatMessageEvent event){
         IMessageFactory.IMessage iMessage=event.getiMessage();
         tvMessage.setText(iMessage.getContent());
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.reset(this);
+        EventBus.getDefault().unregister(this);
     }
 }

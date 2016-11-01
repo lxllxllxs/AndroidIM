@@ -99,7 +99,9 @@ public class WebSocketService extends Service {
             connect(context);
             return;
         }
-        Log.d("WebSocketService", "chat: IMessage大小"+iMessage.toString().length());
+        Log.d("WebSocketService", "chat: IMessage"+iMessage.getContent());
+//        Log.d("WebSocketService", "chat: IMessage大小"+iMessage.toString().length());
+        Log.d("WebSocketService", "chat: IMessage:"+iMessage.toString());
         connection.sendBinaryMessage(iMessage.toByteArray());
     }
 

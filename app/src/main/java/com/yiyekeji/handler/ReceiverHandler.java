@@ -1,9 +1,10 @@
 package com.yiyekeji.handler;
 
-import com.yiyekeji.Event.ChatMessageEvent;
 import com.yiyekeji.Event.LinkManEvent;
 import com.yiyekeji.Event.LoginEvent;
+import com.yiyekeji.Event.UnReceiveEvent;
 import com.yiyekeji.bean.IMessageFactory;
+import com.yiyekeji.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -11,7 +12,6 @@ import org.greenrobot.eventbus.EventBus;
  * Created by Administrator on 2016/10/25.
  */
 public class ReceiverHandler {
-
 
     /**************************Receive***************************************/
     /**
@@ -37,6 +37,12 @@ public class ReceiverHandler {
                     linkManEvent.setiMessage(iMessage);
                     EventBus.getDefault().post(linkManEvent);
                     break;
+                case "2"://接受离线消息
+                    LogUtil.d("ReceiverHandler","接收离线消息");
+                    UnReceiveEvent event=new UnReceiveEvent();
+                    event.setiMessage(iMessage);
+                    EventBus.getDefault().post(event);
+                    break;
             }
         }else if(iMessage.getMainType().equals("1")){
             switch (iMessage.getSubType()){
@@ -54,10 +60,5 @@ public class ReceiverHandler {
         return null;
     }
 
-    private void textMessage(IMessageFactory.IMessage iMessage){
-        ChatMessageEvent event = new ChatMessageEvent();
-        event.setiMessage(iMessage);
-        EventBus.getDefault().post(event);
-    }
 
 }

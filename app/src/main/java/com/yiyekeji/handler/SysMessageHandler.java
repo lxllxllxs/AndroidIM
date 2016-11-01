@@ -36,6 +36,10 @@ public class SysMessageHandler {
     }
 
 
+    /**
+     * 获得所有好友
+     * @return
+     */
     public static IMessageFactory.IMessage getLinkManList(){
         IMessageFactory.IMessage.Builder builder= IMessageFactory.IMessage.newBuilder();
         IMessageFactory.IMessage.User.Builder builder1= IMessageFactory.IMessage.User.newBuilder();
@@ -45,6 +49,17 @@ public class SysMessageHandler {
         builder.addUser(user);
         IMessageFactory.IMessage iMessage=builder.build();
         LogUtil.d("loginSys",iMessage.toString());
+        return iMessage;
+    }
+
+
+    public static IMessageFactory.IMessage getUnRecieveMessage(){
+        IMessageFactory.IMessage.Builder builder= IMessageFactory.IMessage.newBuilder();
+        IMessageFactory.IMessage.User.Builder builder1= IMessageFactory.IMessage.User.newBuilder();
+        builder.setMainType("0");
+        builder.setSubType("2");
+        IMessageFactory.IMessage iMessage=builder.build();
+        LogUtil.d("getUnRecieveMessage",iMessage.toString());
         return iMessage;
     }
 }

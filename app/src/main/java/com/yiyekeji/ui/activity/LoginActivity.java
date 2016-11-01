@@ -1,4 +1,4 @@
-package com.yiyekeji.ui;
+package com.yiyekeji.ui.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -11,8 +11,9 @@ import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.handler.SysMessageHandler;
 import com.yiyekeji.im.R;
 import com.yiyekeji.service.WebSocketService;
-import com.yiyekeji.ui.base.BaseActivity;
+import com.yiyekeji.ui.activity.base.BaseActivity;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -30,6 +31,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         setContentView(R.layout.activity_login);
         edtPassword=(EditText)findViewById(R.id.edt_password);
         edtUsername = (EditText) findViewById(R.id.edt_username);
@@ -56,11 +58,16 @@ public class LoginActivity extends BaseActivity {
     public void isLoginSuccess(LoginEvent loginEvent){
         if (loginEvent.isSuccess()){
             showShortToast("login successfully!!");
-            startActivity(ContactsActivity.class);
+            startActivity(MainFragmentActivity.class);
             return;
         }else {
             Toast.makeText(this,"password is uncorrect",Toast.LENGTH_SHORT).show();
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

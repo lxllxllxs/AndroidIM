@@ -1,21 +1,19 @@
-package com.yiyekeji.ui.base;
+package com.yiyekeji.ui.activity.base;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Toast;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by Administrator on 2016/10/23.
  */
-public class BaseActivity extends Activity implements View.OnClickListener {
+public class BaseActivity extends FragmentActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
+
     }
     private Toast shortToast, longToast ;
 
@@ -38,9 +36,6 @@ public class BaseActivity extends Activity implements View.OnClickListener {
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
+
+
 }
