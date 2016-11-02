@@ -25,7 +25,7 @@ public class ChatMessageHandler {
      * @return
      */
     public static IMessageFactory.IMessage sendTextMessage(String content, String receiverId) {
-        IMessageFactory.IMessage.Builder imBuidler=IMessageFactory.IMessage.newBuilder();
+        IMessageFactory.IMessage.Builder imBuidler=IMessageBuilder.getBuilder();
         imBuidler.setContent(content);
         imBuidler.setMainType("1");
         imBuidler.setSubType("0");

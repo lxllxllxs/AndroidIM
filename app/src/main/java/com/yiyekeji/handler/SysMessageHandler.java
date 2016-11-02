@@ -22,7 +22,7 @@ public class SysMessageHandler {
      * @return
      */
     public static IMessageFactory.IMessage login(String username, String password){
-        IMessageFactory.IMessage.Builder builder= IMessageFactory.IMessage.newBuilder();
+        IMessageFactory.IMessage.Builder builder=IMessageBuilder.getBuilder();
         IMessageFactory.IMessage.User.Builder builder1= IMessageFactory.IMessage.User.newBuilder();
         builder.setMainType("0");
         builder.setSubType("0");
@@ -41,7 +41,7 @@ public class SysMessageHandler {
      * @return
      */
     public static IMessageFactory.IMessage getLinkManList(){
-        IMessageFactory.IMessage.Builder builder= IMessageFactory.IMessage.newBuilder();
+        IMessageFactory.IMessage.Builder builder=IMessageBuilder.getBuilder();
         IMessageFactory.IMessage.User.Builder builder1= IMessageFactory.IMessage.User.newBuilder();
         builder.setMainType("0");
         builder.setSubType("1");
@@ -54,7 +54,7 @@ public class SysMessageHandler {
 
 
     public static IMessageFactory.IMessage getUnRecieveMessage(){
-        IMessageFactory.IMessage.Builder builder= IMessageFactory.IMessage.newBuilder();
+        IMessageFactory.IMessage.Builder builder=IMessageBuilder.getBuilder();
         IMessageFactory.IMessage.User.Builder builder1= IMessageFactory.IMessage.User.newBuilder();
         builder.setMainType("0");
         builder.setSubType("2");

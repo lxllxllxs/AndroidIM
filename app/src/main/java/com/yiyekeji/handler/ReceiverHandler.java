@@ -24,6 +24,7 @@ public class ReceiverHandler {
         if (iMessage.getMainType().equals("0")){
             switch (iMessage.getSubType()){
                 case "0":
+                    LogUtil.d("ReceiverHandler","登录验证");
                     LoginEvent loginEvent=new LoginEvent();
                     if (iMessage.getResult().equals("1")){
                         loginEvent.setSuccess(true);
@@ -33,6 +34,7 @@ public class ReceiverHandler {
                     EventBus.getDefault().post(loginEvent);
                     break;
                 case "1":
+                    LogUtil.d("ReceiverHandler"," 接收好友列表");
                     LinkManEvent linkManEvent=new LinkManEvent();
                     linkManEvent.setiMessage(iMessage);
                     EventBus.getDefault().post(linkManEvent);

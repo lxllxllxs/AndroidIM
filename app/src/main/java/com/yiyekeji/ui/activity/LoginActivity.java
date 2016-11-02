@@ -1,5 +1,6 @@
 package com.yiyekeji.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -33,6 +34,16 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         setContentView(R.layout.activity_login);
+        initView();
+        initWebSocketService();
+    }
+
+    private void initWebSocketService() {
+        Intent intent1 = new Intent(this, WebSocketService.class);
+        startService(intent1);
+    }
+
+    private void initView() {
         edtPassword=(EditText)findViewById(R.id.edt_password);
         edtUsername = (EditText) findViewById(R.id.edt_username);
         tvConfirm=(TextView)findViewById(R.id.tv_confirm);

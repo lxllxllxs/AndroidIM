@@ -48,14 +48,11 @@ public class ChatActivity extends BaseActivity {
     private void initData() {
         receriver = (IMessageFactory.IMessage.User) getIntent().getSerializableExtra(ConstantUtil.USER);
         LogUtil.d("initData", receriver.toString());
-        getUnReceiveMessage();
     }
 
     private void initView() {
     }
 
-    private void getUnReceiveMessage() {
-    }
     /**
      * 若要改此方法里面的字段，可能还需要改发红包界面里面的发送红包方法，多一个参数的为语音消息的秒数
      */

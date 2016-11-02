@@ -61,12 +61,7 @@ public class InformationFragment extends Fragment {
         adapter=new InformAdapter(getActivity(),messageList);
         recylerView.setAdapter(adapter);
         recylerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recylerView.post(new Runnable() {
-            @Override
-            public void run() {
-                WebSocketService.chat(SysMessageHandler.getUnRecieveMessage());
-            }
-        });
+        WebSocketService.chat(SysMessageHandler.getUnRecieveMessage());
     }
 
 
