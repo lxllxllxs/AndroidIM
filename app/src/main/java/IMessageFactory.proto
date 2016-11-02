@@ -10,6 +10,7 @@
 		optional string result =6 ;
 		repeated User user = 7 ;
         required  string id = 8;
+        optional string date = 9 ;
 
 		message User {
     		optional string username = 1 ;

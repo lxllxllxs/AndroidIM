@@ -6,7 +6,9 @@
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:name="com.yiyekeji.IMApp"
+        >
 
         <activity android:name="com.yiyekeji.ui.activity.LoginActivity">
             <intent-filter>

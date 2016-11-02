@@ -69,6 +69,7 @@ public class ReceiverHandler {
         if (iMessage.getResult().equals("1")){
             loginEvent.setSuccess(true);
             //记录用户的信息
+            IMApp.isLogin=true;
             IMApp.userInfo.setUserId(iMessage.getUser(0).getUserId());
             IMApp.userInfo.setUserName(iMessage.getUser(0).getUsername());
         }else {

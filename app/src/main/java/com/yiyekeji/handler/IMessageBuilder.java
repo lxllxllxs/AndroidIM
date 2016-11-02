@@ -12,7 +12,9 @@ public class IMessageBuilder {
     public static IMessageFactory.IMessage.Builder getBuilder() {
         IMessageFactory.IMessage.Builder imBuidler=IMessageFactory.IMessage.newBuilder();
         imBuidler.setId(UUID.randomUUID().toString());
-        imBuidler.setSenderId(IMApp.userInfo.getUserId());
+        if (IMApp.isLogin) {
+            imBuidler.setSenderId(IMApp.userInfo.getUserId());
+        }
         return imBuidler;
     }
 }
