@@ -3,6 +3,7 @@ package com.yiyekeji.handler;
 import com.yiyekeji.Event.LinkManEvent;
 import com.yiyekeji.Event.LoginEvent;
 import com.yiyekeji.Event.UnReceiveEvent;
+import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.utils.LogUtil;
 
@@ -24,14 +25,7 @@ public class ReceiverHandler {
         if (iMessage.getMainType().equals("0")){
             switch (iMessage.getSubType()){
                 case "0":
-                    LogUtil.d("ReceiverHandler","登录验证");
-                    LoginEvent loginEvent=new LoginEvent();
-                    if (iMessage.getResult().equals("1")){
-                        loginEvent.setSuccess(true);
-                    }else {
-                        loginEvent.setSuccess(false);
-                    }
-                    EventBus.getDefault().post(loginEvent);
+                    loginVerfity(iMessage);
                     break;
                 case "1":
                     LogUtil.d("ReceiverHandler"," 接收好友列表");
@@ -60,6 +54,27 @@ public class ReceiverHandler {
             }
         }
         return null;
+    }
+
+    /**
+     * 登录验证
+     * 发送通知进入下一界面
+     * 记录用户的相关信息
+     * 用户的id将用于生产IMeeage的senderId;
+     * @param iMessage
+     */
+    private static void loginVerfity(IMessageFactory.IMessage iMessage) {
+        LogUtil.d("ReceiverHandler","登录验证");
+        LoginEvent loginEvent=new LoginEvent();
+        if (iMessage.getResult().equals("1")){
+            loginEvent.setSuccess(true);
+            //记录用户的信息
+            IMApp.userInfo.setUserId(iMessage.getUser(0).getUserId());
+            IMApp.userInfo.setUserName(iMessage.getUser(0).getUsername());
+        }else {
+            loginEvent.setSuccess(false);
+        }
+        EventBus.getDefault().post(loginEvent);
     }
 
 

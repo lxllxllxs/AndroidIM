@@ -3,6 +3,7 @@ package com.yiyekeji;
 import android.app.Application;
 
 import com.yiyekeji.bean.IMessageFactory;
+import com.yiyekeji.bean.UserInfo;
 
 /**
  * Created by lxl on 2016/10/26.
@@ -17,4 +18,6 @@ public class IMApp extends Application {
         }
         return instance;
     }
+
+    public static UserInfo userInfo = new UserInfo();
 }

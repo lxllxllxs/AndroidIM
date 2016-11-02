@@ -3,9 +3,7 @@ package com.yiyekeji.service;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -25,13 +23,13 @@ import de.tavendo.autobahn.WebSocketException;
  * Created by lxl on 2016/10/31.
  */
 public class WebSocketService extends Service {
-    static boolean isSend=true;
+    static boolean isSendSuccessfull=true;
     private static Context context;
     private static WebSocketConnection connection = null;
     private static boolean isConnected = false;
     private static final String MTAG="WebSocketService";
 
-    private static MessageQueue messageQueue=new MessageQueue();
+    private static MessageQueue messageQueue;
 
     static Thread thread;
 
@@ -45,6 +43,7 @@ public class WebSocketService extends Service {
     public void onCreate() {
         super.onCreate();
         connect(this);
+        messageQueue=new MessageQueue();
         thread = new Thread(runnable);
         thread.start();
     }
@@ -72,10 +71,16 @@ public class WebSocketService extends Service {
                     }
                     @Override
                     public void onTextMessage(String payload) {
+                        LogUtil.d("onTextMessage 发送信息id：",payload);
+                        //只有发送成功才会发送下一条信息
+                        if (payload.equals(iMessage.getId())){
+                            isSendSuccessfull=true;
+                            return;
+                        }
+                        messageQueue.insertToFirst(iMessage);
                     }
                     @Override
                     public void onRawTextMessage(byte[] payload) {
-                        Log.d(MTAG, "onRawTextMessage: "+new String(payload));
                     }
                     @Override
                     public void onBinaryMessage(byte[] payload) {
@@ -85,7 +90,6 @@ public class WebSocketService extends Service {
                         } catch (InvalidProtocolBufferException e) {
                             e.printStackTrace();
                         }
-
                     }
                 });
             }
@@ -104,35 +108,19 @@ public class WebSocketService extends Service {
         }
     };
 
+   static IMessageFactory.IMessage iMessage=null;
     public static void loop(){
-        while (true){
-            if (isSend){
-                send(messageQueue.getEgg());
-            }else {
-                try {
-                    thread.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        while (true) {
+            if (isSendSuccessfull) {
+                iMessage = messageQueue.getEgg();
+                send(iMessage);
+                isSendSuccessfull=false;
             }
         }
     }
 
-    public static Handler handler=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what){
-                case 1:
-                    thread.notify();
-                    break;
-            }
-        }
-    };
-
-
     /**
-     * 发送信息主函数 需要清楚 返回的是什么
+     * 发送信息主函数 缓存信息
      */
     public static void chat(@NonNull IMessageFactory.IMessage iMessage) {
         messageQueue.putEgg(iMessage);
@@ -145,8 +133,8 @@ public class WebSocketService extends Service {
             connect(context);
             return;
         }
-//        Log.d("WebSocketService", "chat: IMessage大小"+iMessage.toString().length());
-        Log.d("WebSocketService", "chat: IMessage:"+iMessage.toString());
+        Log.d("WebSocketService", "正在发送的信息大小"+iMessage.toString().length());
+        Log.d("WebSocketService", "正在发送的信息:"+iMessage.toString());
         connection.sendBinaryMessage(iMessage.toByteArray());
     }
 
