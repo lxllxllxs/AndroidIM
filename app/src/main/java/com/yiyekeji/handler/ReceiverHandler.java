@@ -1,8 +1,8 @@
 package com.yiyekeji.handler;
 
+import com.yiyekeji.Event.ChatMessageEvent;
 import com.yiyekeji.Event.LinkManEvent;
 import com.yiyekeji.Event.LoginEvent;
-import com.yiyekeji.Event.UnReceiveEvent;
 import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.utils.LogUtil;
@@ -33,14 +33,16 @@ public class ReceiverHandler {
                     linkManEvent.setiMessage(iMessage);
                     EventBus.getDefault().post(linkManEvent);
                     break;
-                case "2"://接受离线消息
+                case "2"://接受离线消息（离线消息？）
                     LogUtil.d("ReceiverHandler","接收离线消息");
-                    UnReceiveEvent event=new UnReceiveEvent();
+                    ChatMessageEvent event=new ChatMessageEvent();
                     event.setiMessage(iMessage);
                     EventBus.getDefault().post(event);
                     break;
             }
         }else if(iMessage.getMainType().equals("1")){
+            //A保存聊天类信息
+            IMApp.saveReceiveChatMessage(iMessage);
             switch (iMessage.getSubType()){
                 case "0":
 

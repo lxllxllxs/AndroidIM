@@ -4,6 +4,33 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_contacts"
+            android:text="联系人"
+            style="@style/textview"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:layout_width="0dp"
+            android:background="@color/blue_light"
+            android:layout_height="wrap_content"/>
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/tv_info"
+            android:text="消息"
+            style="@style/textview"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:background="@color/blue_light"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
