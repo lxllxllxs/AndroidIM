@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.yiyekeji.dao.BaseChatMessage;
+import com.yiyekeji.dao.ChatMessage;
 import com.yiyekeji.im.R;
 
 import java.util.List;
@@ -21,11 +21,12 @@ import java.util.List;
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     private LayoutInflater mInflater;
-    private List<BaseChatMessage> messages;
-    public ChatAdapter(Context context, List<BaseChatMessage> messages) {
+    private List<ChatMessage> messages;
+    private final int RECEIVER=0x123;
+    private final int SENDER=0x122;
+    public ChatAdapter(Context context, List<ChatMessage> messages) {
         this.messages=messages;
         mInflater = LayoutInflater.from(context);
-
     }
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(View arg0) {
@@ -43,12 +44,30 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
          * 创建ViewHolder
          */
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-
-            return messages.get(i).getIsReceiver()?setReceiverView(viewGroup):setSenderView(viewGroup);
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int type) {
+            ViewHolder viewHolder = null;
+            switch (type){
+                case RECEIVER:
+                    viewHolder=setReceiverView(viewGroup);
+                    break;
+                case SENDER:
+                    viewHolder=setSenderView(viewGroup);
+                    break;
+            }
+            return viewHolder;
         }
 
-        /**
+
+    @Override
+    public int getItemViewType(int position) {
+        if (messages.get(position).getIsReceiver()){
+            return RECEIVER;
+        }else {
+            return SENDER;
+        }
+    }
+
+    /**
          * 设置布局控件内容
          */
         @Override

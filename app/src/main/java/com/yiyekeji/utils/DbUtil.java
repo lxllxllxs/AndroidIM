@@ -4,13 +4,10 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
-import com.yiyekeji.dao.BaseChatMessage;
+import com.yiyekeji.dao.ChatMessage;
+import com.yiyekeji.dao.ChatMessageDao;
 import com.yiyekeji.dao.DaoMaster;
 import com.yiyekeji.dao.DaoSession;
-import com.yiyekeji.dao.ReceiveMessage;
-import com.yiyekeji.dao.ReceiveMessageDao;
-import com.yiyekeji.dao.SendMessage;
-import com.yiyekeji.dao.SendMessageDao;
 
 import java.util.ArrayList;
 
@@ -25,8 +22,7 @@ public class DbUtil {
     private static SQLiteDatabase db;
     private static DaoMaster daoMaster;
     private static DaoSession daoSession;
-    private  static SendMessageDao smd;
-    private  static ReceiveMessageDao rmd;
+    private  static ChatMessageDao cmd;
 
 
      static  {
@@ -37,8 +33,7 @@ public class DbUtil {
          daoSession = daoMaster.newSession();
 
 
-         smd = daoSession.getSendMessageDao();  //拿到这么个工具dao
-         rmd = daoSession.getReceiveMessageDao();  //拿到这么个工具dao
+         cmd = daoSession.getChatMessageDao();  //拿到这么个工具dao
          LogUtil.d("DbUtil","数据库操作工具类初始化完成");
     }
 
@@ -48,26 +43,26 @@ public class DbUtil {
      */
     public static   void saveSendMessage(IMessageFactory.IMessage iMessage){
 
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setMsgId(iMessage.getId());
-        sendMessage.setSenderId(iMessage.getSenderId());
-        sendMessage.setReceiverId(iMessage.getReceiverId());
-        sendMessage.setContent(iMessage.getContent());
-        sendMessage.setDate(iMessage.getDate());
-        sendMessage.setIsReceiver(false);
-        smd.insert(sendMessage);
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setMsgId(iMessage.getId());
+        chatMessage.setSenderId(iMessage.getSenderId());
+        chatMessage.setReceiverId(iMessage.getReceiverId());
+        chatMessage.setContent(iMessage.getContent());
+        chatMessage.setDate(iMessage.getDate());
+        chatMessage.setIsReceiver(false);
+        cmd.insert(chatMessage);
     }
 
     public static   void saveReceiveChatMessage(IMessageFactory.IMessage iMessage){
 
-        ReceiveMessage receiveMessage = new ReceiveMessage();
-        receiveMessage.setSenderId(iMessage.getSenderId());
-        receiveMessage.setMsgId(iMessage.getId());
-        receiveMessage.setContent(iMessage.getContent());
-        receiveMessage.setDate(DateUtil.getTimeString());
-        receiveMessage.setReceiverId(iMessage.getReceiverId());//
-        receiveMessage.setIsReceiver(true);
-        rmd.insert(receiveMessage);
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setSenderId(iMessage.getSenderId());
+        chatMessage.setMsgId(iMessage.getId());
+        chatMessage.setContent(iMessage.getContent());
+        chatMessage.setDate(DateUtil.getTimeString());
+        chatMessage.setReceiverId(iMessage.getReceiverId());//
+        chatMessage.setIsReceiver(true);
+        cmd.insert(chatMessage);
     }
 
     /**
@@ -75,16 +70,17 @@ public class DbUtil {
      * @param receiverId 接收人
      * @return
      */
-    public static ArrayList<BaseChatMessage> searchSendMsg(String receiverId) {
+    public static ArrayList<ChatMessage> searchSendMsg(String receiverId) {
         // Query 类代表了一个可以被重复执行的查询
-        Query query = smd.queryBuilder()
-                .where(SendMessageDao.Properties.ReceiverId.eq(receiverId))
-                .orderAsc(SendMessageDao.Properties.Date)
+        Query query = cmd.queryBuilder()
+                .where(ChatMessageDao.Properties.ReceiverId.eq(receiverId))
+                .where(ChatMessageDao.Properties.IsReceiver.eq(false))
+                .orderAsc(ChatMessageDao.Properties.Date)
                 .build();
         if (query.list().isEmpty()) {
             return new ArrayList<>();
         }
-        ArrayList<BaseChatMessage> sendMessageList = (ArrayList<BaseChatMessage>)query.list();
+        ArrayList<ChatMessage> sendMessageList = (ArrayList<ChatMessage>)query.list();
         LogUtil.d("searchSendMsg",sendMessageList.size());
         return sendMessageList;
     }
@@ -93,16 +89,17 @@ public class DbUtil {
      * 查询接收聊天信息表
      * @return
      */
-    public static ArrayList<BaseChatMessage> searchReceivedMsg() {
+    public static ArrayList<ChatMessage> searchReceivedMsg() {
         // Query 类代表了一个可以被重复执行的查询
-        Query query = rmd.queryBuilder()
-                .where(ReceiveMessageDao.Properties.ReceiverId.eq(IMApp.userInfo.getUserId()))
-                .orderAsc(ReceiveMessageDao.Properties.Date)
+        Query query = cmd.queryBuilder()
+                .where(ChatMessageDao.Properties.ReceiverId.eq(IMApp.userInfo.getUserId()))
+                .where(ChatMessageDao.Properties.IsReceiver.eq(true))
+                .orderAsc(ChatMessageDao.Properties.Date)
                 .build();
         if (query.list().isEmpty()) {
             return new ArrayList<>();
         }
-        ArrayList<BaseChatMessage> receiveMessages = (ArrayList<BaseChatMessage>)query.list();
+        ArrayList<ChatMessage> receiveMessages = (ArrayList<ChatMessage>)query.list();
         LogUtil.d("searchReceivedMsg",receiveMessages.size());
         return receiveMessages;
     }

@@ -1,6 +1,7 @@
 package com.yiyekeji.ui.activity;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
@@ -8,7 +9,7 @@ import android.widget.TextView;
 
 import com.yiyekeji.Event.ChatMessageEvent;
 import com.yiyekeji.bean.IMessageFactory;
-import com.yiyekeji.dao.BaseChatMessage;
+import com.yiyekeji.dao.ChatMessage;
 import com.yiyekeji.handler.ChatMessageHandler;
 import com.yiyekeji.im.R;
 import com.yiyekeji.service.WebSocketService;
@@ -40,7 +41,7 @@ public class ChatActivity extends BaseActivity {
     @InjectView(R.id.tv_send)
     TextView tvSend;
     private IMessageFactory.IMessage.User receriver;
-    ArrayList<BaseChatMessage> messageList = new ArrayList<>();
+    ArrayList<ChatMessage> messageList = new ArrayList<>();
     private ChatAdapter chatAdapter;
     /**
      * 在这里获取系统的传感器
@@ -59,28 +60,28 @@ public class ChatActivity extends BaseActivity {
         LogUtil.d("initData", receriver.toString());
     }
 
-    private void getChatMessageFormDb(){
-        messageList.addAll(DbUtil.searchReceivedMsg());
-        messageList=DbUtil.searchSendMsg(receriver.getUserId());
-        LogUtil.d("getChatMessageFormDb", messageList.size()+"");
-        for (BaseChatMessage cm : messageList) {
-            LogUtil.d("BaseChatMessage:",cm.getContent()+cm.getIsReceiver());
-        }
-    }
-
     private void initView() {
         getChatMessageFormDb();
-//        chatAdapter=new ChatAdapter(this,messageList);
-//        recylerView.setAdapter(chatAdapter);
-//        recylerView.setLayoutManager(new LinearLayoutManager(this));
+        chatAdapter=new ChatAdapter(this,messageList);
+        recylerView.setAdapter(chatAdapter);
+        recylerView.setLayoutManager(new LinearLayoutManager(this));
 
+    }
+
+    private void getChatMessageFormDb(){
+        messageList.addAll(DbUtil.searchReceivedMsg());
+        messageList.addAll(DbUtil.searchSendMsg(receriver.getUserId()));
+        LogUtil.d("getChatMessageFormDb", messageList.size()+"");
+        for (ChatMessage cm : messageList) {
+            LogUtil.d("BaseChatMessage:",cm.getContent()+cm.getIsReceiver());
+        }
     }
 
     /**
      * 若要改此方法里面的字段，可能还需要改发红包界面里面的发送红包方法，多一个参数的为语音消息的秒数
      */
     private void sendMessage() {
-        WebSocketService.chat(ChatMessageHandler.sendTextMessage("无边落木萧萧下，不尽长江滚滚来", receriver.getUserId()));
+        WebSocketService.chat(ChatMessageHandler.sendTextMessage(edtContent.getText().toString(), receriver.getUserId()));
     }
 
     @OnClick({R.id.tv_send})

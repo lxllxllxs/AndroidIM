@@ -115,7 +115,7 @@ public class WebSocketService extends Service {
             if (isSendSuccessfull) {
                 iMessage = messageQueue.getEgg();
                 send(iMessage);
-                isSendSuccessfull=false;
+                isSendSuccessfull=true;
             }
         }
     }
@@ -144,6 +144,7 @@ public class WebSocketService extends Service {
     public void onDestroy() {
         super.onDestroy();
         disconnect();
+        LogUtil.d("WebSocketService","is disconnect");
     }
 
     public static void disconnect() {
