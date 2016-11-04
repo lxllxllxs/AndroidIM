@@ -5,6 +5,7 @@ import com.yiyekeji.Event.LinkManEvent;
 import com.yiyekeji.Event.LoginEvent;
 import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
+import com.yiyekeji.utils.DbUtil;
 import com.yiyekeji.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -42,7 +43,7 @@ public class ReceiverHandler {
             }
         }else if(iMessage.getMainType().equals("1")){
             //A保存聊天类信息
-            IMApp.saveReceiveChatMessage(iMessage);
+            DbUtil.saveReceiveChatMessage(iMessage);
             switch (iMessage.getSubType()){
                 case "0":
 

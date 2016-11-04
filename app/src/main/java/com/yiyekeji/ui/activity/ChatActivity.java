@@ -8,15 +8,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yiyekeji.Event.ChatMessageEvent;
-import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
-import com.yiyekeji.dao.SaveMessage;
+import com.yiyekeji.dao.ChatMsgAbstract;
 import com.yiyekeji.handler.ChatMessageHandler;
 import com.yiyekeji.im.R;
 import com.yiyekeji.service.WebSocketService;
 import com.yiyekeji.ui.activity.base.BaseActivity;
 import com.yiyekeji.ui.adapter.ChatAdapter;
 import com.yiyekeji.utils.ConstantUtil;
+import com.yiyekeji.utils.DbUtil;
 import com.yiyekeji.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -41,7 +41,7 @@ public class ChatActivity extends BaseActivity {
     @InjectView(R.id.tv_send)
     TextView tvSend;
     private IMessageFactory.IMessage.User receriver;
-    ArrayList<SaveMessage> messageList = new ArrayList<>();
+    ArrayList<ChatMsgAbstract> messageList = new ArrayList<>();
     private ChatAdapter chatAdapter;
     /**
      * 在这里获取系统的传感器
@@ -53,15 +53,22 @@ public class ChatActivity extends BaseActivity {
         EventBus.getDefault().register(this);
         initData();
         initView();
+        getChatMessageFormDb();
     }
 
     private void initData() {
-        messageList= IMApp.search();
         receriver = (IMessageFactory.IMessage.User) getIntent().getSerializableExtra(ConstantUtil.USER);
         LogUtil.d("initData", receriver.toString());
     }
 
+    private void getChatMessageFormDb(){
+        messageList.addAll(DbUtil.searchReceivedMsg());
+        messageList=DbUtil.searchSendMsg(receriver.getUserId());
+        LogUtil.d("getChatMessageFormDb", messageList.size()+"");
+    }
+
     private void initView() {
+        getChatMessageFormDb();
         chatAdapter=new ChatAdapter(this,messageList);
         recylerView.setAdapter(chatAdapter);
         recylerView.setLayoutManager(new LinearLayoutManager(this));

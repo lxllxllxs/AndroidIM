@@ -7,28 +7,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.yiyekeji.dao.SaveMessage;
+import com.yiyekeji.dao.ChatMsgAbstract;
 import com.yiyekeji.im.R;
 
 import java.util.List;
 
 /**
+ * 两个布局
+ * 收件人（左）和发件人（右 本用户）
+ *
  * Created by lxl on 2016/10/25.
  */
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
-        {
+public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     private LayoutInflater mInflater;
-    private List<SaveMessage> messages;
-    public ChatAdapter(Context context, List<SaveMessage> messages) {
+    private List<ChatMsgAbstract> messages;
+    public ChatAdapter(Context context, List<ChatMsgAbstract> messages) {
         this.messages=messages;
         mInflater = LayoutInflater.from(context);
 
     }
-    public static class ViewHolder extends RecyclerView.ViewHolder
-    {
-        public ViewHolder(View arg0)
-        {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public ViewHolder(View arg0) {
             super(arg0);
         }
         TextView tvContent;
@@ -43,14 +43,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
          * 创建ViewHolder
          */
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
-        {
-            View view = mInflater.inflate(R.layout.item_chat_adapter_sender, viewGroup, false);
-            ViewHolder viewHolder = new ViewHolder(view);
-            viewHolder.tvContent = (TextView) view.findViewById(R.id.tv_sender_msg);
-            return viewHolder;
-        }
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
 
+            return messages.get(i).getIsReceiver()?setReceiverView(viewGroup):setSenderView(viewGroup);
+        }
 
         /**
          * 设置布局控件内容
@@ -67,6 +63,23 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
                     }
                 });
             }
+        }
+
+
+        private ViewHolder setSenderView(ViewGroup viewGroup){
+            View view = mInflater.inflate(R.layout.item_chat_adapter_sender, viewGroup, false);
+            ViewHolder viewHolder = new ViewHolder(view);
+            viewHolder.tvContent = (TextView) view.findViewById(R.id.tv_sender_msg);
+
+            return viewHolder;
+        }
+
+        private ViewHolder setReceiverView(ViewGroup viewGroup){
+            View view = mInflater.inflate(R.layout.item_chat_adapter_sender, viewGroup, false);
+            ViewHolder viewHolder = new ViewHolder(view);
+            viewHolder.tvContent = (TextView) view.findViewById(R.id.tv_sender_msg);
+
+            return viewHolder;
         }
 
     /**

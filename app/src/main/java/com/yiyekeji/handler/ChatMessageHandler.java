@@ -1,6 +1,9 @@
 package com.yiyekeji.handler;
 
+import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
+import com.yiyekeji.utils.DateUtil;
+import com.yiyekeji.utils.DbUtil;
 
 /**
  * Created by Administrator on 2016/10/25.
@@ -30,8 +33,10 @@ public class ChatMessageHandler {
         imBuidler.setMainType("1");
         imBuidler.setSubType("0");
         imBuidler.setReceiverId(receiverId);
+        imBuidler.setSenderId(IMApp.userInfo.getUserId());
+        imBuidler.setDate(DateUtil.getTimeString());
         IMessageFactory.IMessage iMessage=imBuidler.build();
-
+        DbUtil.saveSendMessage(iMessage);
         return iMessage;
     }
 }

@@ -10,7 +10,6 @@ import android.util.Log;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.yiyekeji.Config;
-import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.handler.ReceiverHandler;
 import com.yiyekeji.utils.LogUtil;
@@ -76,7 +75,7 @@ public class WebSocketService extends Service {
                         //只有发送成功才会发送下一条信息
                         if (payload.equals(iMessage.getId())){
                             isSendSuccessfull=true;
-                            IMApp.saveChatMessage(iMessage);//将发送成功的记录到表里
+//                            IMApp.saveChatMessage(iMessage);//更新发送成功的信息的状态
                             return;
                         }
                         messageQueue.insertToFirst(iMessage);
