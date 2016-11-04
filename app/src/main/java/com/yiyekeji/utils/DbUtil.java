@@ -4,7 +4,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
-import com.yiyekeji.dao.ChatMsgAbstract;
+import com.yiyekeji.dao.BaseChatMessage;
 import com.yiyekeji.dao.DaoMaster;
 import com.yiyekeji.dao.DaoSession;
 import com.yiyekeji.dao.ReceiveMessage;
@@ -64,7 +64,7 @@ public class DbUtil {
         receiveMessage.setSenderId(iMessage.getSenderId());
         receiveMessage.setMsgId(iMessage.getId());
         receiveMessage.setContent(iMessage.getContent());
-        receiveMessage.setDate(iMessage.getDate());
+        receiveMessage.setDate(DateUtil.getTimeString());
         receiveMessage.setReceiverId(iMessage.getReceiverId());//
         receiveMessage.setIsReceiver(true);
         rmd.insert(receiveMessage);
@@ -75,7 +75,7 @@ public class DbUtil {
      * @param receiverId 接收人
      * @return
      */
-    public static ArrayList<ChatMsgAbstract> searchSendMsg(String receiverId) {
+    public static ArrayList<BaseChatMessage> searchSendMsg(String receiverId) {
         // Query 类代表了一个可以被重复执行的查询
         Query query = smd.queryBuilder()
                 .where(SendMessageDao.Properties.ReceiverId.eq(receiverId))
@@ -84,7 +84,7 @@ public class DbUtil {
         if (query.list().isEmpty()) {
             return new ArrayList<>();
         }
-        ArrayList<ChatMsgAbstract> sendMessageList = (ArrayList<ChatMsgAbstract>)query.list();
+        ArrayList<BaseChatMessage> sendMessageList = (ArrayList<BaseChatMessage>)query.list();
         LogUtil.d("searchSendMsg",sendMessageList.size());
         return sendMessageList;
     }
@@ -93,7 +93,7 @@ public class DbUtil {
      * 查询接收聊天信息表
      * @return
      */
-    public static ArrayList<ChatMsgAbstract> searchReceivedMsg() {
+    public static ArrayList<BaseChatMessage> searchReceivedMsg() {
         // Query 类代表了一个可以被重复执行的查询
         Query query = rmd.queryBuilder()
                 .where(ReceiveMessageDao.Properties.ReceiverId.eq(IMApp.userInfo.getUserId()))
@@ -102,7 +102,7 @@ public class DbUtil {
         if (query.list().isEmpty()) {
             return new ArrayList<>();
         }
-        ArrayList<ChatMsgAbstract> receiveMessages = (ArrayList<ChatMsgAbstract>)query.list();
+        ArrayList<BaseChatMessage> receiveMessages = (ArrayList<BaseChatMessage>)query.list();
         LogUtil.d("searchReceivedMsg",receiveMessages.size());
         return receiveMessages;
     }

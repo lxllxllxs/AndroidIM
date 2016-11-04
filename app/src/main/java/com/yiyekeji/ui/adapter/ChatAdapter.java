@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.yiyekeji.dao.ChatMsgAbstract;
+import com.yiyekeji.dao.BaseChatMessage;
 import com.yiyekeji.im.R;
 
 import java.util.List;
@@ -21,8 +21,8 @@ import java.util.List;
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     private LayoutInflater mInflater;
-    private List<ChatMsgAbstract> messages;
-    public ChatAdapter(Context context, List<ChatMsgAbstract> messages) {
+    private List<BaseChatMessage> messages;
+    public ChatAdapter(Context context, List<BaseChatMessage> messages) {
         this.messages=messages;
         mInflater = LayoutInflater.from(context);
 
@@ -75,7 +75,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
 
         private ViewHolder setReceiverView(ViewGroup viewGroup){
-            View view = mInflater.inflate(R.layout.item_chat_adapter_sender, viewGroup, false);
+            View view = mInflater.inflate(R.layout.item_chat_adapter_receiver, viewGroup, false);
             ViewHolder viewHolder = new ViewHolder(view);
             viewHolder.tvContent = (TextView) view.findViewById(R.id.tv_sender_msg);
 

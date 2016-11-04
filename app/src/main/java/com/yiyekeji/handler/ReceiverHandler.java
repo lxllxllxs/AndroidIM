@@ -34,8 +34,9 @@ public class ReceiverHandler {
                     linkManEvent.setiMessage(iMessage);
                     EventBus.getDefault().post(linkManEvent);
                     break;
-                case "2"://接受离线消息（离线消息？）
+                case "2"://接受离线消息（离线消息？）    //A保存聊天类信息
                     LogUtil.d("ReceiverHandler","接收离线消息");
+                    DbUtil.saveReceiveChatMessage(iMessage);
                     ChatMessageEvent event=new ChatMessageEvent();
                     event.setiMessage(iMessage);
                     EventBus.getDefault().post(event);

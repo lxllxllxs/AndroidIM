@@ -1,7 +1,6 @@
 package com.yiyekeji.ui.activity;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
@@ -9,7 +8,7 @@ import android.widget.TextView;
 
 import com.yiyekeji.Event.ChatMessageEvent;
 import com.yiyekeji.bean.IMessageFactory;
-import com.yiyekeji.dao.ChatMsgAbstract;
+import com.yiyekeji.dao.BaseChatMessage;
 import com.yiyekeji.handler.ChatMessageHandler;
 import com.yiyekeji.im.R;
 import com.yiyekeji.service.WebSocketService;
@@ -41,7 +40,7 @@ public class ChatActivity extends BaseActivity {
     @InjectView(R.id.tv_send)
     TextView tvSend;
     private IMessageFactory.IMessage.User receriver;
-    ArrayList<ChatMsgAbstract> messageList = new ArrayList<>();
+    ArrayList<BaseChatMessage> messageList = new ArrayList<>();
     private ChatAdapter chatAdapter;
     /**
      * 在这里获取系统的传感器
@@ -53,7 +52,6 @@ public class ChatActivity extends BaseActivity {
         EventBus.getDefault().register(this);
         initData();
         initView();
-        getChatMessageFormDb();
     }
 
     private void initData() {
@@ -65,13 +63,16 @@ public class ChatActivity extends BaseActivity {
         messageList.addAll(DbUtil.searchReceivedMsg());
         messageList=DbUtil.searchSendMsg(receriver.getUserId());
         LogUtil.d("getChatMessageFormDb", messageList.size()+"");
+        for (BaseChatMessage cm : messageList) {
+            LogUtil.d("BaseChatMessage:",cm.getContent()+cm.getIsReceiver());
+        }
     }
 
     private void initView() {
         getChatMessageFormDb();
-        chatAdapter=new ChatAdapter(this,messageList);
-        recylerView.setAdapter(chatAdapter);
-        recylerView.setLayoutManager(new LinearLayoutManager(this));
+//        chatAdapter=new ChatAdapter(this,messageList);
+//        recylerView.setAdapter(chatAdapter);
+//        recylerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
