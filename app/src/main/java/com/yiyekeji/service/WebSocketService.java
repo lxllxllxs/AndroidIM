@@ -35,7 +35,7 @@ public class WebSocketService extends Service {
 
     static Thread thread;
 
-    private final int UNLOCK=0x11;
+    private final static  int UNLOCK=0x11;
 
     @Nullable
     @Override
@@ -117,36 +117,40 @@ public class WebSocketService extends Service {
         while (true) {
             if (isSendSuccessfull) {
                 iMessage = messageQueue.getEgg();
+                isSendSuccessfull=false;//锁住
                 send(iMessage);
-                //锁住
-                isSendSuccessfull=false;
+
+
             }
         }
     }
 
     /**
-     * 若是5秒后还未收到回执
+     * 若是10秒后还未收到回执执行此动作
      * 重发
+     * 先插入头部 在执行
+     * 防止在此时收到回执
      */
-    public Runnable runnable2=new Runnable() {
+    public static Runnable runnable2=new Runnable() {
         @Override
         public void run() {
-            if (!isSendSuccessfull) {
-
-                isSendSuccessfull = true;
+            synchronized (this) {
+                if (isSendSuccessfull) {
+                    return;
+                }
                 messageQueue.insertToFirst(iMessage);
+                isSendSuccessfull = true;
             }
         }
+
     };
 
-    private   Handler handler=new Handler(){
+    private static   Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
         }
     };
-
-
 
     /**
      * 发送信息主函数 缓存信息
@@ -165,6 +169,7 @@ public class WebSocketService extends Service {
         Log.d("WebSocketService", "正在发送的信息大小"+iMessage.toString().length());
         Log.d("WebSocketService", "正在发送的信息:"+iMessage.toString());
         connection.sendBinaryMessage(iMessage.toByteArray());
+        handler.postDelayed(runnable2,10*1000);
     }
 
 

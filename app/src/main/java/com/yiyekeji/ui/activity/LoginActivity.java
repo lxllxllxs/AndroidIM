@@ -74,10 +74,10 @@ public class LoginActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void isLoginSuccess(LoginEvent loginEvent){
+
         if (loginEvent.isSuccess()){
             showShortToast("login successfully!!");
             startActivity(MainFragmentActivity.class);
-            return;
         }else {
             Toast.makeText(this,"password is uncorrect",Toast.LENGTH_SHORT).show();
         }

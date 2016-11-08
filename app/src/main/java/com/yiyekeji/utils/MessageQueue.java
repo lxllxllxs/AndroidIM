@@ -28,10 +28,11 @@ public class MessageQueue {
     public IMessageFactory.IMessage getEgg() {
         IMessageFactory.IMessage iMessage = null;
         try {
-            iMessage = blockingDeque.takeFirst();
+            iMessage = blockingDeque.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        LogUtil.d("MessageQueue:get：:取出",iMessage!=null?iMessage.toString():"");
         LogUtil.d("MessageQueue:get：:现在大小为",blockingDeque.size());
         return iMessage;
     }

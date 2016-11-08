@@ -72,11 +72,11 @@ public class ContactsFragment extends Fragment {
         ca.setOnItemClickLitener(new ContactsAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(ConstantUtil.USER, userArrayList.get(position));
-                intent.putExtras(bundle);
-                startActivity(intent);
+            Intent intent = new Intent(getActivity(), ChatActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ConstantUtil.USER, userArrayList.get(position));
+            intent.putExtras(bundle);
+            startActivity(intent);
             }
         });
     }
