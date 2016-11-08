@@ -72,9 +72,6 @@ public class ChatActivity extends BaseActivity {
         messageList.addAll(DbUtil.searchReceivedMsg());
         messageList.addAll(DbUtil.searchSendMsg(receriver.getUserId()));
         LogUtil.d("getChatMessageFormDb", messageList.size()+"");
-        for (ChatMessage cm : messageList) {
-            LogUtil.d("BaseChatMessage:",cm.getContent()+cm.getIsReceiver());
-        }
     }
 
     /**

@@ -14,12 +14,11 @@ public class ChatMessage {
     private String messageType;
     private String content;
     private String date;
-    private Boolean isReceiver;
 
     public ChatMessage() {
     }
 
-    public ChatMessage(String id, String msgId, String senderId, String receiverId, String groupId, String messageType, String content, String date, Boolean isReceiver) {
+    public ChatMessage(String id, String msgId, String senderId, String receiverId, String groupId, String messageType, String content, String date) {
         this.id = id;
         this.msgId = msgId;
         this.senderId = senderId;
@@ -28,7 +27,6 @@ public class ChatMessage {
         this.messageType = messageType;
         this.content = content;
         this.date = date;
-        this.isReceiver = isReceiver;
     }
 
     public String getId() {
@@ -93,14 +91,6 @@ public class ChatMessage {
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public Boolean getIsReceiver() {
-        return isReceiver;
-    }
-
-    public void setIsReceiver(Boolean isReceiver) {
-        this.isReceiver = isReceiver;
     }
 
 }

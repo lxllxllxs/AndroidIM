@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.yiyekeji.IMApp;
 import com.yiyekeji.dao.ChatMessage;
 import com.yiyekeji.im.R;
 
@@ -24,6 +25,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     private List<ChatMessage> messages;
     private final int RECEIVER=0x123;
     private final int SENDER=0x122;
+
+    private String userId = IMApp.userInfo.getUserId();
     public ChatAdapter(Context context, List<ChatMessage> messages) {
         this.messages=messages;
         mInflater = LayoutInflater.from(context);
@@ -60,10 +63,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (messages.get(position).getIsReceiver()){
-            return RECEIVER;
-        }else {
+        if (messages.get(position).getSenderId().equals(userId)){
             return SENDER;
+        }else {
+            return RECEIVER;
         }
     }
 

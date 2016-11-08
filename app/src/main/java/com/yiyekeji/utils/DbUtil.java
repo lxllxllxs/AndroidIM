@@ -49,7 +49,6 @@ public class DbUtil {
         chatMessage.setReceiverId(iMessage.getReceiverId());
         chatMessage.setContent(iMessage.getContent());
         chatMessage.setDate(iMessage.getDate());
-        chatMessage.setIsReceiver(false);
         cmd.insert(chatMessage);
     }
 
@@ -61,7 +60,6 @@ public class DbUtil {
         chatMessage.setContent(iMessage.getContent());
         chatMessage.setDate(DateUtil.getTimeString());
         chatMessage.setReceiverId(iMessage.getReceiverId());//
-        chatMessage.setIsReceiver(true);
         cmd.insert(chatMessage);
     }
 
@@ -74,7 +72,6 @@ public class DbUtil {
         // Query 类代表了一个可以被重复执行的查询
         Query query = cmd.queryBuilder()
                 .where(ChatMessageDao.Properties.ReceiverId.eq(receiverId))
-                .where(ChatMessageDao.Properties.IsReceiver.eq(false))
                 .orderAsc(ChatMessageDao.Properties.Date)
                 .build();
         if (query.list().isEmpty()) {
@@ -93,7 +90,6 @@ public class DbUtil {
         // Query 类代表了一个可以被重复执行的查询
         Query query = cmd.queryBuilder()
                 .where(ChatMessageDao.Properties.ReceiverId.eq(IMApp.userInfo.getUserId()))
-                .where(ChatMessageDao.Properties.IsReceiver.eq(true))
                 .orderAsc(ChatMessageDao.Properties.Date)
                 .build();
         if (query.list().isEmpty()) {
