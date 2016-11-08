@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yiyekeji.Event.ChatMessageEvent;
+import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.dao.ChatMessage;
 import com.yiyekeji.handler.ChatMessageHandler;
@@ -43,6 +44,10 @@ public class ChatActivity extends BaseActivity {
     private IMessageFactory.IMessage.User receriver;
     ArrayList<ChatMessage> messageList = new ArrayList<>();
     private ChatAdapter chatAdapter;
+
+    ChatMessage chatMessage;
+     String receiverId;
+    final String senderId = IMApp.userInfo.getUserId();
     /**
      * 在这里获取系统的传感器
      */
@@ -57,6 +62,7 @@ public class ChatActivity extends BaseActivity {
 
     private void initData() {
         receriver = (IMessageFactory.IMessage.User) getIntent().getSerializableExtra(ConstantUtil.USER);
+        receiverId = receriver.getUserId();
         LogUtil.d("initData", receriver.toString());
     }
 
@@ -78,7 +84,18 @@ public class ChatActivity extends BaseActivity {
      * 若要改此方法里面的字段，可能还需要改发红包界面里面的发送红包方法，多一个参数的为语音消息的秒数
      */
     private void sendMessage() {
-        WebSocketService.chat(ChatMessageHandler.sendTextMessage(edtContent.getText().toString(), receriver.getUserId()));
+        String content = edtContent.getText().toString();
+        upDateLocal(content);
+        WebSocketService.chat(ChatMessageHandler.sendTextMessage(content,receiverId));//这里数据库保存
+    }
+
+    private void upDateLocal(String content) {
+        chatMessage = new ChatMessage();
+        chatMessage.setContent(content);
+        chatMessage.setSenderId(senderId);
+        chatMessage.setReceiverId(receiverId);
+        messageList.add(chatMessage);
+        chatAdapter.notifyDataSetChanged();
     }
 
     @OnClick({R.id.tv_send})
