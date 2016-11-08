@@ -1,4 +1,4 @@
-package com.yiyekeji.handler;
+package com.yiyekeji.utils;
 
 import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;

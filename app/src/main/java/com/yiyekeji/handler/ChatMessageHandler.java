@@ -4,6 +4,7 @@ import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.utils.DateUtil;
 import com.yiyekeji.utils.DbUtil;
+import com.yiyekeji.utils.IMessageBuilder;
 
 /**
  * Created by Administrator on 2016/10/25.
@@ -28,7 +29,7 @@ public class ChatMessageHandler {
      * @return
      */
     public static IMessageFactory.IMessage sendTextMessage(String content, String receiverId) {
-        IMessageFactory.IMessage.Builder imBuidler=IMessageBuilder.getBuilder();
+        IMessageFactory.IMessage.Builder imBuidler= IMessageBuilder.getBuilder();
         imBuidler.setContent(content);
         imBuidler.setMainType("1");
         imBuidler.setSubType("0");

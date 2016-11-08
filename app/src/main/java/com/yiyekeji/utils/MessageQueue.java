@@ -2,7 +2,6 @@ package com.yiyekeji.utils;
 
 import com.yiyekeji.bean.IMessageFactory;
 
-import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**
@@ -14,7 +13,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 public class MessageQueue {
 
 
-    BlockingDeque<IMessageFactory.IMessage> blockingDeque=new LinkedBlockingDeque<>();
+    LinkedBlockingDeque<IMessageFactory.IMessage> blockingDeque=new LinkedBlockingDeque<>();
     /** 压入 */
     public void putEgg(IMessageFactory.IMessage iMessage) {
         try {
@@ -22,26 +21,30 @@ public class MessageQueue {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        LogUtil.d("MessageQueue:put",blockingDeque.size());
+        LogUtil.d("MessageQueue:put：:现在大小为",blockingDeque.size());
     }
 
     /** 取出 */
     public IMessageFactory.IMessage getEgg() {
         IMessageFactory.IMessage iMessage = null;
         try {
-            iMessage = blockingDeque.take();
+            iMessage = blockingDeque.takeFirst();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        LogUtil.d("MessageQueue:get",blockingDeque.size()+iMessage.toString());
+        LogUtil.d("MessageQueue:get：:现在大小为",blockingDeque.size());
         return iMessage;
     }
 
 
     /** 未发送成功的插到头部 重新发送 */
     public void  insertToFirst(IMessageFactory.IMessage iMessage) {
-        blockingDeque.addFirst(iMessage);
-        LogUtil.d("MessageQueue:insertToFirst",blockingDeque.size());
+        try {
+            blockingDeque.putFirst(iMessage);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        LogUtil.d("MessageQueue:insertToFirst:现在大小为",blockingDeque.size());
     }
 
 }

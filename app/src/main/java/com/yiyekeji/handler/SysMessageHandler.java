@@ -1,6 +1,7 @@
 package com.yiyekeji.handler;
 
 import com.yiyekeji.bean.IMessageFactory;
+import com.yiyekeji.utils.IMessageBuilder;
 import com.yiyekeji.utils.LogUtil;
 
 /**
@@ -22,7 +23,7 @@ public class SysMessageHandler {
      * @return
      */
     public static IMessageFactory.IMessage login(String username, String password){
-        IMessageFactory.IMessage.Builder builder=IMessageBuilder.getBuilder();
+        IMessageFactory.IMessage.Builder builder= IMessageBuilder.getBuilder();
         IMessageFactory.IMessage.User.Builder builder1= IMessageFactory.IMessage.User.newBuilder();
         builder.setMainType("0");
         builder.setSubType("0");

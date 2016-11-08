@@ -3,7 +3,9 @@ package com.yiyekeji.service;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -32,6 +34,8 @@ public class WebSocketService extends Service {
     private static MessageQueue messageQueue;
 
     static Thread thread;
+
+    private final int UNLOCK=0x11;
 
     @Nullable
     @Override
@@ -78,7 +82,6 @@ public class WebSocketService extends Service {
 //                            IMApp.saveChatMessage(iMessage);//更新发送成功的信息的状态
                             return;
                         }
-                        messageQueue.insertToFirst(iMessage);
                     }
                     @Override
                     public void onRawTextMessage(byte[] payload) {
@@ -110,15 +113,40 @@ public class WebSocketService extends Service {
     };
 
    static IMessageFactory.IMessage iMessage=null;
-    public static void loop(){
+    public  void loop(){
         while (true) {
             if (isSendSuccessfull) {
                 iMessage = messageQueue.getEgg();
                 send(iMessage);
-                isSendSuccessfull=true;
+                //锁住
+                isSendSuccessfull=false;
             }
         }
     }
+
+    /**
+     * 若是5秒后还未收到回执
+     * 重发
+     */
+    public Runnable runnable2=new Runnable() {
+        @Override
+        public void run() {
+            if (!isSendSuccessfull) {
+
+                isSendSuccessfull = true;
+                messageQueue.insertToFirst(iMessage);
+            }
+        }
+    };
+
+    private   Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
+    };
+
+
 
     /**
      * 发送信息主函数 缓存信息
@@ -143,8 +171,9 @@ public class WebSocketService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        handler.removeCallbacks(runnable2);
         disconnect();
-        LogUtil.d("WebSocketService","is disconnect");
+        LogUtil.d("WebSocketService","正在销毁WebSocketService");
     }
 
     public static void disconnect() {
