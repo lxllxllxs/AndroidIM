@@ -72,7 +72,6 @@ public class DbUtil {
         // Query 类代表了一个可以被重复执行的查询
         Query query = cmd.queryBuilder()
                 .where(ChatMessageDao.Properties.ReceiverId.eq(receiverId))
-                .orderAsc(ChatMessageDao.Properties.Date)
                 .build();
         if (query.list().isEmpty()) {
             return new ArrayList<>();
@@ -90,7 +89,6 @@ public class DbUtil {
         // Query 类代表了一个可以被重复执行的查询
         Query query = cmd.queryBuilder()
                 .where(ChatMessageDao.Properties.ReceiverId.eq(IMApp.userInfo.getUserId()))
-                .orderAsc(ChatMessageDao.Properties.Date)
                 .build();
         if (query.list().isEmpty()) {
             return new ArrayList<>();

@@ -17,6 +17,7 @@ import com.yiyekeji.service.WebSocketService;
 import com.yiyekeji.ui.activity.base.BaseActivity;
 import com.yiyekeji.ui.adapter.ChatAdapter;
 import com.yiyekeji.utils.ConstantUtil;
+import com.yiyekeji.utils.DateUtil;
 import com.yiyekeji.utils.DbUtil;
 import com.yiyekeji.utils.LogUtil;
 
@@ -25,6 +26,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -77,6 +81,7 @@ public class ChatActivity extends BaseActivity {
     private void getChatMessageFormDb(){
         messageList.addAll(DbUtil.searchReceivedMsg());
         messageList.addAll(DbUtil.searchSendMsg(receriver.getUserId()));
+        Collections.sort(messageList,new DateComParator());
         LogUtil.d("getChatMessageFormDb", messageList.size()+"");
     }
 
@@ -119,6 +124,19 @@ public class ChatActivity extends BaseActivity {
         super.onDestroy();
         ButterKnife.reset(this);
         EventBus.getDefault().unregister(this);
+    }
+
+    public class DateComParator implements Comparator<ChatMessage> {
+        public int compare(ChatMessage c1, ChatMessage c2) {
+            Date date1 = DateUtil.dateStringToDate(c1.getDate());
+            Date date2 = DateUtil.dateStringToDate(c2.getDate());
+            assert date2 != null;
+            if (date2.before(date1)) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
     }
 
 }

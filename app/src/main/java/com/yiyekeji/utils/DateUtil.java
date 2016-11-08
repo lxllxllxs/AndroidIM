@@ -1,7 +1,11 @@
 package com.yiyekeji.utils;
 
+import android.support.annotation.NonNull;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by lxl on 2016/11/4.
@@ -16,6 +20,16 @@ public class DateUtil {
         return format(Calendar.getInstance(), "yyyy-MM-dd HH:mm:ss");
     }
 
+
+    public static Date dateStringToDate(@NonNull String dateStr){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            return sdf.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     /**
      * 日期格式化
      *
