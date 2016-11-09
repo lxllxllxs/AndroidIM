@@ -36,7 +36,6 @@ public class WebSocketService extends Service {
 
     static Thread thread;
 
-    private final static  int UNLOCK=0x11;
 
     @Nullable
     @Override

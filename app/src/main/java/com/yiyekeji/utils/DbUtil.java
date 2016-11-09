@@ -83,7 +83,7 @@ public class DbUtil {
      * @param iMessage
      * @return
      */
-    private static ChatMessage IMessageToChatMessage(IMessageFactory.IMessage iMessage) {
+    public static ChatMessage IMessageToChatMessage(IMessageFactory.IMessage iMessage) {
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setSenderId(iMessage.getSenderId());
         chatMessage.setMsgId(iMessage.getId());

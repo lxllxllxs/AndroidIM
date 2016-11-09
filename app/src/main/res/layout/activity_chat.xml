@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	android:orientation="vertical"
-    android:background="#efeff4">
+    android:background="@color/white">
 	<TextView
 		android:id="@+id/tv_name"
 		style="@style/textview"
@@ -18,14 +18,22 @@
 		android:layout_height="0dp"/>
 
 	<LinearLayout
+
 		android:orientation="horizontal"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		>
 		<EditText
+			android:background="@drawable/bg_edit_white_gray_solide"
 			android:id="@+id/edt_content"
 			android:layout_weight="1"
+			android:textSize="13sp"
+			android:textColor="@color/black"
+			android:padding="2dp"
 			android:layout_width="0dp"
 			android:layout_marginRight="5dp"
+			android:layout_marginLeft="5dp"
+			android:hint="请输入"
 			android:layout_height="wrap_content"/>
 
 		<TextView
@@ -37,6 +45,4 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"/>
 	</LinearLayout>
-
-
 </LinearLayout>

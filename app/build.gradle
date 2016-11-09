@@ -27,4 +27,5 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile files('libs/protobuf-java-2.4.1.jar')
     compile 'de.greenrobot:greendao:2.1.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

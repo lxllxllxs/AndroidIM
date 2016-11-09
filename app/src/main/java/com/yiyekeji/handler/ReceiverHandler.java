@@ -1,5 +1,6 @@
 package com.yiyekeji.handler;
 
+import com.yiyekeji.Event.ChatMessageEvent;
 import com.yiyekeji.Event.LinkManEvent;
 import com.yiyekeji.Event.LoginEvent;
 import com.yiyekeji.IMApp;
@@ -44,6 +45,9 @@ public class ReceiverHandler {
             DbUtil.saveReceiveChatMessage(iMessage);
             switch (iMessage.getSubType()){
                 case "0":
+                    ChatMessageEvent cme = new ChatMessageEvent();
+                    cme.setChatMessage(DbUtil.IMessageToChatMessage(iMessage));
+                    EventBus.getDefault().post(cme);
                     break;
                 case "1":
                     break;

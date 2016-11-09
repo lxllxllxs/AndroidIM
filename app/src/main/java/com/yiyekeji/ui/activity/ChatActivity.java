@@ -65,6 +65,7 @@ public class ChatActivity extends BaseActivity {
     private void initData() {
         receriver = (IMessageFactory.IMessage.User) getIntent().getSerializableExtra(ConstantUtil.USER);
         receiverId = receriver.getUserId();
+        tvName.setText(receriver.getUsername());
         LogUtil.d("initData", receriver.toString());
     }
 
@@ -113,7 +114,7 @@ public class ChatActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void receiverMessage(ChatMessageEvent event) {
         LogUtil.d("chatActivity","已经收到信息");
-        ChatMessage chatMessage = event.getiMessage();
+        ChatMessage chatMessage = event.getChatMessage();
         messageList.add(chatMessage);
         chatAdapter.notifyDataSetChanged();
     }
