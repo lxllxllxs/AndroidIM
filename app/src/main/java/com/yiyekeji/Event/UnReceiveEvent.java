@@ -3,6 +3,7 @@ package com.yiyekeji.Event;
 import com.yiyekeji.bean.IMessageFactory;
 
 /**
+ * 用作通知信息列表里
  * Created by Administrator on 2016/11/1.
  */
 public class UnReceiveEvent {

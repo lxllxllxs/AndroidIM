@@ -24,15 +24,12 @@ public class DbUtil {
     private static DaoSession daoSession;
     private  static ChatMessageDao cmd;
 
-
      static  {
          LogUtil.d("DbUtil","数据库操作工具类正在初始化");
          helper = new DaoMaster.DevOpenHelper(IMApp.getContext(), "im_db", null);
          db = helper.getWritableDatabase();
          daoMaster = new DaoMaster(db);
          daoSession = daoMaster.newSession();
-
-
          cmd = daoSession.getChatMessageDao();  //拿到这么个工具dao
          LogUtil.d("DbUtil","数据库操作工具类初始化完成");
     }
@@ -42,26 +39,60 @@ public class DbUtil {
      * @param iMessage
      */
     public static   void saveSendMessage(IMessageFactory.IMessage iMessage){
-
-        ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setMsgId(iMessage.getId());
-        chatMessage.setSenderId(iMessage.getSenderId());
-        chatMessage.setReceiverId(iMessage.getReceiverId());
-        chatMessage.setContent(iMessage.getContent());
-        chatMessage.setDate(iMessage.getDate());
-        cmd.insert(chatMessage);
+        cmd.insert(IMessageToChatMessage(iMessage));
     }
 
     public static   void saveReceiveChatMessage(IMessageFactory.IMessage iMessage){
+        cmd.insert(IMessageToChatMessage(iMessage));
+    }
 
+    /**
+     *更改为发送成功（发送到服务器端）
+     */
+    public static void upDataSendChatMsg(String msgId){
+        Query query = cmd.queryBuilder()
+                .where(ChatMessageDao.Properties.MsgId.eq(msgId))
+                .build();
+        if (query.list().isEmpty()) {
+            return;
+        }
+        ChatMessage cm=((ArrayList<ChatMessage>)query.list()).get(0);
+        cm.setSendStatus("1");
+        cmd.update(cm);
+    }
+
+    /**
+     * 根据msgId查询 判断有无重复值，
+     * @return
+     */
+    public static boolean isHaveSameMsg(String id) {
+        // Query 类代表了一个可以被重复执行的查询
+        Query query = cmd.queryBuilder()
+                .where(ChatMessageDao.Properties.MsgId.eq(id))
+                .build();
+        if (query.list().isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
+
+
+    /**
+     * 网络转本地
+     * @param iMessage
+     * @return
+     */
+    private static ChatMessage IMessageToChatMessage(IMessageFactory.IMessage iMessage) {
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setSenderId(iMessage.getSenderId());
         chatMessage.setMsgId(iMessage.getId());
         chatMessage.setContent(iMessage.getContent());
-        chatMessage.setDate(DateUtil.getTimeString());
+        chatMessage.setDate(DateUtil.getTimeString());//也许可改为直接存日期
         chatMessage.setReceiverId(iMessage.getReceiverId());//
-        cmd.insert(chatMessage);
+        return chatMessage;
     }
+
 
     /**
      * 查询发送聊天信息表

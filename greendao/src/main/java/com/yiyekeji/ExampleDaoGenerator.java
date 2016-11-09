@@ -14,10 +14,15 @@ public class ExampleDaoGenerator {
         addSendMessage(schema);
         new DaoGenerator().generateAll(schema, "E:\\DaoExample");
     }
-    
+
+    /**
+     * 主键用于dao的更新操作
+     * msgId用于比对服务端信息
+     * @param schema
+     */
     private static void addSendMessage(Schema schema) {
         Entity ChatMessage= schema.addEntity("ChatMessage");
-        ChatMessage.addStringProperty("id");
+        ChatMessage.addIdProperty();
         ChatMessage.addStringProperty("msgId");
         ChatMessage.addStringProperty("senderId");
         ChatMessage.addStringProperty("receiverId");
@@ -25,6 +30,7 @@ public class ExampleDaoGenerator {
         ChatMessage.addStringProperty("messageType");//文字还是语音还是图片
         ChatMessage.addStringProperty("content");//非文本消息是需要根据messagetype转换
         ChatMessage.addStringProperty("date");//发送日期
+        ChatMessage.addStringProperty("sendStatus");//发送状态
     }
 
 

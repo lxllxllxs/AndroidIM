@@ -11,13 +11,13 @@ import com.yiyekeji.Event.ChatMessageEvent;
 import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.dao.ChatMessage;
+import com.yiyekeji.dao.DateComParator;
 import com.yiyekeji.handler.ChatMessageHandler;
 import com.yiyekeji.im.R;
 import com.yiyekeji.service.WebSocketService;
 import com.yiyekeji.ui.activity.base.BaseActivity;
 import com.yiyekeji.ui.adapter.ChatAdapter;
 import com.yiyekeji.utils.ConstantUtil;
-import com.yiyekeji.utils.DateUtil;
 import com.yiyekeji.utils.DbUtil;
 import com.yiyekeji.utils.LogUtil;
 
@@ -27,8 +27,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -113,9 +111,11 @@ public class ChatActivity extends BaseActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void setTvMessage(ChatMessageEvent event) {
+    public void receiverMessage(ChatMessageEvent event) {
         LogUtil.d("chatActivity","已经收到信息");
-        IMessageFactory.IMessage iMessage = event.getiMessage();
+        ChatMessage chatMessage = event.getiMessage();
+        messageList.add(chatMessage);
+        chatAdapter.notifyDataSetChanged();
     }
 
 
@@ -126,17 +126,5 @@ public class ChatActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    public class DateComParator implements Comparator<ChatMessage> {
-        public int compare(ChatMessage c1, ChatMessage c2) {
-            Date date1 = DateUtil.dateStringToDate(c1.getDate());
-            Date date2 = DateUtil.dateStringToDate(c2.getDate());
-            assert date2 != null;
-            if (date2.before(date1)) {
-                return -1;
-            } else {
-                return 1;
-            }
-        }
-    }
 
 }

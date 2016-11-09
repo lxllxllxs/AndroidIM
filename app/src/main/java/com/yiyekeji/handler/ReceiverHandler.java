@@ -1,6 +1,5 @@
 package com.yiyekeji.handler;
 
-import com.yiyekeji.Event.ChatMessageEvent;
 import com.yiyekeji.Event.LinkManEvent;
 import com.yiyekeji.Event.LoginEvent;
 import com.yiyekeji.IMApp;
@@ -36,10 +35,8 @@ public class ReceiverHandler {
                     break;
                 case "2"://接受离线消息（离线消息？）    //A保存聊天类信息
                     LogUtil.d("ReceiverHandler","接收离线消息");
-                    DbUtil.saveReceiveChatMessage(iMessage);
-                    ChatMessageEvent event=new ChatMessageEvent();
-                    event.setiMessage(iMessage);
-                    EventBus.getDefault().post(event);
+                    saveUnReceiveMessage(iMessage);
+                    //这里应该用UnReceiveEvent
                     break;
             }
         }else if(iMessage.getMainType().equals("1")){
@@ -47,7 +44,6 @@ public class ReceiverHandler {
             DbUtil.saveReceiveChatMessage(iMessage);
             switch (iMessage.getSubType()){
                 case "0":
-
                     break;
                 case "1":
                     break;
@@ -59,6 +55,19 @@ public class ReceiverHandler {
         }
         return null;
     }
+
+
+    /**
+     * 根据id 判断有无插入重复值 防止同设置切换号导致出现重复数据
+     * @param iMessage
+     */
+    private static void saveUnReceiveMessage(IMessageFactory.IMessage iMessage){
+        if (!DbUtil.isHaveSameMsg(iMessage.getId())) {
+            DbUtil.saveReceiveChatMessage(iMessage);
+        }
+
+    }
+
 
     /**
      * 登录验证

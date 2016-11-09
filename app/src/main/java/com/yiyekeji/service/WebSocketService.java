@@ -14,6 +14,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.yiyekeji.Config;
 import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.handler.ReceiverHandler;
+import com.yiyekeji.utils.DbUtil;
 import com.yiyekeji.utils.LogUtil;
 import com.yiyekeji.utils.MessageQueue;
 
@@ -78,9 +79,10 @@ public class WebSocketService extends Service {
                         LogUtil.d("onTextMessage 发送信息id：",payload);
                         //只有发送成功才会发送下一条信息
                         if (payload.equals(iMessage.getId())){
+                            if (iMessage.getMainType().equals("1")) {
+                                DbUtil.upDataSendChatMsg(iMessage.getId());//只有是聊天信息才需要更新状态
+                            }
                             isSendSuccessfull=true;
-//                            IMApp.saveChatMessage(iMessage);//更新发送成功的信息的状态
-                            return;
                         }
                     }
                     @Override
@@ -119,8 +121,6 @@ public class WebSocketService extends Service {
                 iMessage = messageQueue.getEgg();
                 isSendSuccessfull=false;//锁住
                 send(iMessage);
-
-
             }
         }
     }
@@ -145,7 +145,8 @@ public class WebSocketService extends Service {
 
     };
 
-    private static   Handler handler=new Handler(){
+    private static
+    Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);

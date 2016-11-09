@@ -1,18 +1,18 @@
 package com.yiyekeji.Event;
 
-import com.yiyekeji.bean.IMessageFactory;
+import com.yiyekeji.dao.ChatMessage;
 
 /**
  * Created by Administrator on 2016/10/31.
  */
 public class ChatMessageEvent {
-    public IMessageFactory.IMessage getiMessage() {
-        return iMessage;
+    public ChatMessage getiMessage() {
+        return cm;
     }
 
-    public void setiMessage(IMessageFactory.IMessage iMessage) {
-        this.iMessage = iMessage;
+    public void setiMessage(ChatMessage cm) {
+        this.cm = cm;
     }
 
-    IMessageFactory.IMessage iMessage;
+    ChatMessage cm;
 }

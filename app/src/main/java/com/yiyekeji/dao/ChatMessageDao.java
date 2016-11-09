@@ -14,7 +14,7 @@ import com.yiyekeji.dao.ChatMessage;
 /** 
  * DAO for table "CHAT_MESSAGE".
 */
-public class ChatMessageDao extends AbstractDao<ChatMessage, Void> {
+public class ChatMessageDao extends AbstractDao<ChatMessage, Long> {
 
     public static final String TABLENAME = "CHAT_MESSAGE";
 
@@ -23,7 +23,7 @@ public class ChatMessageDao extends AbstractDao<ChatMessage, Void> {
      * Can be used for QueryBuilder and for referencing column names.
     */
     public static class Properties {
-        public final static Property Id = new Property(0, String.class, "id", false, "ID");
+        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property MsgId = new Property(1, String.class, "msgId", false, "MSG_ID");
         public final static Property SenderId = new Property(2, String.class, "senderId", false, "SENDER_ID");
         public final static Property ReceiverId = new Property(3, String.class, "receiverId", false, "RECEIVER_ID");
@@ -31,6 +31,7 @@ public class ChatMessageDao extends AbstractDao<ChatMessage, Void> {
         public final static Property MessageType = new Property(5, String.class, "messageType", false, "MESSAGE_TYPE");
         public final static Property Content = new Property(6, String.class, "content", false, "CONTENT");
         public final static Property Date = new Property(7, String.class, "date", false, "DATE");
+        public final static Property SendStatus = new Property(8, String.class, "sendStatus", false, "SEND_STATUS");
     };
 
 
@@ -46,14 +47,15 @@ public class ChatMessageDao extends AbstractDao<ChatMessage, Void> {
     public static void createTable(SQLiteDatabase db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CHAT_MESSAGE\" (" + //
-                "\"ID\" TEXT," + // 0: id
+                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"MSG_ID\" TEXT," + // 1: msgId
                 "\"SENDER_ID\" TEXT," + // 2: senderId
                 "\"RECEIVER_ID\" TEXT," + // 3: receiverId
                 "\"GROUP_ID\" TEXT," + // 4: groupId
                 "\"MESSAGE_TYPE\" TEXT," + // 5: messageType
                 "\"CONTENT\" TEXT," + // 6: content
-                "\"DATE\" TEXT);"); // 7: date
+                "\"DATE\" TEXT," + // 7: date
+                "\"SEND_STATUS\" TEXT);"); // 8: sendStatus
     }
 
     /** Drops the underlying database table. */
@@ -67,9 +69,9 @@ public class ChatMessageDao extends AbstractDao<ChatMessage, Void> {
     protected void bindValues(SQLiteStatement stmt, ChatMessage entity) {
         stmt.clearBindings();
  
-        String id = entity.getId();
+        Long id = entity.getId();
         if (id != null) {
-            stmt.bindString(1, id);
+            stmt.bindLong(1, id);
         }
  
         String msgId = entity.getMsgId();
@@ -106,26 +108,32 @@ public class ChatMessageDao extends AbstractDao<ChatMessage, Void> {
         if (date != null) {
             stmt.bindString(8, date);
         }
+ 
+        String sendStatus = entity.getSendStatus();
+        if (sendStatus != null) {
+            stmt.bindString(9, sendStatus);
+        }
     }
 
     /** @inheritdoc */
     @Override
-    public Void readKey(Cursor cursor, int offset) {
-        return null;
+    public Long readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
 
     /** @inheritdoc */
     @Override
     public ChatMessage readEntity(Cursor cursor, int offset) {
         ChatMessage entity = new ChatMessage( //
-            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // id
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // msgId
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // senderId
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // receiverId
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // groupId
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // messageType
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // content
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7) // date
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // date
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // sendStatus
         );
         return entity;
     }
@@ -133,7 +141,7 @@ public class ChatMessageDao extends AbstractDao<ChatMessage, Void> {
     /** @inheritdoc */
     @Override
     public void readEntity(Cursor cursor, ChatMessage entity, int offset) {
-        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setMsgId(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setSenderId(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setReceiverId(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
@@ -141,19 +149,24 @@ public class ChatMessageDao extends AbstractDao<ChatMessage, Void> {
         entity.setMessageType(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setContent(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setDate(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setSendStatus(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
      }
     
     /** @inheritdoc */
     @Override
-    protected Void updateKeyAfterInsert(ChatMessage entity, long rowId) {
-        // Unsupported or missing PK type
-        return null;
+    protected Long updateKeyAfterInsert(ChatMessage entity, long rowId) {
+        entity.setId(rowId);
+        return rowId;
     }
     
     /** @inheritdoc */
     @Override
-    public Void getKey(ChatMessage entity) {
-        return null;
+    public Long getKey(ChatMessage entity) {
+        if(entity != null) {
+            return entity.getId();
+        } else {
+            return null;
+        }
     }
 
     /** @inheritdoc */
