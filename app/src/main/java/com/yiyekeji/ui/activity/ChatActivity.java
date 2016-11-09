@@ -87,7 +87,7 @@ public class ChatActivity extends BaseActivity {
     /**
      * 若要改此方法里面的字段，可能还需要改发红包界面里面的发送红包方法，多一个参数的为语音消息的秒数
      */
-    private void sendMessage() {
+    private void sendTextMessage() {
         String content = edtContent.getText().toString();
         upDateLocal(content);
         WebSocketService.chat(ChatMessageHandler.sendTextMessage(content,receiverId));//这里数据库保存
@@ -106,7 +106,7 @@ public class ChatActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_send:
-                sendMessage();
+                sendTextMessage();
                 break;
         }
     }
