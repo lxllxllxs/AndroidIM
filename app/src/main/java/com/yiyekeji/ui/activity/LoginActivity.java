@@ -27,7 +27,6 @@ public class LoginActivity extends BaseActivity {
     EditText edtUsername;
     EditText edtPassword;
     TextView tvConfirm;
-    TextView tvSend;
     Intent intent1 =null;
     ArrayList<IMessageFactory.IMessage.User> userArrayList;
     @Override
@@ -48,22 +47,15 @@ public class LoginActivity extends BaseActivity {
         edtPassword=(EditText)findViewById(R.id.edt_password);
         edtUsername = (EditText) findViewById(R.id.edt_username);
         tvConfirm=(TextView)findViewById(R.id.tv_confirm);
-        tvSend=(TextView)findViewById(R.id.tv_send);
         tvConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(LoginActivity.this,"login",Toast.LENGTH_SHORT).show();
+                startActivity(MainFragmentActivity.class);
                 login(edtUsername.getText().toString(),edtPassword.getText().toString());
 
             }
         });
-        tvSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopService(intent1);
-            }
-        });
-
     }
 
 

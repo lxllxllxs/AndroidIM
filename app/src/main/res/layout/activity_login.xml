@@ -3,55 +3,68 @@
               android:orientation="vertical"
               android:gravity="center"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:background="@mipmap/bg_login"
+    >
+
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="300dp"
+        android:layout_width="500px"
         android:layout_height="wrap_content">
-        <EditText
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/bg_edit_white_blue"
-            android:id="@+id/edt_username"
-            android:textSize="25sp"
-            android:hint="username"
-            android:textColor="@color/black"
+        <RelativeLayout
+            android:background="@drawable/bg_edit_white_white"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="70px">
+            <ImageView
+                android:padding="10px"
+                android:id="@+id/iv_user"
+                android:layout_alignParentLeft="true"
+                android:src="@mipmap/ic_user"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+            <EditText
+                android:layout_toRightOf="@id/iv_user"
+                style="@style/editText"
+                android:id="@+id/edt_username"
+                android:hint="username"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </RelativeLayout>
 
-        <EditText
-            android:layout_marginTop="10dp"
-            android:background="@drawable/bg_edit_white_blue"
-            android:id="@+id/edt_password"
-            android:textSize="25sp"
-            android:hint="password"
-            android:textColor="@color/black"
+        <RelativeLayout
+            android:layout_marginTop="30px"
+            android:background="@drawable/bg_edit_white_white"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="70px">
+            <ImageView
+                android:padding="10px"
+                android:id="@+id/iv_pwd"
+                android:layout_alignParentLeft="true"
+                android:src="@mipmap/ic_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+            <EditText
+                android:layout_toRightOf="@id/iv_pwd"
+                android:id="@+id/edt_password"
+                android:hint="password"
+                style="@style/editText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+
+
     </LinearLayout>
 
     <TextView
-        android:layout_marginTop="10dp"
+        style="@style/textview"
+        android:background="@drawable/bg_trans_white_stroke"
+        android:layout_marginTop="30px"
         android:id="@+id/tv_confirm"
-        android:textSize="25sp"
+        android:text="登录"
         android:textColor="@color/white"
-        android:text="LOGIN"
-        android:gravity="center"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:background="@color/blue_light"
-        android:layout_width="300dp"
+        android:layout_width="500px"
         android:layout_height="wrap_content"/>
 
-    <TextView
-        android:layout_marginTop="10dp"
-        android:id="@+id/tv_send"
-        android:textSize="25sp"
-        android:textColor="@color/white"
-        android:text="SENDMESSAGE"
-        android:gravity="center"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:background="@color/blue_light"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"/>
+
 </LinearLayout>

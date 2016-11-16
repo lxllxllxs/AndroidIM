@@ -3,15 +3,16 @@ package com.yiyekeji.ui.activity.base;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.zhy.autolayout.AutoLayoutActivity;
+
 /**
  * Created by Administrator on 2016/10/23.
  */
-public class BaseActivity extends FragmentActivity implements View.OnClickListener {
+public class BaseActivity extends AutoLayoutActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
