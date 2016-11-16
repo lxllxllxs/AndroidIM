@@ -12,6 +12,7 @@ import com.yiyekeji.im.R;
 import com.yiyekeji.ui.activity.base.BaseActivity;
 import com.yiyekeji.ui.fragment.ContactsFragment;
 import com.yiyekeji.ui.fragment.InformationFragment;
+import com.yiyekeji.ui.view.TitleBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,8 @@ public class MainFragmentActivity extends BaseActivity {
     TextView tvContacts;
     @InjectView(R.id.tv_info)
     TextView tvInfo;
+    @InjectView(R.id.titleBar)
+    TitleBar titleBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class MainFragmentActivity extends BaseActivity {
         setContentView(R.layout.activity_main_fragment);
         ButterKnife.inject(this);
         initViewPager();
+        titleBar.initView(this);
     }
 
     public void initViewPager() {
@@ -55,9 +59,10 @@ public class MainFragmentActivity extends BaseActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
+
             @Override
             public void onPageSelected(int position) {
-                switch (position){
+                switch (position) {
                     case 0:
                         tvContacts.setTextColor(Color.WHITE);
                         tvContacts.setBackgroundColor(getResources().getColor(R.color.blue_light));
@@ -72,6 +77,7 @@ public class MainFragmentActivity extends BaseActivity {
                         break;
                 }
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
             }
