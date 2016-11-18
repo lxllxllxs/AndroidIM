@@ -9,15 +9,16 @@
         android:background="@color/blue_light"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+<!--    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/fragment"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        />
+        />-->
 
     <LinearLayout
-        android:background="@color/white"
+        android:background="@color/gray"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="120px">
@@ -29,19 +30,19 @@
             android:layout_height="wrap_content">
             <ImageView
                 style="@style/ImageView"
-                android:src="@mipmap/contacts"
+                android:padding="5px"
+                android:src="@mipmap/ic_contact"
                 android:layout_width="80px"
                 android:layout_height="80px"/>
             <TextView
                 android:id="@+id/tv_contacts"
                 android:text="联系人"
                 style="@style/textview"
+                android:textColor="@color/theme_blue"
                 android:padding="0px"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
-
-
         <LinearLayout
             android:gravity="center"
             android:orientation="vertical"
@@ -50,20 +51,19 @@
             android:layout_height="match_parent">
             <ImageView
                 style="@style/ImageView"
+                android:padding="5px"
                 android:src="@mipmap/session"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"/>
+                android:layout_width="80px"
+                android:layout_height="80px"/>
             <TextView
                 android:id="@+id/tv_info"
                 android:text="消息"
                 style="@style/textview"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
+                android:textColor="@color/black"
+                android:padding="0px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
-
-
-
         <LinearLayout
             android:gravity="center"
             android:orientation="vertical"
@@ -72,16 +72,18 @@
             android:layout_height="match_parent">
             <ImageView
                 style="@style/ImageView"
+                android:padding="5px"
                 android:src="@mipmap/setting"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"/>
+                android:layout_width="80px"
+                android:layout_height="80px"/>
             <TextView
                 android:id="@+id/tv_setting"
                 android:text="设置"
                 style="@style/textview"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
+                android:textColor="@color/black"
+                android:padding="0px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
     </LinearLayout>
