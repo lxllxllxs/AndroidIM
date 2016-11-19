@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <style name="myTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:background">@color/gray</item>
+    <style name="myTheme" parent="Theme.AppCompat.Light.NoActionBar">
     </style>
 
     <style name="textview">

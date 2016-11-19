@@ -62,6 +62,14 @@ public class ChatActivity extends BaseActivity {
         initView();
     }
 
+    @Override
+    public void initView() {
+        getChatMessageFormDb();
+        chatAdapter=new ChatAdapter(this,messageList);
+        recylerView.setAdapter(chatAdapter);
+        recylerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
     private void initData() {
         receriver = (IMessageFactory.IMessage.User) getIntent().getSerializableExtra(ConstantUtil.USER);
         receiverId = receriver.getUserId();
@@ -69,13 +77,7 @@ public class ChatActivity extends BaseActivity {
         LogUtil.d("initData", receriver.toString());
     }
 
-    private void initView() {
-        getChatMessageFormDb();
-        chatAdapter=new ChatAdapter(this,messageList);
-        recylerView.setAdapter(chatAdapter);
-        recylerView.setLayoutManager(new LinearLayoutManager(this));
 
-    }
 
     private void getChatMessageFormDb(){
         messageList.addAll(DbUtil.searchReceivedMsg());

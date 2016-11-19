@@ -43,7 +43,8 @@ public class LoginActivity extends BaseActivity {
         startService(intent1);
     }
 
-    private void initView() {
+    @Override
+    public void initView() {
         edtPassword=(EditText)findViewById(R.id.edt_password);
         edtUsername = (EditText) findViewById(R.id.edt_username);
         tvConfirm=(TextView)findViewById(R.id.tv_confirm);

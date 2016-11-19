@@ -36,6 +36,11 @@ public class Test extends BaseActivity {
 
     }
 
+    @Override
+    public void initView() {
+
+    }
+
     @OnClick({R.id.put, R.id.get, R.id.insertFirst})
     public void onClick(View view) {
         switch (view.getId()) {

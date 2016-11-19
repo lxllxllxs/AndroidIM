@@ -1,24 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+    >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/id_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_light"
+        android:fitsSystemWindows="true"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
     <TextView
-        style="@style/textview"
+        android:fitsSystemWindows="true"
+        android:id="@+id/tv_title"
+        android:text="联系人"
+        android:paddingBottom="20px"
+        android:paddingTop="20px"
+        android:textSize="13sp"
+        android:gravity="center"
         android:textColor="@color/white"
         android:background="@color/blue_light"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-<!--    <LinearLayout
+    <LinearLayout
         android:orientation="vertical"
         android:id="@+id/fragment"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        />-->
+        />
 
     <LinearLayout
-        android:background="@color/gray"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="120px">
@@ -29,17 +44,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
             <ImageView
+                android:id="@+id/iv_contacts"
                 style="@style/ImageView"
                 android:padding="5px"
-                android:src="@mipmap/ic_contact"
+                android:src="@mipmap/ic_contacts"
                 android:layout_width="80px"
                 android:layout_height="80px"/>
             <TextView
                 android:id="@+id/tv_contacts"
                 android:text="联系人"
-                style="@style/textview"
+                android:textSize="13sp"
                 android:textColor="@color/theme_blue"
-                android:padding="0px"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -50,17 +65,17 @@
             android:layout_width="0dp"
             android:layout_height="match_parent">
             <ImageView
+                android:id="@+id/iv_information"
                 style="@style/ImageView"
                 android:padding="5px"
-                android:src="@mipmap/session"
+                android:src="@mipmap/information"
                 android:layout_width="80px"
                 android:layout_height="80px"/>
             <TextView
                 android:id="@+id/tv_info"
                 android:text="消息"
-                style="@style/textview"
+                android:textSize="13sp"
                 android:textColor="@color/black"
-                android:padding="0px"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -71,6 +86,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent">
             <ImageView
+                android:id="@+id/iv_setting"
                 style="@style/ImageView"
                 android:padding="5px"
                 android:src="@mipmap/setting"
@@ -79,9 +95,8 @@
             <TextView
                 android:id="@+id/tv_setting"
                 android:text="设置"
-                style="@style/textview"
+                android:textSize="13sp"
                 android:textColor="@color/black"
-                android:padding="0px"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
