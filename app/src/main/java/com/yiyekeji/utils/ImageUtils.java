@@ -9,7 +9,7 @@ import android.graphics.BitmapFactory.Options;
 import android.net.Uri;
 import android.provider.MediaStore.Images.ImageColumns;
 import android.util.Base64;
-import android.util.LruCache;
+import android.widget.ImageView;
 
 import com.yiyekeji.im.R;
 
@@ -17,28 +17,11 @@ import java.io.File;
 import java.io.InputStream;
 
 public class ImageUtils {
-	private static LruCache<String, Bitmap> bitmapCache;
-	
-	public static void initBitmapCache() {
-		int maxMemory = (int) Runtime.getRuntime().maxMemory();
-		int cacheSize = maxMemory / 8;		
-		bitmapCache = new LruCache<String, Bitmap>(cacheSize) {
-			protected int sizeOf(String key, Bitmap value) {
-				return value.getByteCount();
-			}			
-		};
-	}
-	
-	
-	public static LruCache<String, Bitmap> getBitmapLruCache() {
-		if(bitmapCache == null) {
-			initBitmapCache();
-		}
-		
-		return bitmapCache;
-	}
-	
 
+	public static void byteToBitmap(byte[] bytes, ImageView imageView){
+		Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+		imageView.setImageBitmap(bitmap);
+	}
 
 	public static Bitmap compressBitmap(String path, int reqWidth, int reqHeight) {
 		int inSampleSize = 1;
@@ -85,33 +68,5 @@ public class ImageUtils {
 	
 	
 
-	public static int getBankLogoResId(Context c, String bankCode){
-		String rcName = "ic_bank_" + bankCode;
-		int rcId = c.getResources()
-				.getIdentifier(rcName, "drawable",
-						c.getPackageName());
-		return rcId ;
-	}
-	public static int getBankLogo2ResId(Context c, String bankCode){
-		String rcName = "ic_bank_" + bankCode+"2";
-		int rcId = c.getResources()
-				.getIdentifier(rcName, "drawable",
-						c.getPackageName());
-		return rcId ;
-	}
-	public static int getBankLogobigResId(Context c, String bankCode){
-		String rcName = "ic_big_bank_" + bankCode;
-		int rcId = c.getResources()
-				.getIdentifier(rcName, "drawable",
-						c.getPackageName());
-		return rcId ;
-	}
-	public static int getBankcircularLogoResId(Context c, String bankCode){
-		String rcName = "ic_r_bank_" + bankCode;
-		int rcId = c.getResources()
-				.getIdentifier(rcName, "drawable",
-						c.getPackageName());
-		return rcId ;
-	}
 
 }

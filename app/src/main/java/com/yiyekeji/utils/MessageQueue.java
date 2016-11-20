@@ -37,6 +37,9 @@ public class MessageQueue {
         return iMessage;
     }
 
+    public int size(){
+        return blockingDeque.size();
+    }
 
     /** 未发送成功的插到头部 重新发送 */
     public void  insertToFirst(IMessageFactory.IMessage iMessage) {

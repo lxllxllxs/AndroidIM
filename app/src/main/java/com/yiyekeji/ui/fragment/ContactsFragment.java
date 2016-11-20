@@ -55,7 +55,6 @@ public class ContactsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initData();
-        initView();
     }
 
     private void initData() {

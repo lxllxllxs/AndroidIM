@@ -52,7 +52,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(LoginActivity.this,"login",Toast.LENGTH_SHORT).show();
-                startActivity(MainFragmentActivity.class);
+
                 login(edtUsername.getText().toString(),edtPassword.getText().toString());
 
             }
@@ -67,7 +67,6 @@ public class LoginActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void isLoginSuccess(LoginEvent loginEvent){
-
         if (loginEvent.isSuccess()){
             showShortToast("login successfully!!");
             startActivity(MainFragmentActivity.class);

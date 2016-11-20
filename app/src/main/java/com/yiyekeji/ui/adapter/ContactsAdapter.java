@@ -5,11 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yiyekeji.bean.UserInfo;
 import com.yiyekeji.im.R;
+import com.yiyekeji.utils.ImageUtils;
 
 import java.util.List;
 
@@ -32,6 +34,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         {
             super(arg0);
         }
+        ImageView ivHead;
         TextView tvId;
         TextView tvName;
         LinearLayout llContainer;
@@ -52,6 +55,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             ViewHolder viewHolder = new ViewHolder(view);
             viewHolder.tvId= (TextView) view.findViewById(R.id.tvId);
             viewHolder.tvName = (TextView) view.findViewById(R.id.tvName);
+            viewHolder.ivHead=(ImageView)view.findViewById(R.id.iv_head);
             viewHolder.llContainer=(LinearLayout)view.findViewById(R.id.llContainer);
             return viewHolder;
         }
@@ -63,8 +67,10 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         @Override
         public void onBindViewHolder(final ViewHolder viewHolder, final int i)
         {
-            viewHolder.tvId.setText(userList.get(i).getUserId());
-            viewHolder.tvName.setText(userList.get(i).getUserName());
+            UserInfo userInfo = userList.get(i);
+            ImageUtils.byteToBitmap(userInfo.getImgBytes(),viewHolder.ivHead);
+            viewHolder.tvId.setText(userInfo.getUserId());
+            viewHolder.tvName.setText(userInfo.getUserName());
             if(mOnItemClickLitener!=null){
                 viewHolder.llContainer.setOnClickListener(new View.OnClickListener() {
                     @Override
