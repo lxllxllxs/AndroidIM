@@ -1,6 +1,9 @@
 package com.yiyekeji.Event;
 
 import com.yiyekeji.bean.IMessageFactory;
+import com.yiyekeji.bean.UserInfo;
+
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2016/10/31.
@@ -8,8 +11,17 @@ import com.yiyekeji.bean.IMessageFactory;
 public class LinkManEvent {
     private IMessageFactory.IMessage iMessage;
 
-    public IMessageFactory.IMessage getiMessage() {
-        return iMessage;
+    private ArrayList<UserInfo> userInfoList;
+    public ArrayList<UserInfo> getLinkManList() {
+        userInfoList = new ArrayList<>();
+        for (IMessageFactory.IMessage.User user : iMessage.getUserList()) {
+            UserInfo userInfo=new UserInfo();
+            userInfo.setUserId(user.getUserId());
+            userInfo.setImgBytes(user.getImgUrl().getBytes());
+            userInfo.setUserName(user.getUsername());
+            userInfoList.add(userInfo);
+        }
+        return userInfoList;
     }
 
     public void setiMessage(IMessageFactory.IMessage iMessage) {

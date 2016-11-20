@@ -95,6 +95,10 @@ public final class IMessageFactory {
       // optional string userId = 3;
       boolean hasUserId();
       String getUserId();
+      
+      // optional string imgUrl = 4;
+      boolean hasImgUrl();
+      String getImgUrl();
     }
     public static final class User extends
         com.google.protobuf.GeneratedMessage
@@ -221,10 +225,43 @@ public final class IMessageFactory {
         }
       }
       
+      // optional string imgUrl = 4;
+      public static final int IMGURL_FIELD_NUMBER = 4;
+      private java.lang.Object imgUrl_;
+      public boolean hasImgUrl() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      public String getImgUrl() {
+        java.lang.Object ref = imgUrl_;
+        if (ref instanceof String) {
+          return (String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          String s = bs.toStringUtf8();
+          if (com.google.protobuf.Internal.isValidUtf8(bs)) {
+            imgUrl_ = s;
+          }
+          return s;
+        }
+      }
+      private com.google.protobuf.ByteString getImgUrlBytes() {
+        java.lang.Object ref = imgUrl_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8((String) ref);
+          imgUrl_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      
       private void initFields() {
         username_ = "";
         password_ = "";
         userId_ = "";
+        imgUrl_ = "";
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
@@ -247,6 +284,9 @@ public final class IMessageFactory {
         if (((bitField0_ & 0x00000004) == 0x00000004)) {
           output.writeBytes(3, getUserIdBytes());
         }
+        if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          output.writeBytes(4, getImgUrlBytes());
+        }
         getUnknownFields().writeTo(output);
       }
       
@@ -267,6 +307,10 @@ public final class IMessageFactory {
         if (((bitField0_ & 0x00000004) == 0x00000004)) {
           size += com.google.protobuf.CodedOutputStream
             .computeBytesSize(3, getUserIdBytes());
+        }
+        if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeBytesSize(4, getImgUrlBytes());
         }
         size += getUnknownFields().getSerializedSize();
         memoizedSerializedSize = size;
@@ -398,6 +442,8 @@ public final class IMessageFactory {
           bitField0_ = (bitField0_ & ~0x00000002);
           userId_ = "";
           bitField0_ = (bitField0_ & ~0x00000004);
+          imgUrl_ = "";
+          bitField0_ = (bitField0_ & ~0x00000008);
           return this;
         }
         
@@ -448,6 +494,10 @@ public final class IMessageFactory {
             to_bitField0_ |= 0x00000004;
           }
           result.userId_ = userId_;
+          if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+            to_bitField0_ |= 0x00000008;
+          }
+          result.imgUrl_ = imgUrl_;
           result.bitField0_ = to_bitField0_;
           onBuilt();
           return result;
@@ -472,6 +522,9 @@ public final class IMessageFactory {
           }
           if (other.hasUserId()) {
             setUserId(other.getUserId());
+          }
+          if (other.hasImgUrl()) {
+            setImgUrl(other.getImgUrl());
           }
           this.mergeUnknownFields(other.getUnknownFields());
           return this;
@@ -517,6 +570,11 @@ public final class IMessageFactory {
               case 26: {
                 bitField0_ |= 0x00000004;
                 userId_ = input.readBytes();
+                break;
+              }
+              case 34: {
+                bitField0_ |= 0x00000008;
+                imgUrl_ = input.readBytes();
                 break;
               }
             }
@@ -630,6 +688,42 @@ public final class IMessageFactory {
         void setUserId(com.google.protobuf.ByteString value) {
           bitField0_ |= 0x00000004;
           userId_ = value;
+          onChanged();
+        }
+        
+        // optional string imgUrl = 4;
+        private java.lang.Object imgUrl_ = "";
+        public boolean hasImgUrl() {
+          return ((bitField0_ & 0x00000008) == 0x00000008);
+        }
+        public String getImgUrl() {
+          java.lang.Object ref = imgUrl_;
+          if (!(ref instanceof String)) {
+            String s = ((com.google.protobuf.ByteString) ref).toStringUtf8();
+            imgUrl_ = s;
+            return s;
+          } else {
+            return (String) ref;
+          }
+        }
+        public Builder setImgUrl(String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+          imgUrl_ = value;
+          onChanged();
+          return this;
+        }
+        public Builder clearImgUrl() {
+          bitField0_ = (bitField0_ & ~0x00000008);
+          imgUrl_ = getDefaultInstance().getImgUrl();
+          onChanged();
+          return this;
+        }
+        void setImgUrl(com.google.protobuf.ByteString value) {
+          bitField0_ |= 0x00000008;
+          imgUrl_ = value;
           onChanged();
         }
         
@@ -1920,14 +2014,14 @@ public final class IMessageFactory {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\025IMessageFactory.proto\"\350\001\n\010IMessage\022\020\n\010" +
+      "\n\025IMessageFactory.proto\"\370\001\n\010IMessage\022\020\n\010" +
       "MainType\030\001 \002(\t\022\017\n\007subType\030\002 \002(\t\022\020\n\010sende" +
       "rId\030\003 \001(\t\022\022\n\nreceiverId\030\004 \001(\t\022\017\n\007content" +
       "\030\005 \001(\t\022\016\n\006result\030\006 \001(\t\022\034\n\004user\030\007 \003(\0132\016.I" +
-      "Message.User\022\n\n\002id\030\010 \002(\t\022\014\n\004date\030\t \001(\t\032:" +
+      "Message.User\022\n\n\002id\030\010 \002(\t\022\014\n\004date\030\t \001(\t\032J" +
       "\n\004User\022\020\n\010username\030\001 \001(\t\022\020\n\010password\030\002 \001" +
-      "(\t\022\016\n\006userId\030\003 \001(\tB$\n\021com.yiyekeji.beanB" +
-      "\017IMessageFactory"
+      "(\t\022\016\n\006userId\030\003 \001(\t\022\016\n\006imgUrl\030\004 \001(\tB$\n\021co" +
+      "m.yiyekeji.beanB\017IMessageFactory"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1947,7 +2041,7 @@ public final class IMessageFactory {
           internal_static_IMessage_User_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_IMessage_User_descriptor,
-              new java.lang.String[] { "Username", "Password", "UserId", },
+              new java.lang.String[] { "Username", "Password", "UserId", "ImgUrl", },
               com.yiyekeji.bean.IMessageFactory.IMessage.User.class,
               com.yiyekeji.bean.IMessageFactory.IMessage.User.Builder.class);
           return null;

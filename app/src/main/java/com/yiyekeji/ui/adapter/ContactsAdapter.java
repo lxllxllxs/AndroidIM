@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.yiyekeji.bean.IMessageFactory;
+import com.yiyekeji.bean.UserInfo;
 import com.yiyekeji.im.R;
 
 import java.util.List;
@@ -20,8 +20,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         {
 
     private LayoutInflater mInflater;
-    private List<IMessageFactory.IMessage.User> userList;
-    public ContactsAdapter(Context context, List<IMessageFactory.IMessage.User> userList) {
+    private List<UserInfo> userList;
+    public ContactsAdapter(Context context, List<UserInfo> userList) {
         this.userList=userList;
         mInflater = LayoutInflater.from(context);
 
@@ -64,7 +64,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         public void onBindViewHolder(final ViewHolder viewHolder, final int i)
         {
             viewHolder.tvId.setText(userList.get(i).getUserId());
-            viewHolder.tvName.setText(userList.get(i).getUsername());
+            viewHolder.tvName.setText(userList.get(i).getUserName());
             if(mOnItemClickLitener!=null){
                 viewHolder.llContainer.setOnClickListener(new View.OnClickListener() {
                     @Override

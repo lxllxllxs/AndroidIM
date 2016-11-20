@@ -16,6 +16,7 @@
     		optional string username = 1 ;
 			optional string password = 2 ;
 			optional string userId = 3 ;
+			optional string imgUrl = 4 ;
 		}
 
 	}

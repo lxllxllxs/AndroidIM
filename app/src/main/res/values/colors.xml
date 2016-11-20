@@ -20,7 +20,7 @@
     <color name="theme_gray">#909090</color>
     <color name="button_gray">#dbdbdb</color>
     <color name="line_gray">#F4F4F4</color>
-    <color name="gray_black">#7b7b7b</color>
+    <color name="gray_black">#8a8a8a</color>
     <color name="gesture_background">#ff303237</color>
     <color name="text_hint_color">#AAA</color>
     <color name="black_light">#413a3c</color>

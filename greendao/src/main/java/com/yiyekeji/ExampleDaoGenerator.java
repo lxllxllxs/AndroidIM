@@ -12,7 +12,7 @@ public class ExampleDaoGenerator {
         
         Schema schema = new Schema(1, "com.yiyekeji.dao");
         addSendMessage(schema);
-        new DaoGenerator().generateAll(schema, "E:\\DaoExample");
+        new DaoGenerator().generateAll(schema, "D:\\DaoExample");
     }
 
     /**

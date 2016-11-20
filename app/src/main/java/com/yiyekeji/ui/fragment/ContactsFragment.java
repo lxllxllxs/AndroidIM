@@ -11,21 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yiyekeji.Event.LinkManEvent;
-import com.yiyekeji.bean.IMessageFactory;
+import com.yiyekeji.bean.UserInfo;
 import com.yiyekeji.handler.SysMessageHandler;
 import com.yiyekeji.im.R;
 import com.yiyekeji.service.WebSocketService;
 import com.yiyekeji.ui.activity.ChatActivity;
 import com.yiyekeji.ui.adapter.ContactsAdapter;
 import com.yiyekeji.utils.ConstantUtil;
-import com.yiyekeji.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -37,7 +35,7 @@ public class ContactsFragment extends Fragment {
 
     private final String TAG = "ContactsFragment";
     ContactsAdapter ca;
-    List<IMessageFactory.IMessage.User> userArrayList = new ArrayList<>();
+    ArrayList<UserInfo> userArrayList = new ArrayList<>();
     @InjectView(R.id.recylerView)
     RecyclerView recylerView;
 
@@ -73,9 +71,7 @@ public class ContactsFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
             Intent intent = new Intent(getActivity(), ChatActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(ConstantUtil.USER, userArrayList.get(position));
-            intent.putExtras(bundle);
+            intent.putExtra(ConstantUtil.USER,userArrayList.get(position));
             startActivity(intent);
             }
         });
@@ -84,10 +80,7 @@ public class ContactsFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateLinkManList(LinkManEvent event) {
-        for (IMessageFactory.IMessage.User user : event.getiMessage().getUserList()) {
-            LogUtil.d("updateLinman", user.toString());
-        }
-        userArrayList = event.getiMessage().getUserList();
+        userArrayList = event.getLinkManList();
         if (userArrayList == null) {
             return;
         }

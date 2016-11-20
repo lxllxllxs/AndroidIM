@@ -45,6 +45,12 @@ public class MainFragmentActivity extends BaseActivity {
     ImageView ivSetting;
     @InjectView(R.id.tv_title)
     TextView tvTitle;
+    @InjectView(R.id.ll_contacts)
+    LinearLayout llContacts;
+    @InjectView(R.id.ll_information)
+    LinearLayout llInformation;
+    @InjectView(R.id.ll_setting)
+    LinearLayout llSetting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +64,12 @@ public class MainFragmentActivity extends BaseActivity {
     @Override
     public void initView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         //定制状态栏颜色使用此方法
         //StatusBarCompat.compat(this, 0xFFFF0000);
         StatusBarCompat.compat(this);
-        color_gray = ContextCompat.getColor(this, R.color.gray);
+        color_gray = ContextCompat.getColor(this, R.color.gray_black);
         color_bule = ContextCompat.getColor(this, R.color.theme_blue);
     }
 
@@ -79,33 +86,6 @@ public class MainFragmentActivity extends BaseActivity {
 
     FragmentManager fm;
 
-    @OnClick({R.id.tv_contacts, R.id.tv_info, R.id.tv_setting})
-    public void onClick(View view) {
-        revertTab();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.hide(contactsFragment).hide(informationFragment);
-        switch (view.getId()) {
-            case R.id.tv_contacts:
-                tvTitle.setText("联系人");
-                ft.show(contactsFragment);
-                tvContacts.setTextColor(color_bule);
-                ivContacts.setImageResource(R.mipmap.ic_contacts);
-                break;
-            case R.id.tv_info:
-                tvTitle.setText("消息");
-                ft.show(informationFragment);
-                tvInfo.setTextColor(color_bule);
-                ivInformation.setImageResource(R.mipmap.ic_infomation);
-                break;
-            case R.id.tv_setting:
-                tvTitle.setText("设置");
-                tvSetting.setTextColor(color_bule);
-                ivSetting.setImageResource(R.mipmap.ic_setting);
-                break;
-        }
-        ft.commit();
-    }
-
     private void revertTab() {
         tvContacts.setTextColor(color_gray);
         tvInfo.setTextColor(color_gray);
@@ -114,5 +94,32 @@ public class MainFragmentActivity extends BaseActivity {
         ivContacts.setImageResource(R.mipmap.contacts);
         ivInformation.setImageResource(R.mipmap.information);
         ivSetting.setImageResource(R.mipmap.setting);
+    }
+
+    @OnClick({R.id.ll_contacts, R.id.ll_information, R.id.ll_setting})
+    public void onClick(View view) {
+        revertTab();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.hide(contactsFragment).hide(informationFragment);
+        switch (view.getId()) {
+            case R.id.ll_contacts:
+                tvTitle.setText("联系人");
+                ft.show(contactsFragment);
+                tvContacts.setTextColor(color_bule);
+                ivContacts.setImageResource(R.mipmap.ic_contacts);
+                break;
+            case R.id.ll_information:
+                tvTitle.setText("消息");
+                ft.show(informationFragment);
+                tvInfo.setTextColor(color_bule);
+                ivInformation.setImageResource(R.mipmap.ic_infomation);
+                break;
+            case R.id.ll_setting:
+                tvTitle.setText("设置");
+                tvSetting.setTextColor(color_bule);
+                ivSetting.setImageResource(R.mipmap.ic_setting);
+                break;
+        }
+        ft.commit();
     }
 }

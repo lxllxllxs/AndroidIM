@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.yiyekeji.Event.ChatMessageEvent;
 import com.yiyekeji.IMApp;
-import com.yiyekeji.bean.IMessageFactory;
+import com.yiyekeji.bean.UserInfo;
 import com.yiyekeji.dao.ChatMessage;
 import com.yiyekeji.dao.DateComParator;
 import com.yiyekeji.handler.ChatMessageHandler;
@@ -43,10 +43,9 @@ public class ChatActivity extends BaseActivity {
     EditText edtContent;
     @InjectView(R.id.tv_send)
     TextView tvSend;
-    private IMessageFactory.IMessage.User receriver;
     ArrayList<ChatMessage> messageList = new ArrayList<>();
     private ChatAdapter chatAdapter;
-
+    private UserInfo receriver;
     ChatMessage chatMessage;
      String receiverId;
     final String senderId = IMApp.userInfo.getUserId();
@@ -71,9 +70,9 @@ public class ChatActivity extends BaseActivity {
     }
 
     private void initData() {
-        receriver = (IMessageFactory.IMessage.User) getIntent().getSerializableExtra(ConstantUtil.USER);
+        receriver = (UserInfo) getIntent().getSerializableExtra(ConstantUtil.USER);
         receiverId = receriver.getUserId();
-        tvName.setText(receriver.getUsername());
+        tvName.setText(receriver.getUserName());
         LogUtil.d("initData", receriver.toString());
     }
 
