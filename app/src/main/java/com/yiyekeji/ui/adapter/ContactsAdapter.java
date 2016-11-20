@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.yiyekeji.bean.UserInfo;
 import com.yiyekeji.im.R;
-import com.yiyekeji.utils.ImageUtils;
+import com.yiyekeji.utils.PicassoUtil;
 
 import java.util.List;
 
@@ -68,9 +68,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         public void onBindViewHolder(final ViewHolder viewHolder, final int i)
         {
             UserInfo userInfo = userList.get(i);
-            ImageUtils.byteToBitmap(userInfo.getImgBytes(),viewHolder.ivHead);
             viewHolder.tvId.setText(userInfo.getUserId());
             viewHolder.tvName.setText(userInfo.getUserName());
+            PicassoUtil.setBitmapToView(userInfo.getImgUrl(),viewHolder.ivHead);
             if(mOnItemClickLitener!=null){
                 viewHolder.llContainer.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -9,14 +9,14 @@ import android.os.Parcelable;
 public class UserInfo implements Parcelable {
     private  String userName;
     private String userId;
-    private  byte[] imgBytes;
+    private  String  imgUrl;
 
-    public byte[] getImgBytes() {
-        return imgBytes;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public void setImgBytes(byte[] imgBytes) {
-        this.imgBytes = imgBytes;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     public String getUserName() {
@@ -47,13 +47,13 @@ public class UserInfo implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.userName);
         dest.writeString(this.userId);
-        dest.writeByteArray(this.imgBytes);
+        dest.writeString(this.imgUrl);
     }
 
     protected UserInfo(Parcel in) {
         this.userName = in.readString();
         this.userId = in.readString();
-        this.imgBytes = in.createByteArray();
+        this.imgUrl = in.readString();
     }
 
     public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {

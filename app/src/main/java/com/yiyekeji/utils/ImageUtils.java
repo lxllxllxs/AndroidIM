@@ -19,8 +19,7 @@ import java.io.InputStream;
 public class ImageUtils {
 
 	public static void byteToBitmap(byte[] bytes, ImageView imageView){
-		Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-		imageView.setImageBitmap(bitmap);
+		File file=new File("C:/1.jpg");
 	}
 
 	public static Bitmap compressBitmap(String path, int reqWidth, int reqHeight) {

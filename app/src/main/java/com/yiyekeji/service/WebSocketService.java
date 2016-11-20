@@ -118,7 +118,7 @@ public class WebSocketService extends Service {
         while (true) {
             if (isSendSuccessfull) {
                 iMessage = messageQueue.getEgg();
-                isSendSuccessfull=false;//锁住
+//                isSendSuccessfull=false;//锁住
                 send(iMessage);
             }
         }
