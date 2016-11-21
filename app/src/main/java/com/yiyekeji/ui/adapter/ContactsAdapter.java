@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.yiyekeji.bean.UserInfo;
 import com.yiyekeji.im.R;
 import com.yiyekeji.utils.PicassoUtil;
+import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         public ViewHolder(View arg0)
         {
             super(arg0);
+            AutoUtils.autoSize(arg0);
         }
         ImageView ivHead;
         TextView tvId;

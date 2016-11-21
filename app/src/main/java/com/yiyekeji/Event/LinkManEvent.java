@@ -17,7 +17,7 @@ public class LinkManEvent {
         for (IMessageFactory.IMessage.User user : iMessage.getUserList()) {
             UserInfo userInfo=new UserInfo();
             userInfo.setUserId(user.getUserId());
-            userInfo.setImgBytes(user.getImgUrl().getBytes());
+            userInfo.setImgUrl(user.getImgUrl());
             userInfo.setUserName(user.getUsername());
             userInfoList.add(userInfo);
         }

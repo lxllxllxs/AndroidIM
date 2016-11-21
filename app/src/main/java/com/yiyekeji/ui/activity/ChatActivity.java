@@ -70,7 +70,7 @@ public class ChatActivity extends BaseActivity {
     }
 
     private void initData() {
-        receriver = (UserInfo) getIntent().getSerializableExtra(ConstantUtil.USER);
+        receriver = (UserInfo) getIntent().getParcelableExtra(ConstantUtil.USER);
         receiverId = receriver.getUserId();
         tvName.setText(receriver.getUserName());
         LogUtil.d("initData", receriver.toString());

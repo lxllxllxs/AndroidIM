@@ -17,6 +17,7 @@ import com.yiyekeji.im.R;
 import com.yiyekeji.service.WebSocketService;
 import com.yiyekeji.ui.activity.ChatActivity;
 import com.yiyekeji.ui.adapter.ContactsAdapter;
+import com.yiyekeji.ui.view.DividerItemDecoration;
 import com.yiyekeji.utils.ConstantUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -66,6 +67,7 @@ public class ContactsFragment extends Fragment {
         ca = new ContactsAdapter(getActivity(), userArrayList);
         recylerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recylerView.setAdapter(ca);
+        recylerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL_LIST));
         ca.setOnItemClickLitener(new ContactsAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {

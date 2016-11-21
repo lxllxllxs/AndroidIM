@@ -19,9 +19,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.yiyekeji.TestUi">
-        </activity>
-
         <activity android:name="com.yiyekeji.ui.activity.ChatActivity"/>
         <activity android:name="com.yiyekeji.ui.activity.MainFragmentActivity"/>
 
