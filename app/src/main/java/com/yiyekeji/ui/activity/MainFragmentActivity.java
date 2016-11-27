@@ -79,7 +79,7 @@ public class MainFragmentActivity extends BaseActivity {
         fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.add(R.id.fragment, contactsFragment)
-                .add(R.id.fragment, informationFragment)
+//                .add(R.id.fragment, informationFragment)
                 .show(contactsFragment)
                 .commit();
     }
