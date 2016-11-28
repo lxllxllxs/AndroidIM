@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.yiyekeji.bean.IMessageFactory;
+import com.yiyekeji.dao.ChatMessage;
 import com.yiyekeji.im.R;
 
 import java.util.List;
@@ -20,8 +20,8 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
         {
 
     private LayoutInflater mInflater;
-    private List<IMessageFactory.IMessage> messageList;
-    public InformAdapter(Context context, List<IMessageFactory.IMessage> userList) {
+    private List<ChatMessage> messageList;
+    public InformAdapter(Context context, List<ChatMessage> userList) {
         this.messageList=userList;
         mInflater = LayoutInflater.from(context);
 

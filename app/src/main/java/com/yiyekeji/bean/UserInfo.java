@@ -56,6 +56,15 @@ public class UserInfo implements Parcelable {
         this.imgUrl = in.readString();
     }
 
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "userName='" + userName + '\'' +
+                ", userId='" + userId + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                '}';
+    }
+
     public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {
         @Override
         public UserInfo createFromParcel(Parcel source) {

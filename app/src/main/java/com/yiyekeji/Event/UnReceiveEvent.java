@@ -1,19 +1,19 @@
 package com.yiyekeji.Event;
 
-import com.yiyekeji.bean.IMessageFactory;
+import com.yiyekeji.dao.ChatMessage;
 
 /**
  * 用作通知信息列表里
  * Created by Administrator on 2016/11/1.
  */
 public class UnReceiveEvent {
-    private IMessageFactory.IMessage iMessage;
+    private ChatMessage  chatMessage;
 
-    public IMessageFactory.IMessage getiMessage() {
-        return iMessage;
+    public ChatMessage getChatMessage() {
+        return chatMessage;
     }
 
-    public void setiMessage(IMessageFactory.IMessage iMessage) {
-        this.iMessage = iMessage;
+    public void setChatMessageMessage(ChatMessage chatMessage) {
+        this.chatMessage = chatMessage;
     }
 }

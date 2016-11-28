@@ -1,6 +1,8 @@
 package com.yiyekeji.ui.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -94,6 +96,11 @@ public class ChatActivity extends BaseActivity {
         WebSocketService.chat(ChatMessageHandler.sendTextMessage(content,receiverId));//这里数据库保存
     }
 
+    private void testTextMessage(String content) {
+        upDateLocal(content);
+        WebSocketService.chat(ChatMessageHandler.sendTextMessage(content,receiverId));//这里数据库保存
+    }
+
     private void upDateLocal(String content) {
         chatMessage = new ChatMessage();
         chatMessage.setContent(content);
@@ -108,10 +115,43 @@ public class ChatActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.tv_send:
                 sendTextMessage();
+//                testSendTextMessage();
                 break;
+
         }
     }
 
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                    testTextMessage(senderId+msg.obj);
+                    break;
+            }
+        }
+    };
+
+    private  void testSendTextMessage(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 100; i++) {
+                    synchronized (this) {
+                        try {
+                            wait(2 * 1000);
+                            Message msg=new Message();
+                            msg.obj=i;
+                            handler.sendEmptyMessage(1);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }).start();
+    }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void receiverMessage(ChatMessageEvent event) {
         LogUtil.d("chatActivity","已经收到信息");

@@ -3,6 +3,7 @@ package com.yiyekeji.handler;
 import com.yiyekeji.Event.ChatMessageEvent;
 import com.yiyekeji.Event.LinkManEvent;
 import com.yiyekeji.Event.LoginEvent;
+import com.yiyekeji.Event.UnReceiveEvent;
 import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.utils.DbUtil;
@@ -38,6 +39,9 @@ public class ReceiverHandler {
                     LogUtil.d("ReceiverHandler","接收离线消息");
                     saveUnReceiveMessage(iMessage);
                     //这里应该用UnReceiveEvent
+                    UnReceiveEvent event = new UnReceiveEvent();
+                    event.setChatMessageMessage(DbUtil.IMessageToChatMessage(iMessage));
+                    EventBus.getDefault().post(event);
                     break;
             }
         }else if(iMessage.getMainType().equals("1")){

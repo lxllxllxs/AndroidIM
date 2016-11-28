@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yiyekeji.Event.UnReceiveEvent;
-import com.yiyekeji.bean.IMessageFactory;
+import com.yiyekeji.dao.ChatMessage;
 import com.yiyekeji.handler.SysMessageHandler;
 import com.yiyekeji.im.R;
 import com.yiyekeji.service.WebSocketService;
@@ -35,7 +35,7 @@ public class InformationFragment extends Fragment {
     @InjectView(R.id.recylerView)
     RecyclerView recylerView;
     InformAdapter adapter;
-    List<IMessageFactory.IMessage> messageList = new ArrayList<>();
+    List<ChatMessage> messageList = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,26 +53,26 @@ public class InformationFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initView();
         initData();
+        initView();
     }
 
     private void initData() {
-        adapter=new InformAdapter(getActivity(),messageList);
-        recylerView.setAdapter(adapter);
-        recylerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         WebSocketService.chat(SysMessageHandler.getUnRecieveMessage());
     }
 
 
     private void initView() {
-
+        adapter=new InformAdapter(getActivity(),messageList);
+        recylerView.setAdapter(adapter);
+        recylerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void unReceiMessage(UnReceiveEvent event){
-        LogUtil.d(TAG,event.getiMessage().getContent());
-        messageList.add(event.getiMessage());
+        LogUtil.d(TAG,event.getChatMessage().getContent());
+        messageList.add(event.getChatMessage());
         adapter.notifyDataSetChanged();
     }
 

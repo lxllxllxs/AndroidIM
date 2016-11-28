@@ -76,7 +76,7 @@ public class WebSocketService extends Service {
                     @Override
                     public void onTextMessage(String payload) {
                         LogUtil.d("onTextMessage 发送信息id：",payload);
-                        //只有发送成功才会发送下一条信息
+                        //只有发送成功才会发送下一条信息 只针对聊天信息
                         if (payload.equals(iMessage.getId())){
                             if (iMessage.getMainType().equals("1")) {
                                 DbUtil.upDataSendChatMsg(iMessage.getId());//只有是聊天信息才需要更新状态
@@ -118,7 +118,7 @@ public class WebSocketService extends Service {
         while (true) {
             if (isSendSuccessfull) {
                 iMessage = messageQueue.getEgg();
-//                isSendSuccessfull=false;//锁住
+                isSendSuccessfull=false;//锁住
                 send(iMessage);
             }
         }
@@ -169,7 +169,7 @@ public class WebSocketService extends Service {
         Log.d("WebSocketService", "正在发送的信息大小"+iMessage.toString().length());
         Log.d("WebSocketService", "正在发送的信息:"+iMessage.toString());
         connection.sendBinaryMessage(iMessage.toByteArray());
-        handler.postDelayed(runnable2,10*1000);
+        handler.postDelayed(runnable2,5*1000);
     }
 
 

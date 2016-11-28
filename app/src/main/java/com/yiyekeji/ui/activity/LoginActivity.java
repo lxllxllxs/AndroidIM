@@ -13,6 +13,7 @@ import com.yiyekeji.handler.SysMessageHandler;
 import com.yiyekeji.im.R;
 import com.yiyekeji.service.WebSocketService;
 import com.yiyekeji.ui.activity.base.BaseActivity;
+import com.yiyekeji.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -65,9 +66,19 @@ public class LoginActivity extends BaseActivity {
         WebSocketService.chat(SysMessageHandler.login(name, pwd));
     }
 
+
+    private  void testLogin(){
+        String username="lxl";
+        for (int i=4;i<200;i++){
+            WebSocketService.chat(SysMessageHandler.login(username+i, "123"));
+        }
+    }
+    private int loginCount;
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void isLoginSuccess(LoginEvent loginEvent){
         if (loginEvent.isSuccess()){
+            loginCount++;
+            LogUtil.d("loginSuccess",loginCount+"");
             showShortToast("login successfully!!");
             startActivity(MainFragmentActivity.class);
         }else {

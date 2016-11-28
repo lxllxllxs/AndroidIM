@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.yiyekeji.bean.UserInfo;
 import com.yiyekeji.im.R;
+import com.yiyekeji.utils.LogUtil;
 import com.yiyekeji.utils.PicassoUtil;
 import com.zhy.autolayout.utils.AutoUtils;
 
@@ -70,6 +71,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         public void onBindViewHolder(final ViewHolder viewHolder, final int i)
         {
             UserInfo userInfo = userList.get(i);
+            LogUtil.d("ContactsAdapter:onBindViewHolder",userInfo.toString());
             viewHolder.tvId.setText(userInfo.getUserId());
             viewHolder.tvName.setText(userInfo.getUserName());
             PicassoUtil.setBitmapToView(userInfo.getImgUrl(),viewHolder.ivHead);
