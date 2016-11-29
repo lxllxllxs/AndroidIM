@@ -15,6 +15,7 @@ public class PicassoUtil {
 
 
     public static void setBitmapToView(String url, ImageView imageView) {
+
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         if (TextUtils.isEmpty(url)) {
         } else {

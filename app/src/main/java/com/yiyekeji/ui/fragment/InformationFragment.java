@@ -22,6 +22,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -36,7 +37,7 @@ public class InformationFragment extends Fragment {
     RecyclerView recylerView;
     InformAdapter adapter;
     List<ChatMessage> messageList = new ArrayList<>();
-
+    private static HashMap<String, ArrayList<ChatMessage>> chatMap = new HashMap<>();
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
@@ -64,16 +65,19 @@ public class InformationFragment extends Fragment {
 
 
     private void initView() {
-        adapter=new InformAdapter(getActivity(),messageList);
+        adapter=new InformAdapter(getActivity(),chatMap);
         recylerView.setAdapter(adapter);
         recylerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
+    /**
+     * 作为接收方需要发送人id
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void unReceiMessage(UnReceiveEvent event){
-        LogUtil.d(TAG,event.getChatMessage().getContent());
-        messageList.add(event.getChatMessage());
-        adapter.notifyDataSetChanged();
+        LogUtil.d(TAG,UnReceiveEvent.chatMap.size());
+        adapter.setData(UnReceiveEvent.chatMap);
     }
 
     @Override

@@ -4,7 +4,7 @@ package com.yiyekeji.dao;
 /**
  * Entity mapped to table "CHAT_MESSAGE".
  */
-public class ChatMessage {
+public class ChatMessage implements Cloneable{
 
     private Long id;
     private String msgId;

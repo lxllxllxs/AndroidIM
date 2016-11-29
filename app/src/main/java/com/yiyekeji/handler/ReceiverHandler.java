@@ -32,16 +32,18 @@ public class ReceiverHandler {
                 case "1":
                     LogUtil.d("ReceiverHandler"," 接收好友列表");
                     LinkManEvent linkManEvent=new LinkManEvent();
-                    linkManEvent.setiMessage(iMessage);
+                    linkManEvent.addLinkMan(iMessage);
                     EventBus.getDefault().post(linkManEvent);
                     break;
                 case "2"://接受离线消息（离线消息？）    //A保存聊天类信息
                     LogUtil.d("ReceiverHandler","接收离线消息");
                     saveUnReceiveMessage(iMessage);
                     //这里应该用UnReceiveEvent
-                    UnReceiveEvent event = new UnReceiveEvent();
-                    event.setChatMessageMessage(DbUtil.IMessageToChatMessage(iMessage));
-                    EventBus.getDefault().post(event);
+                    UnReceiveEvent.setChatMessageMessage(DbUtil.IMessageToChatMessage(iMessage));
+                    LogUtil.d("ReceiverHandler", iMessage.getSenderId());
+                    if (iMessage.getSenderId().equals("end")) {
+                        EventBus.getDefault().post(new UnReceiveEvent());
+                    }
                     break;
             }
         }else if(iMessage.getMainType().equals("1")){
