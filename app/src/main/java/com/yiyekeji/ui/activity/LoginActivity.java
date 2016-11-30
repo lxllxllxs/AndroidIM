@@ -48,6 +48,8 @@ public class LoginActivity extends BaseActivity {
     public void initView() {
         edtPassword=(EditText)findViewById(R.id.edt_password);
         edtUsername = (EditText) findViewById(R.id.edt_username);
+        edtUsername.setText("lxl1");
+        edtPassword.setText("123");
         tvConfirm=(TextView)findViewById(R.id.tv_confirm);
         tvConfirm.setOnClickListener(new View.OnClickListener() {
             @Override

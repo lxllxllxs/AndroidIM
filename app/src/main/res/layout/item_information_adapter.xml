@@ -4,12 +4,24 @@
               android:layout_width="match_parent"
               android:layout_height="100px">
 
-    <com.yiyekeji.ui.view.CircleImageView
-        android:id="@+id/civ_head"
-        android:layout_marginLeft="20px"
-        android:layout_width="80px"
-        android:src="@mipmap/qq"
-        android:layout_height="match_parent"/>
+    <RelativeLayout
+        android:layout_width="100px"
+        android:paddingLeft="10px"
+        android:layout_height="match_parent">
+        <com.yiyekeji.ui.view.CircleImageView
+            android:id="@+id/civ_head"
+            android:layout_width="match_parent"
+            android:src="@mipmap/qq"
+            android:layout_height="match_parent"/>
+        <com.yiyekeji.ui.view.NumberView
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:id="@+id/numberview"
+            android:layout_gravity="center_vertical"
+            android:layout_width="40px"
+            android:layout_height="40px"/>
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_marginLeft="30px"
         android:layout_weight="1"
@@ -35,7 +47,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
-
     <TextView
         android:id="@+id/tv_date"
         android:text="2016-11-29"

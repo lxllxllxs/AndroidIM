@@ -12,12 +12,16 @@ import com.yiyekeji.bean.UserInfo;
 import com.yiyekeji.dao.ChatMessage;
 import com.yiyekeji.im.R;
 import com.yiyekeji.ui.view.CircleImageView;
+import com.yiyekeji.ui.view.NumberView;
+import com.yiyekeji.utils.LogUtil;
 import com.yiyekeji.utils.PicassoUtil;
+import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lxl on 2016/10/25.
@@ -32,23 +36,23 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
     public InformAdapter(Context context, HashMap<String, ArrayList<ChatMessage>> hashMap) {
         setData(hashMap);
         mInflater = LayoutInflater.from(context);
-
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(View arg0) {
             super(arg0);
+            AutoUtils.autoSize(arg0);
         }
         CircleImageView civHead;
         TextView tvUserName;
         TextView tvChatMessage;
         TextView tvDate;
-
+        NumberView numberView;
     }
 
     @Override
     public int getItemCount() {
-        return chatMap.size();
+        return keyList.size();
     }
 
     public void setData(HashMap<String, ArrayList<ChatMessage>> hashMap) {
@@ -56,8 +60,14 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
         keyList.clear();
         Iterator iterator = chatMap.entrySet().iterator();
         while (iterator.hasNext()) {
-            keyList.add((String) iterator.next());
+            Map.Entry entry = (Map.Entry) iterator.next();
+            keyList.add(entry.getKey().toString());
         }
+        notifyDataSetChanged();
+    }
+
+    public void setData(String data) {
+        LogUtil.d("setData",data);
         notifyDataSetChanged();
     }
 
@@ -72,29 +82,28 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
         viewHolder.tvUserName = (TextView) view.findViewById(R.id.tv_userName);
         viewHolder.tvChatMessage = (TextView) view.findViewById(R.id.tv_chatMessage);
         viewHolder.tvDate = (TextView) view.findViewById(R.id.tv_date);
-
+        viewHolder.numberView=(NumberView)view.findViewById(R.id.numberview);
         return viewHolder;
     }
 
-    /**
+    /**显示最新的一条信息
      * 设置布局控件内容
      */
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         List<ChatMessage> chatMessageList = chatMap.get(keyList.get(i));
         ChatMessage chatMessage = chatMessageList.get(chatMessageList.size() - 1);//获取最新
-        UserInfo info=getUserInfo(chatMessage);
-        assert info != null;
+        final UserInfo info=getUserInfo(chatMessage);
         PicassoUtil.setBitmapToView(info.getImgUrl(),viewHolder.civHead);
         viewHolder.tvUserName.setText(chatMessage.getSenderId());
         viewHolder.tvChatMessage.setText(chatMessage.getContent());
         viewHolder.tvUserName.setText(chatMessage.getSenderId());
-
+        viewHolder.numberView.setNumber(chatMessageList.size()+"");
         if (mOnItemClickLitener != null) {
             viewHolder.tvUserName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickLitener.onItemClick(viewHolder.tvUserName, i);
+                    mOnItemClickLitener.onItemClick(viewHolder.tvUserName, info);
                 }
             });
         }
@@ -118,7 +127,7 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
      * @author lxl
      */
     public interface OnItemClickLitener {
-        void onItemClick(View view, int position);
+        void onItemClick(View view, UserInfo userInfo);
     }
 
     public OnItemClickLitener mOnItemClickLitener;

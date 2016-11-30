@@ -42,7 +42,9 @@ public class ReceiverHandler {
                     UnReceiveEvent.setChatMessageMessage(DbUtil.IMessageToChatMessage(iMessage));
                     LogUtil.d("ReceiverHandler", iMessage.getSenderId());
                     if (iMessage.getSenderId().equals("end")) {
-                        EventBus.getDefault().post(new UnReceiveEvent());
+                        LogUtil.d("ReceiverHandler",UnReceiveEvent.chatMap.size());
+                        UnReceiveEvent event=new UnReceiveEvent();
+                        EventBus.getDefault().post(event);
                     }
                     break;
             }

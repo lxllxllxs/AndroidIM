@@ -1,5 +1,7 @@
 package com.yiyekeji.Event;
 
+import android.text.TextUtils;
+
 import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.bean.UserInfo;
@@ -23,7 +25,9 @@ public class LinkManEvent {
      */
     public void addLinkMan(IMessageFactory.IMessage iMessage) {
         for (IMessageFactory.IMessage.User user : iMessage.getUserList()) {
-            if (user.getUserId()==null){
+            if (TextUtils.isEmpty(user.getUserId())||
+            TextUtils.isEmpty(user.getUsername())||
+            TextUtils.isEmpty(user.getImgUrl())){
                 continue;
             }
             UserInfo userInfo=new UserInfo();
@@ -32,7 +36,7 @@ public class LinkManEvent {
             userInfo.setUserName(user.getUsername());
             userInfoList.add(userInfo);
         }
-        //不要直接赋值引用
+        //不要直接赋值引用 需要改深拷贝?
         IMApp.linkManList.addAll(userInfoList);
     }
 }
