@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.yiyekeji.Event.UnReceiveEvent;
 import com.yiyekeji.bean.UserInfo;
@@ -21,6 +22,8 @@ import com.yiyekeji.ui.adapter.InformAdapter;
 import com.yiyekeji.ui.view.DividerItemDecoration;
 import com.yiyekeji.utils.ConstantUtil;
 import com.yiyekeji.utils.LogUtil;
+import com.zhy.autolayout.AutoLinearLayout;
+import com.zhy.autolayout.utils.AutoUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,6 +46,9 @@ public class InformationFragment extends Fragment {
     InformAdapter adapter;
     List<ChatMessage> messageList = new ArrayList<>();
     private static HashMap<String, ArrayList<ChatMessage>> chatMap = new HashMap<>();
+    @InjectView(R.id.ll_container)
+    AutoLinearLayout llContainer;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
@@ -68,19 +74,35 @@ public class InformationFragment extends Fragment {
 
 
     private void initView() {
-        adapter=new InformAdapter(getActivity(),chatMap);
+        adapter = new InformAdapter(getActivity(), chatMap);
         recylerView.setAdapter(adapter);
-        recylerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL_LIST));
+        recylerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         adapter.setOnItemClickLitener(new InformAdapter.OnItemClickLitener() {
             @Override
-            public void onItemClick(View view,UserInfo info) {
-                LogUtil.d("onItemClick",info.toString());
+            public void onItemClick(View view, UserInfo info) {
+                LogUtil.d("onItemClick", info.toString());
                 Intent intent = new Intent(getContext(), ChatActivity.class);
-                intent.putExtra(ConstantUtil.USER,info);
+                intent.putExtra(ConstantUtil.USER, info);
                 startActivity(intent);
             }
         });
         recylerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        for (int i = 0; i < 5; i++) {
+            llContainer.addView(getTextView());
+        }
+
+    }
+
+    private View getTextView() {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.textview, null);
+        TextView tv = (TextView)view.findViewById(R.id.tv);
+       /* tv.setText("哈哈");
+        tv.setTextColor(Color.BLACK);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_PX,25);
+        tv.setPadding(15,15,15,15);
+        tv.setBackgroundColor(Color.GRAY);*/
+        AutoUtils.autoTextSize(tv,25);
+        return  tv;
     }
 
     @Override
@@ -88,17 +110,19 @@ public class InformationFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
 
         if (getUserVisibleHint()) {
-            LogUtil.d("setUserVisibleHint","asd");
+            LogUtil.d("setUserVisibleHint", "asd");
         } else {
         }
     }
+
     /**
      * 作为接收方需要发送人id
+     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void unReceiMessage(UnReceiveEvent event){
-        LogUtil.d(TAG,event.getChatMap().size());
+    public void unReceiMessage(UnReceiveEvent event) {
+        LogUtil.d(TAG, event.getChatMap().size());
         adapter.setData(event.getChatMap());
     }
 
