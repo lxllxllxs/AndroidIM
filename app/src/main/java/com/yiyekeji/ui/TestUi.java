@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
+import com.yiyekeji.Config;
 import com.yiyekeji.im.R;
 import com.yiyekeji.ui.activity.base.BaseActivity;
 import com.yiyekeji.ui.view.DividerItemDecoration;
@@ -17,6 +18,9 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import de.tavendo.autobahn.WebSocket;
+import de.tavendo.autobahn.WebSocketConnection;
+import de.tavendo.autobahn.WebSocketException;
 import test.MyScrollView;
 import test.adapter.TestAdapter;
 import test.bean.MyType;
@@ -36,7 +40,44 @@ public class TestUi extends BaseActivity implements MyScrollView.OnScrollChangeL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         ButterKnife.inject(this);
-        initView();
+//        initView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        for (int i=0;i<2;i++){
+            try {
+             new WebSocketConnection().connect(Config.IM_URL, new WebSocket.ConnectionHandler() {
+                 @Override
+                 public void onOpen() {
+                     LogUtil.d("open:","sdas");
+                 }
+
+                 @Override
+                 public void onClose(int code, String reason) {
+
+                 }
+
+                 @Override
+                 public void onTextMessage(String payload) {
+
+                 }
+
+                 @Override
+                 public void onRawTextMessage(byte[] payload) {
+
+                 }
+
+                 @Override
+                 public void onBinaryMessage(byte[] payload) {
+
+                 }
+             });
+            } catch (WebSocketException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private TestAdapter mAdapter;
