@@ -11,7 +11,7 @@ import de.tavendo.autobahn.WebSocketException;
  */
 public class TestWebSocket {
 
-  /*  public static void main(String[] args){
+    public static void main(String[] args){
         TestWebSocket mytest=new TestWebSocket();
         for (int i=0;i<50;i++){
             try {
@@ -20,7 +20,7 @@ public class TestWebSocket {
                 e.printStackTrace();
             }
         }
-    }*/
+    }
 
 
     public void connect() throws WebSocketException {

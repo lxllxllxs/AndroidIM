@@ -13,7 +13,7 @@ public class Config {
     public static final String IM_URL="ws://192.168.1.103:8080/AndroidWebSocket/Chat";//自机测试
 //    public static final String IM_URL="ws://192.168.10.187:8080/AndroidWebSocket/Chat";//公司测试
     public static final String LOG_FILTER = "YiYeMarket";
-    public static final String BASE_LOCAL_PATH = Environment.getExternalStorageDirectory() + "/YiYePay";
+    public static final String BASE_LOCAL_PATH = Environment.getExternalStorageDirectory() + "/AndroidIM";
     public static final String IMAGE_DIR = "/image/";
     public static final String DATA_DIR = "/data/";
     public static final int USER_HEAD_SIZE = 350;

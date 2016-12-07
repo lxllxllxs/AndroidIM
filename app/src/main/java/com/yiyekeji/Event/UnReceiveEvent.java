@@ -4,6 +4,7 @@ import com.yiyekeji.dao.ChatMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 用作通知信息列表里
@@ -11,9 +12,8 @@ import java.util.HashMap;
  */
 public class UnReceiveEvent {
     HashMap<String, ArrayList<ChatMessage>> hashMap;
-    String a="hello";
     public static HashMap<String, ArrayList<ChatMessage>> chatMap = new HashMap<>();
-
+    private static List<String> msgIdList = new ArrayList<>();
     /**
      * end作为结束符
      * @param chatMessage
@@ -22,6 +22,7 @@ public class UnReceiveEvent {
         if (chatMessage.getSenderId().equals("end")){
             return;
         }
+        msgIdList.add(chatMessage.getMsgId());
         if (!chatMap.containsKey(chatMessage.getSenderId())){
             chatMap.put(chatMessage.getSenderId(),new ArrayList<ChatMessage>());
         }
@@ -33,5 +34,8 @@ public class UnReceiveEvent {
         assert chatMap != null;
         hashMap.putAll(UnReceiveEvent.chatMap);
         return hashMap;
+    }
+    public List<String> getMsgIdList() {
+        return msgIdList;
     }
 }

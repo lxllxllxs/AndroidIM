@@ -14,6 +14,7 @@ import com.yiyekeji.ui.view.DividerItemDecoration;
 import com.yiyekeji.utils.LogUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -41,43 +42,43 @@ public class TestUi extends BaseActivity implements MyScrollView.OnScrollChangeL
         setContentView(R.layout.activity_test);
         ButterKnife.inject(this);
 //        initView();
+        initWebSocket();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        for (int i=0;i<2;i++){
+    private void initWebSocket() {
+        WebSocketConnection cn=null;
+        for (int i=0;i<5;i++){
             try {
-             new WebSocketConnection().connect(Config.IM_URL, new WebSocket.ConnectionHandler() {
-                 @Override
-                 public void onOpen() {
-                     LogUtil.d("open:","sdas");
-                 }
-
-                 @Override
-                 public void onClose(int code, String reason) {
-
-                 }
-
-                 @Override
-                 public void onTextMessage(String payload) {
-
-                 }
-
-                 @Override
-                 public void onRawTextMessage(byte[] payload) {
-
-                 }
-
-                 @Override
-                 public void onBinaryMessage(byte[] payload) {
-
-                 }
-             });
+                cn= new WebSocketConnection();
+                cn.connect(Config.IM_URL, new WebSocket.ConnectionHandler() {
+                    @Override
+                    public void onOpen() {
+                        LogUtil.d("open:","sdas");
+                    }
+                    @Override
+                    public void onClose(int code, String reason) {
+                    }
+                    @Override
+                    public void onTextMessage(String payload) {
+                    }
+                    @Override
+                    public void onRawTextMessage(byte[] payload) {
+                    }
+                    @Override
+                    public void onBinaryMessage(byte[] payload) {
+                    }
+                });
             } catch (WebSocketException e) {
                 e.printStackTrace();
             }
+            connectionList.add(cn);
         }
+    }
+
+    private List<WebSocketConnection> connectionList = new ArrayList<>();
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     private TestAdapter mAdapter;

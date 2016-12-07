@@ -124,6 +124,7 @@ public class InformationFragment extends Fragment {
     public void unReceiMessage(UnReceiveEvent event) {
         LogUtil.d(TAG, event.getChatMap().size());
         adapter.setData(event.getChatMap());
+        WebSocketService.chat(SysMessageHandler.feedBackUnRecieveMessage(event.getMsgIdList()));
     }
 
     @Override
