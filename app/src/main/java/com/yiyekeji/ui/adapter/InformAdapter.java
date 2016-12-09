@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yiyekeji.IMApp;
@@ -45,6 +46,7 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
             super(arg0);
             AutoUtils.autoSize(arg0);
         }
+        RelativeLayout rlContainer;
         CircleImageView civHead;//图标、头像
         TextView tvSender;//发送者
         TextView tvMain;//主要简略内容
@@ -80,11 +82,14 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = mInflater.inflate(R.layout.item_information_adapter, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(view);
+
+        viewHolder.rlContainer=(RelativeLayout)view.findViewById(R.id.rl_container);
         viewHolder.civHead = (CircleImageView) view.findViewById(R.id.civ_head);
         viewHolder.tvSender = (TextView) view.findViewById(R.id.tv_userName);
         viewHolder.tvMain = (TextView) view.findViewById(R.id.tv_chatMessage);
         viewHolder.tvDate = (TextView) view.findViewById(R.id.tv_date);
         viewHolder.numberView=(NumberView)view.findViewById(R.id.numberview);
+
         return viewHolder;
     }
 
@@ -100,10 +105,10 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
         viewHolder.tvMain.setText(information.getMain());
         viewHolder.numberView.setNumber(iInformations.size()+"");
         if (mOnItemClickLitener != null) {
-            viewHolder.tvSender.setOnClickListener(new View.OnClickListener() {
+            viewHolder.rlContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickLitener.onItemClick(viewHolder.tvSender,IMApp.getUserInfo(information.getSender()));
+                    mOnItemClickLitener.onItemClick(viewHolder.rlContainer,IMApp.getUserInfo(information.getSender()));
                 }
             });
         }
