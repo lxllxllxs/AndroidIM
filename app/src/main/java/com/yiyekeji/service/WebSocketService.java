@@ -152,10 +152,13 @@ public class WebSocketService extends Service {
         }
     };
 
-    /**
+    /**在断线时要先连上
      * 发送信息主函数 缓存信息
      */
     public static void chat(@NonNull IMessageFactory.IMessage iMessage) {
+        if (!isConnected){
+            return;
+        }
         messageQueue.putEgg(iMessage);
     }
 

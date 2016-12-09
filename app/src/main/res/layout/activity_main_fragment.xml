@@ -4,30 +4,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/id_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="140px"
-        android:background="@color/blue_light"
-        android:fitsSystemWindows="true"
-        android:gravity="center"
-        android:contentInsetStart="0dp"
-        android:contentInsetLeft="0dp"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
-
-        >
-        <TextView
-            android:id="@+id/tv_title"
-            android:text="联系人"
-            android:textSize="15sp"
-            android:gravity="center"
-
-            android:textColor="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </android.support.v7.widget.Toolbar>
-
+    <include layout="@layout/include_toobar"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -47,28 +24,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:id="@+id/ll_contacts"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/iv_contacts"
-                style="@style/ImageView"
-                android:padding="5px"
-                android:src="@mipmap/ic_contacts"
-                android:layout_width="80px"
-                android:layout_height="80px"/>
-            <TextView
-                android:id="@+id/tv_contacts"
-                android:text="联系人"
-                android:textSize="24px"
-                android:textColor="@color/theme_blue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
             android:id="@+id/ll_information"
             android:gravity="center"
             android:orientation="vertical"
@@ -79,14 +34,36 @@
                 android:id="@+id/iv_information"
                 style="@style/ImageView"
                 android:padding="5px"
-                android:src="@mipmap/information"
+                android:src="@mipmap/ic_infomation"
                 android:layout_width="80px"
                 android:layout_height="80px"/>
             <TextView
                 android:id="@+id/tv_info"
                 android:text="消息"
                 android:textSize="24px"
-                android:textColor="@color/gray_black"
+                android:textColor="@color/theme_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_contacts"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/iv_contacts"
+                style="@style/ImageView"
+                android:padding="5px"
+                android:src="@mipmap/contacts"
+                android:layout_width="80px"
+                android:layout_height="80px"/>
+            <TextView
+                android:id="@+id/tv_contacts"
+                android:text="联系人"
+                android:textSize="24px"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>

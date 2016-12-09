@@ -32,6 +32,8 @@ public class ChatMessageDao extends AbstractDao<ChatMessage, Long> {
         public final static Property Content = new Property(6, String.class, "content", false, "CONTENT");
         public final static Property Date = new Property(7, String.class, "date", false, "DATE");
         public final static Property SendStatus = new Property(8, String.class, "sendStatus", false, "SEND_STATUS");
+        public final static Property SenderName = new Property(9, String.class, "senderName", false, "SENDER_NAME");
+        public final static Property ReceiverName = new Property(10, String.class, "receiverName", false, "RECEIVER_NAME");
     };
 
 
@@ -55,7 +57,9 @@ public class ChatMessageDao extends AbstractDao<ChatMessage, Long> {
                 "\"MESSAGE_TYPE\" TEXT," + // 5: messageType
                 "\"CONTENT\" TEXT," + // 6: content
                 "\"DATE\" TEXT," + // 7: date
-                "\"SEND_STATUS\" TEXT);"); // 8: sendStatus
+                "\"SEND_STATUS\" TEXT," + // 8: sendStatus
+                "\"SENDER_NAME\" TEXT," + // 9: senderName
+                "\"RECEIVER_NAME\" TEXT);"); // 10: receiverName
     }
 
     /** Drops the underlying database table. */
@@ -113,6 +117,16 @@ public class ChatMessageDao extends AbstractDao<ChatMessage, Long> {
         if (sendStatus != null) {
             stmt.bindString(9, sendStatus);
         }
+ 
+        String senderName = entity.getSenderName();
+        if (senderName != null) {
+            stmt.bindString(10, senderName);
+        }
+ 
+        String receiverName = entity.getReceiverName();
+        if (receiverName != null) {
+            stmt.bindString(11, receiverName);
+        }
     }
 
     /** @inheritdoc */
@@ -133,7 +147,9 @@ public class ChatMessageDao extends AbstractDao<ChatMessage, Long> {
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // messageType
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // content
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // date
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // sendStatus
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // sendStatus
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // senderName
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10) // receiverName
         );
         return entity;
     }
@@ -150,6 +166,8 @@ public class ChatMessageDao extends AbstractDao<ChatMessage, Long> {
         entity.setContent(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setDate(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setSendStatus(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setSenderName(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setReceiverName(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
      }
     
     /** @inheritdoc */

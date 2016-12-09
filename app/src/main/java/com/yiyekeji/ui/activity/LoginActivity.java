@@ -28,7 +28,7 @@ public class LoginActivity extends BaseActivity {
     EditText edtUsername;
     EditText edtPassword;
     TextView tvConfirm;
-    Intent intent1 =null;
+    public  static Intent intent1 =null;
     ArrayList<IMessageFactory.IMessage.User> userArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +40,10 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void initWebSocketService() {
-        intent1 = new Intent(this, WebSocketService.class);
-        startService(intent1);
+        if (intent1 == null) {
+            intent1 = new Intent(this, WebSocketService.class);
+            startService(intent1);
+        }
     }
 
     @Override
@@ -55,9 +57,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(LoginActivity.this,"login",Toast.LENGTH_SHORT).show();
-
                 login(edtUsername.getText().toString(),edtPassword.getText().toString());
-
             }
         });
     }
@@ -83,6 +83,7 @@ public class LoginActivity extends BaseActivity {
             LogUtil.d("loginSuccess",loginCount+"");
             showShortToast("login successfully!!");
             startActivity(MainFragmentActivity.class);
+            finish();
         }else {
             Toast.makeText(this,"password is uncorrect",Toast.LENGTH_SHORT).show();
         }

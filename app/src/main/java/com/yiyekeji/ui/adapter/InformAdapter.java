@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.UserInfo;
-import com.yiyekeji.dao.ChatMessage;
 import com.yiyekeji.im.R;
+import com.yiyekeji.impl.IInformation;
 import com.yiyekeji.ui.view.CircleImageView;
 import com.yiyekeji.ui.view.NumberView;
 import com.yiyekeji.utils.LogUtil;
@@ -25,15 +25,17 @@ import java.util.Map;
 
 /**
  * Created by lxl on 2016/10/25.
+ * 采用固定样式
+ *
  */
 public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder> {
 
     private LayoutInflater mInflater;
-    private HashMap<String, ArrayList<ChatMessage>> chatMap;
-    private List<ChatMessage> messageList = new ArrayList<>();
+    private HashMap<String, ArrayList<IInformation>> chatMap;
+    private List<IInformation> messageList = new ArrayList<>();
     private List<String> keyList = new ArrayList<>();
 
-    public InformAdapter(Context context, HashMap<String, ArrayList<ChatMessage>> hashMap) {
+    public InformAdapter(Context context, HashMap<String, ArrayList<IInformation>> hashMap) {
         setData(hashMap);
         mInflater = LayoutInflater.from(context);
     }
@@ -43,11 +45,11 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
             super(arg0);
             AutoUtils.autoSize(arg0);
         }
-        CircleImageView civHead;
-        TextView tvUserName;
-        TextView tvChatMessage;
-        TextView tvDate;
-        NumberView numberView;
+        CircleImageView civHead;//图标、头像
+        TextView tvSender;//发送者
+        TextView tvMain;//主要简略内容
+        TextView tvDate;//消息日期
+        NumberView numberView;//消息数
     }
 
     @Override
@@ -55,7 +57,7 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
         return keyList.size();
     }
 
-    public void setData(HashMap<String, ArrayList<ChatMessage>> hashMap) {
+    public void setData(HashMap<String, ArrayList<IInformation>> hashMap) {
         this.chatMap = hashMap;
         keyList.clear();
         Iterator iterator = chatMap.entrySet().iterator();
@@ -79,8 +81,8 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
         View view = mInflater.inflate(R.layout.item_information_adapter, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(view);
         viewHolder.civHead = (CircleImageView) view.findViewById(R.id.civ_head);
-        viewHolder.tvUserName = (TextView) view.findViewById(R.id.tv_userName);
-        viewHolder.tvChatMessage = (TextView) view.findViewById(R.id.tv_chatMessage);
+        viewHolder.tvSender = (TextView) view.findViewById(R.id.tv_userName);
+        viewHolder.tvMain = (TextView) view.findViewById(R.id.tv_chatMessage);
         viewHolder.tvDate = (TextView) view.findViewById(R.id.tv_date);
         viewHolder.numberView=(NumberView)view.findViewById(R.id.numberview);
         return viewHolder;
@@ -91,34 +93,20 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
      */
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
-        List<ChatMessage> chatMessageList = chatMap.get(keyList.get(i));
-        ChatMessage chatMessage = chatMessageList.get(chatMessageList.size() - 1);//获取最新
-        final UserInfo info=getUserInfo(chatMessage);
-        PicassoUtil.setBitmapToView(info.getImgUrl(),viewHolder.civHead);
-        viewHolder.tvUserName.setText(chatMessage.getSenderId());
-        viewHolder.tvChatMessage.setText(chatMessage.getContent());
-        viewHolder.tvUserName.setText(chatMessage.getSenderId());
-        viewHolder.numberView.setNumber(chatMessageList.size()+"");
+        List<IInformation> iInformations = chatMap.get(keyList.get(i));
+        final IInformation information = iInformations.get(iInformations.size() - 1);//获取最新
+        PicassoUtil.setBitmapToView(information.getHead(),viewHolder.civHead);
+        viewHolder.tvSender.setText(information.getSender());
+        viewHolder.tvMain.setText(information.getMain());
+        viewHolder.numberView.setNumber(iInformations.size()+"");
         if (mOnItemClickLitener != null) {
-            viewHolder.tvUserName.setOnClickListener(new View.OnClickListener() {
+            viewHolder.tvSender.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickLitener.onItemClick(viewHolder.tvUserName, info);
+                    mOnItemClickLitener.onItemClick(viewHolder.tvSender,IMApp.getUserInfo(information.getSender()));
                 }
             });
         }
-    }
-
-    /**
-     * 从全局变量中查找好友信息
-     */
-    private UserInfo getUserInfo(ChatMessage msg) {
-        for (UserInfo info : IMApp.linkManList) {
-            if (info.getUserId().equals(msg.getSenderId())) {
-                return info;
-            }
-        }
-        return null;
     }
 
     /**

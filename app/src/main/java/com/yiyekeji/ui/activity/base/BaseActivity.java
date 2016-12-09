@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.yiyekeji.IMApp;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 /**
@@ -22,6 +23,7 @@ public  abstract  class BaseActivity extends AutoLayoutActivity implements View.
             //透明导航栏
 //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
+        IMApp.addActivity(this);
     }
 
     public abstract void initView() ;
@@ -44,9 +46,12 @@ public  abstract  class BaseActivity extends AutoLayoutActivity implements View.
 
     @Override
     public void onClick(View v) {
-
     }
 
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        IMApp.removeActivity(this);
+    }
 }

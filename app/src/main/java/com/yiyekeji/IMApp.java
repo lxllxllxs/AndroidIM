@@ -1,5 +1,6 @@
 package com.yiyekeji;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
@@ -16,8 +17,14 @@ public class IMApp extends Application {
 
     public static List<UserInfo> linkManList = new ArrayList<>();
     public static UserInfo userInfo = new UserInfo();
-
+    public static List<Activity> activityList = new ArrayList<>();
     public static Context context;
+
+    public static void clearAllCache(){
+        userInfo = new UserInfo();//指向新对象
+        linkManList.clear();
+        isLogin=false;
+    }
 
     @Override
     public void onCreate() {
@@ -29,6 +36,31 @@ public class IMApp extends Application {
         return context;
     }
 
+    public static void addActivity(Activity activity){
+        activityList.add(activity);
+    }
+
+    public static void removeActivity(Activity activity){
+        activityList.remove(activity);
+    }
+
+    public static void removeAllActivity(){
+        for (Activity activity : activityList) {
+            activity.finish();
+        }
+        System.exit(0);
+    }
 
 
+    /**
+     * 从全局变量中查找好友信息
+     */
+    public static UserInfo getUserInfo(String senderId) {
+        for (UserInfo info : linkManList) {
+            if (info.getUserId().equals(senderId)) {
+                return info;
+            }
+        }
+        return null;
+    }
 }

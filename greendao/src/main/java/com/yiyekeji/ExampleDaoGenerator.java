@@ -31,6 +31,8 @@ public class ExampleDaoGenerator {
         ChatMessage.addStringProperty("content");//非文本消息是需要根据messagetype转换
         ChatMessage.addStringProperty("date");//发送日期
         ChatMessage.addStringProperty("sendStatus");//发送状态
+        ChatMessage.addStringProperty("senderName");//收件人姓名
+        ChatMessage.addStringProperty("receiverName");//发件人姓名
     }
 
 

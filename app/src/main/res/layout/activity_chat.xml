@@ -4,13 +4,9 @@
     android:layout_height="match_parent"
 	android:orientation="vertical"
     android:background="@color/white">
-	<TextView
-		android:id="@+id/tv_name"
-		style="@style/textview"
-		android:background="@color/theme_blue"
-		android:textColor="@color/white"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"/>
+
+	<include layout="@layout/include_toobar"/>
+
 	<android.support.v7.widget.RecyclerView
 		android:id="@+id/recylerView"
 		android:layout_weight="1"

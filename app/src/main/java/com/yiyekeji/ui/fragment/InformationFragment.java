@@ -16,13 +16,13 @@ import com.yiyekeji.bean.UserInfo;
 import com.yiyekeji.dao.ChatMessage;
 import com.yiyekeji.handler.SysMessageHandler;
 import com.yiyekeji.im.R;
+import com.yiyekeji.impl.IInformation;
 import com.yiyekeji.service.WebSocketService;
 import com.yiyekeji.ui.activity.ChatActivity;
 import com.yiyekeji.ui.adapter.InformAdapter;
 import com.yiyekeji.ui.view.DividerItemDecoration;
 import com.yiyekeji.utils.ConstantUtil;
 import com.yiyekeji.utils.LogUtil;
-import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -45,9 +45,7 @@ public class InformationFragment extends Fragment {
     RecyclerView recylerView;
     InformAdapter adapter;
     List<ChatMessage> messageList = new ArrayList<>();
-    private static HashMap<String, ArrayList<ChatMessage>> chatMap = new HashMap<>();
-    @InjectView(R.id.ll_container)
-    AutoLinearLayout llContainer;
+    private static HashMap<String, ArrayList<IInformation>> chatMap = new HashMap<>();
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,10 +85,6 @@ public class InformationFragment extends Fragment {
             }
         });
         recylerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        for (int i = 0; i < 5; i++) {
-            llContainer.addView(getTextView());
-        }
-
     }
 
     private View getTextView() {

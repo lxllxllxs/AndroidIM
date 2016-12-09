@@ -1,6 +1,7 @@
 package com.yiyekeji.ui.activity;
 
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yiyekeji.IMApp;
 import com.yiyekeji.im.R;
 import com.yiyekeji.ui.activity.base.BaseActivity;
 import com.yiyekeji.ui.fragment.ContactsFragment;
@@ -43,14 +45,16 @@ public class MainFragmentActivity extends BaseActivity {
     ImageView ivInformation;
     @InjectView(R.id.iv_setting)
     ImageView ivSetting;
-    @InjectView(R.id.tv_title)
-    TextView tvTitle;
     @InjectView(R.id.ll_contacts)
     LinearLayout llContacts;
     @InjectView(R.id.ll_information)
     LinearLayout llInformation;
     @InjectView(R.id.ll_setting)
     LinearLayout llSetting;
+    @InjectView(R.id.tv_title)
+    TextView tvTitle;
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +64,19 @@ public class MainFragmentActivity extends BaseActivity {
         initView();
         initViewPager();
     }
+    /**
+     * 在这里关闭service
+     * 并清除所有缓存信息
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(LoginActivity.intent1);
+        IMApp.clearAllCache();
+    }
 
     @Override
     public void initView() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
-        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         //定制状态栏颜色使用此方法
         //StatusBarCompat.compat(this, 0xFFFF0000);
@@ -78,9 +90,11 @@ public class MainFragmentActivity extends BaseActivity {
         informationFragment = new InformationFragment();
         fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.add(R.id.fragment, contactsFragment)
+        fragmentTransaction
+                .add(R.id.fragment, contactsFragment)
                 .add(R.id.fragment, informationFragment)
-                .show(contactsFragment)
+                .hide(contactsFragment)
+                .show(informationFragment)
                 .commit();
     }
 
@@ -122,4 +136,22 @@ public class MainFragmentActivity extends BaseActivity {
         }
         ft.commit();
     }
+
+    /**
+     * 连续点击两次 关闭
+     */
+    long[] mHits = new long[2];
+
+    @Override
+    public void onBackPressed() {
+        System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
+        //实现左移，然后最后一个位置更新距离开机的时间，如果最后一个时间和最开始时间小于500，即双击
+        mHits[mHits.length - 1] = SystemClock.uptimeMillis();
+        showShortToast("再次点击退出应用");
+        if (mHits[0] >= (SystemClock.uptimeMillis() - 1000)) {
+            IMApp.removeAllActivity();
+        }
+    }
+
+
 }

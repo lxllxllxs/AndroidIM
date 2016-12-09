@@ -7,13 +7,12 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="110px">
-    <ImageView
-        android:padding="10px"
+    <com.yiyekeji.ui.view.CircleImageView
         android:id="@+id/iv_head"
         android:layout_gravity="center_vertical"
         android:src="@mipmap/ic_head"
-        android:layout_width="90px"
-        android:layout_height="90px"/>
+        android:layout_width="100px"
+        android:layout_height="100px"/>
     <LinearLayout
         android:layout_marginLeft="30px"
         android:orientation="vertical"

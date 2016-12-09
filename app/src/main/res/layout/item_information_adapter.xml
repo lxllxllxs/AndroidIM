@@ -1,32 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="100px">
 
-    <RelativeLayout
+    <com.yiyekeji.ui.view.CircleImageView
+        android:layout_marginLeft="20px"
+        android:id="@+id/civ_head"
         android:layout_width="100px"
-        android:paddingLeft="10px"
-        android:layout_height="match_parent">
-        <com.yiyekeji.ui.view.CircleImageView
-            android:id="@+id/civ_head"
-            android:layout_width="match_parent"
-            android:src="@mipmap/qq"
-            android:layout_height="match_parent"/>
-        <com.yiyekeji.ui.view.NumberView
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:id="@+id/numberview"
-            android:layout_gravity="center_vertical"
-            android:layout_width="40px"
-            android:layout_height="40px"/>
-    </RelativeLayout>
+        android:src="@mipmap/qq"
+        android:layout_height="100px"/>
 
     <LinearLayout
+        android:layout_toRightOf="@id/civ_head"
         android:layout_marginLeft="30px"
-        android:layout_weight="1"
         android:orientation="vertical"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent">
         <TextView
             android:id="@+id/tv_userName"
@@ -48,10 +37,20 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
     <TextView
+        android:layout_marginRight="50px"
+        android:layout_alignParentRight="true"
         android:id="@+id/tv_date"
         android:text="2016-11-29"
-        android:textSize="23px"
+        android:textSize="25px"
         android:gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"/>
-</LinearLayout>
+        android:layout_height="50px"/>
+    <com.yiyekeji.ui.view.NumberView
+        android:layout_below="@+id/tv_date"
+        android:layout_marginRight="50px"
+        android:layout_alignParentRight="true"
+        android:id="@+id/numberview"
+        android:layout_width="35px"
+        android:layout_height="35px"/>
+
+</RelativeLayout>
