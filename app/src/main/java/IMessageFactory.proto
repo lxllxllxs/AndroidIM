@@ -6,11 +6,14 @@
 		required  string subType = 2;
 		optional string senderId = 3 ;
 		optional string receiverId =4 ;
-		optional string content =5;
-		optional string result =6 ;
-		repeated User user = 7 ;
-        required  string id = 8;
-        optional string date = 9 ;
+		optional string senderName = 5 ;
+        optional string receiverName =6 ;
+
+		optional string content =7;
+		optional string result =8 ;
+		repeated User user = 9 ;
+        required  string id = 10;
+        optional string date = 11 ;
 
 		message User {
     		optional string username = 1 ;

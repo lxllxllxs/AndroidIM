@@ -85,11 +85,16 @@ public class DbUtil {
      */
     public static ChatMessage IMessageToChatMessage(IMessageFactory.IMessage iMessage) {
         ChatMessage chatMessage = new ChatMessage();
+
         chatMessage.setSenderId(iMessage.getSenderId());
+        chatMessage.setSenderName(iMessage.getSenderName());
+
         chatMessage.setMsgId(iMessage.getId());
         chatMessage.setContent(iMessage.getContent());
         chatMessage.setDate(DateUtil.getTimeString());//也许可改为直接存日期
+
         chatMessage.setReceiverId(iMessage.getReceiverId());//
+        chatMessage.setReceiverName(iMessage.getReceiverName());
         return chatMessage;
     }
 

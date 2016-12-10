@@ -82,7 +82,6 @@ public class ChatActivity extends BaseActivity {
 
     private void initData() {
         receriver = (UserInfo) getIntent().getParcelableExtra(ConstantUtil.USER);
-        receiverId = receriver.getUserId();
         tvTitle.setText(receriver.getUserName());
         LogUtil.d("initData", receriver.toString());
     }
@@ -101,12 +100,12 @@ public class ChatActivity extends BaseActivity {
     private void sendTextMessage() {
         String content = edtContent.getText().toString();
         upDateLocal(content);
-        WebSocketService.chat(ChatMessageHandler.sendTextMessage(content, receiverId));//这里数据库保存
+        WebSocketService.chat(ChatMessageHandler.sendTextMessage(content, receriver));//这里数据库保存
     }
 
     private void testTextMessage(String content) {
         upDateLocal(content);
-        WebSocketService.chat(ChatMessageHandler.sendTextMessage(content, receiverId));//这里数据库保存
+        WebSocketService.chat(ChatMessageHandler.sendTextMessage(content, receriver));//这里数据库保存
     }
 
     private void upDateLocal(String content) {
