@@ -8,6 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="110px">
     <com.yiyekeji.ui.view.CircleImageView
+        android:layout_marginLeft="20px"
         android:id="@+id/iv_head"
         android:layout_gravity="center_vertical"
         android:src="@mipmap/ic_head"

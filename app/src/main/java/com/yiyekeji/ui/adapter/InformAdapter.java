@@ -33,7 +33,6 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
 
     private LayoutInflater mInflater;
     private HashMap<String, ArrayList<IInformation>> chatMap;
-    private List<IInformation> messageList = new ArrayList<>();
     private List<String> keyList = new ArrayList<>();
 
     public InformAdapter(Context context, HashMap<String, ArrayList<IInformation>> hashMap) {

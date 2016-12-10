@@ -89,7 +89,7 @@ public class ChatActivity extends BaseActivity {
 
     private void getChatMessageFormDb() {
         messageList.addAll(DbUtil.searchReceivedMsg());
-        messageList.addAll(DbUtil.searchSendMsg(receriver.getUserId()));
+        messageList.addAll(DbUtil.searchAllSendMsg(receriver.getUserId()));
         Collections.sort(messageList, new DateComParator());
         LogUtil.d("getChatMessageFormDb", messageList.size() + "");
     }

@@ -3,12 +3,13 @@
                 android:id="@+id/rl_container"
               android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:layout_height="100px">
+              android:layout_height="110px">
 
     <com.yiyekeji.ui.view.CircleImageView
         android:layout_marginLeft="20px"
         android:id="@+id/civ_head"
         android:layout_width="100px"
+        android:layout_gravity="center_vertical"
         android:src="@mipmap/qq"
         android:layout_height="100px"/>
 

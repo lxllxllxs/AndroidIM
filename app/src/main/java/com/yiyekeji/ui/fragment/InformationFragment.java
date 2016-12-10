@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.yiyekeji.Event.UnReceiveEvent;
 import com.yiyekeji.bean.UserInfo;
@@ -23,7 +22,6 @@ import com.yiyekeji.ui.adapter.InformAdapter;
 import com.yiyekeji.ui.view.DividerItemDecoration;
 import com.yiyekeji.utils.ConstantUtil;
 import com.yiyekeji.utils.LogUtil;
-import com.zhy.autolayout.utils.AutoUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -67,7 +65,7 @@ public class InformationFragment extends Fragment {
     }
 
     private void initData() {
-        WebSocketService.chat(SysMessageHandler.getUnRecieveMessage());
+//        WebSocketService.chat(SysMessageHandler.getUnRecieveMessage());
     }
 
 
@@ -87,27 +85,6 @@ public class InformationFragment extends Fragment {
         recylerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-    private View getTextView() {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.textview, null);
-        TextView tv = (TextView)view.findViewById(R.id.tv);
-       /* tv.setText("哈哈");
-        tv.setTextColor(Color.BLACK);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_PX,25);
-        tv.setPadding(15,15,15,15);
-        tv.setBackgroundColor(Color.GRAY);*/
-        AutoUtils.autoTextSize(tv,25);
-        return  tv;
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        if (getUserVisibleHint()) {
-            LogUtil.d("setUserVisibleHint", "asd");
-        } else {
-        }
-    }
 
     /**
      * 作为接收方需要发送人id

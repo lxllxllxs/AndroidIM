@@ -4,12 +4,16 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
+import com.yiyekeji.bean.UserInfo;
 import com.yiyekeji.dao.ChatMessage;
 import com.yiyekeji.dao.ChatMessageDao;
 import com.yiyekeji.dao.DaoMaster;
 import com.yiyekeji.dao.DaoSession;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import de.greenrobot.dao.query.Query;
 
@@ -103,8 +107,11 @@ public class DbUtil {
      * 查询发送聊天信息表
      * @param receiverId 接收人
      * @return
+     *
+     * 两种情况 ：在会话列表时receiverId为自己
+     * 在聊天主界面时receiveId 为对方
      */
-    public static ArrayList<ChatMessage> searchSendMsg(String receiverId) {
+    public static ArrayList<ChatMessage> searchAllSendMsg(String receiverId) {
         // Query 类代表了一个可以被重复执行的查询
         Query query = cmd.queryBuilder()
                 .where(ChatMessageDao.Properties.ReceiverId.eq(receiverId))
@@ -116,6 +123,22 @@ public class DbUtil {
         LogUtil.d("searchSendMsg",sendMessageList.size());
         return sendMessageList;
     }
+
+    /**
+     *接收者 或发送方
+     * 对聊天信息进行归类，userInfo:最新的ChatMessage
+     * @param receiverId
+     * @return
+     */
+    public static Map<UserInfo,ChatMessage> getSessionMap(String receiverId){
+        //原始数据 这里主要考虑不同账号保持独立信息
+        List<ChatMessage> chatMessageList=searchAllSendMsg(receiverId);
+        Map<String, List<ChatMessage>> hashMap = new HashMap<>();
+        for (ChatMessage chatMessage : chatMessageList) {
+        }
+        return null;
+    }
+
 
     /**
      * 查询接收聊天信息表
