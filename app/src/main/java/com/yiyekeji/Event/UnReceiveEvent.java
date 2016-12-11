@@ -24,10 +24,6 @@ public class UnReceiveEvent {
      * @param chatMessage
      */
     public static void setChatMessageMessage(ChatMessage chatMessage) {
-        if (chatMessage.getSenderId().equals("end")){
-            addUnReceiMessageToSession();
-            return;
-        }
         msgIdList.add(chatMessage.getMsgId());
         if (!chatMap.containsKey(chatMessage.getSenderId())){
             chatMap.put(chatMessage.getSenderId(),new ArrayList<IInformation>());
@@ -35,7 +31,7 @@ public class UnReceiveEvent {
         chatMap.get(chatMessage.getSenderId()).add(chatMessage);
     }
 
-    private static void addUnReceiMessageToSession() {
+    public static void addUnReceiMessageToSession() {
         Iterator iterator=chatMap.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry  item= (Map.Entry) iterator.next();

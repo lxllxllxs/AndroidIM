@@ -47,6 +47,7 @@ public class ExampleDaoGenerator {
         Session.addStringProperty("msgId");
         Session.addStringProperty("userId");
         Session.addStringProperty("unRead");
+        Session.addStringProperty("owner");//记录信息归属
     }
 
 

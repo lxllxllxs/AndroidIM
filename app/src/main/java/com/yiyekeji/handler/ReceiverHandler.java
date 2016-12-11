@@ -38,14 +38,16 @@ public class ReceiverHandler {
                     break;
                 case "2"://接受离线消息（离线消息？）    //A保存聊天类信息
                     LogUtil.d("ReceiverHandler","接收离线消息");
-                    saveUnReceiveMessage(iMessage);
                     //这里应该用UnReceiveEvent 只要通知界面刷新就好
-                    UnReceiveEvent.setChatMessageMessage(Convert.IMessageToChatMessage(iMessage));
                     LogUtil.d("ReceiverHandler", iMessage.getSenderId());
-                    if (iMessage.getSenderId().equals("end")) {
-                        UnReceiveEvent event=new UnReceiveEvent();
-                        EventBus.getDefault().post(event);
+                    if (!iMessage.getSenderId().equals("end")) {
+                        UnReceiveEvent.setChatMessageMessage(Convert.IMessageToChatMessage(iMessage));
+                        DbUtil.saveReceiveChatMessage(iMessage);
+                        return null;
                     }
+                    UnReceiveEvent.addUnReceiMessageToSession();
+                    UnReceiveEvent event=new UnReceiveEvent();
+                    EventBus.getDefault().post(event);
                     break;
             }
         }else if(iMessage.getMainType().equals("1")){

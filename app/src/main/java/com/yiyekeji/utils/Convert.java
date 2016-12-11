@@ -45,6 +45,7 @@ public class Convert  {
         session.setMsgId(msgId);
         session.setUserId(userId);
         session.setUnRead(unRead);
+        session.setOwner(IMApp.userInfo.getUserId());
         return session;
     }
 

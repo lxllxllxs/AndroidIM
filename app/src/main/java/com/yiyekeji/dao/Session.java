@@ -10,6 +10,7 @@ public class Session {
     private String msgId;
     private String userId;
     private String unRead;
+    private String owner;
 
     public Session() {
     }
@@ -18,11 +19,12 @@ public class Session {
         this.id = id;
     }
 
-    public Session(Long id, String msgId, String userId, String unRead) {
+    public Session(Long id, String msgId, String userId, String unRead, String owner) {
         this.id = id;
         this.msgId = msgId;
         this.userId = userId;
         this.unRead = unRead;
+        this.owner = owner;
     }
 
     public Long getId() {
@@ -55,6 +57,14 @@ public class Session {
 
     public void setUnRead(String unRead) {
         this.unRead = unRead;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
 }

@@ -67,10 +67,14 @@ public class InformationFragment extends Fragment {
     }
 
     private void initData() {
-//        WebSocketService.chat(SysMessageHandler.getUnRecieveMessage());
+        WebSocketService.chat(SysMessageHandler.getUnRecieveMessage());
         hashMap = DbUtil.getAllSessionChatMap();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     private void initView() {
         adapter = new InformAdapter(getActivity(), hashMap);
@@ -80,6 +84,7 @@ public class InformationFragment extends Fragment {
             @Override
             public void onItemClick(View view, UserInfo info) {
                 LogUtil.d("onItemClick", info.toString());
+                DbUtil.upDataSessionRead(info.getUserId());
                 Intent intent = new Intent(getContext(), ChatActivity.class);
                 intent.putExtra(ConstantUtil.USER, info);
                 startActivity(intent);

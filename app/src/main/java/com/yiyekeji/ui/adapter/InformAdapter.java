@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.UserInfo;
 import com.yiyekeji.im.R;
 import com.yiyekeji.impl.IInformation;
@@ -90,9 +89,9 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
      */
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
-        UserInfo userInfo = keyList.get(i);
-       final IInformation iInformations = chatMap.get(userInfo);
-        PicassoUtil.setBitmapToView(iInformations.getHead(),viewHolder.civHead);
+        final UserInfo userInfo = keyList.get(i);
+        final IInformation iInformations = chatMap.get(userInfo);
+        PicassoUtil.setBitmapToView(userInfo.getImgUrl(),viewHolder.civHead);
         viewHolder.tvOtherSide.setText(iInformations.getOtherSide());
         viewHolder.tvMain.setText(iInformations.getMain());
         viewHolder.numberView.setNumber(userInfo.getUnRead());//未读消息记录到用户字段里
@@ -100,7 +99,7 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
             viewHolder.rlContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickLitener.onItemClick(viewHolder.rlContainer,IMApp.getUserInfo(iInformations.getOtherSide()));
+                    mOnItemClickLitener.onItemClick(viewHolder.rlContainer,userInfo);
                 }
             });
         }

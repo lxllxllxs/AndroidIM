@@ -5,7 +5,6 @@ package com.yiyekeji.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.yiyekeji.IMApp;
 import com.yiyekeji.impl.IInformation;
 
 /**
@@ -106,14 +105,6 @@ public class ChatMessage implements Parcelable,Cloneable,IInformation {
         this.content = content;
     }
 
-    @Override
-    public String getHead() {
-        if (isReceiver.equals("1")){
-            return IMApp.getUserInfo(senderId).getImgUrl();
-        }else {
-            return IMApp.getUserInfo(receiverId).getImgUrl();
-        }
-    }
 
     @Override
     public String getMain() {
@@ -215,7 +206,7 @@ public class ChatMessage implements Parcelable,Cloneable,IInformation {
         this.owner = in.readString();
     }
 
-    public static final Parcelable.Creator<ChatMessage> CREATOR = new Parcelable.Creator<ChatMessage>() {
+    public static final Creator<ChatMessage> CREATOR = new Creator<ChatMessage>() {
         @Override
         public ChatMessage createFromParcel(Parcel source) {
             return new ChatMessage(source);

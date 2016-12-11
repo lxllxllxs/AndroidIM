@@ -64,27 +64,44 @@ public class DbUtil {
     }
 
 
-    /**确定这里是每个用户对应有且一条ChatMessage
+    /**确定这里是每个用户对应有且一条ChatMessage 且要判断该session 是否归属
      * 返回所有会话表
      * @return
      */
     public static Map<UserInfo, IInformation> getAllSessionChatMap(){
         Map<UserInfo, IInformation> hashMap = new HashMap<>();
         Query query = sd.queryBuilder()
+                .where(SessionDao.Properties.Owner.eq(IMApp.userInfo.getUserId()))
                 .build();
         if (query.list().size()<1){
             return new HashMap<>();
         }
         for (Session session:(List<Session>)query.list()){
             UserInfo userInfo=IMApp.getUserInfo(session.getUserId());
-            ChatMessage chatMessage=queryChatMessageById(session.getMsgId());
-            if (!hashMap.containsKey(userInfo)){
-                hashMap.put(userInfo,chatMessage);
-            }else {
-                continue;
-            }
+            //将数据中的读到变量里 在点击进入聊天界面后清除
+            userInfo.setUnRead(session.getUnRead());
+    ChatMessage chatMessage=queryChatMessageById(session.getMsgId());
+    if (!hashMap.containsKey(userInfo)){
+        hashMap.put(userInfo,chatMessage);
+    }else {
+        continue;
+    }
+}
+return hashMap;
         }
-        return hashMap;
+
+    /**
+     * 点击进去后置了“0”
+     * @param userId
+     */
+    public  static void upDataSessionRead(String userId){
+        Query query = sd.queryBuilder()
+                .where(SessionDao.Properties.UserId.eq(userId),
+                        SessionDao.Properties.Owner.eq(IMApp.userInfo.getUserId()))
+                .build();
+            Session session= (Session) query.list().get(0);
+            session.setUnRead("0");
+            sd.update(session);
     }
 
     /**增加包
@@ -94,7 +111,8 @@ public class DbUtil {
      */
     public  static void saveSession(String msgId,String userId){
         Query query = sd.queryBuilder()
-                .where(SessionDao.Properties.UserId.eq(msgId))
+                .where(SessionDao.Properties.UserId.eq(userId),
+                        SessionDao.Properties.Owner.eq(IMApp.userInfo.getUserId()))
                 .build();
         if (query.list().isEmpty()) {
             sd.insert(Convert.createSessionFromMsg(msgId,userId));
@@ -114,7 +132,8 @@ public class DbUtil {
      */
     public  static void upDataUnReceiSession(String msgId,String userId,String unRead){
         Query query = sd.queryBuilder()
-                .where(SessionDao.Properties.UserId.eq(msgId))
+                .where(SessionDao.Properties.UserId.eq(userId),
+                        SessionDao.Properties.Owner.eq(IMApp.userInfo.getUserId()))
                 .build();
         if (query.list().isEmpty()) {
             sd.insert(Convert.createSessionFromMsg(msgId,userId,unRead));

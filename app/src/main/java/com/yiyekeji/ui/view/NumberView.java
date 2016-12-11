@@ -63,6 +63,9 @@ public class NumberView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if (number.equals("0")){
+            return;
+        }
         int width = this.getWidth();
         int height = this.getHeight();
         if (width != height) {

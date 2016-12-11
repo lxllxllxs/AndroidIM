@@ -54,9 +54,7 @@ public class ContactsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (ca != null) {
-            ca.notifyDataSetChanged();
-        }
+
     }
 
     private void initView() {

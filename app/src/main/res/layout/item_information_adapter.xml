@@ -8,8 +8,8 @@
     <com.yiyekeji.ui.view.CircleImageView
         android:layout_marginLeft="20px"
         android:id="@+id/civ_head"
+        android:layout_centerVertical="true"
         android:layout_width="100px"
-        android:layout_gravity="center_vertical"
         android:src="@mipmap/qq"
         android:layout_height="100px"/>
 
@@ -54,5 +54,4 @@
         android:id="@+id/numberview"
         android:layout_width="35px"
         android:layout_height="35px"/>
-
 </RelativeLayout>

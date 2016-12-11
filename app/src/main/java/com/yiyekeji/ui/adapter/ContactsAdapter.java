@@ -35,7 +35,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         public ViewHolder(View arg0)
         {
             super(arg0);
-            AutoUtils.autoSize(arg0);
+            AutoUtils.auto(arg0);
         }
         ImageView ivHead;
         TextView tvId;
