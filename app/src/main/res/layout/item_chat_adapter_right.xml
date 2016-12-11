@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
+                android:paddingRight="20px"
+                android:paddingLeft="20px"
+                android:layout_marginBottom="30px"
               android:layout_height="wrap_content">
     <TextView
-        android:text="明月出天山，苍茫云海间无边落木萧萧下，苍茫云海间无边落木萧萧下，苍茫云海间无边落木萧萧下，苍茫云海间无边落木萧萧下"
-        android:layout_marginLeft="70dp"
+        android:layout_marginLeft="100px"
         android:id="@+id/tv_sender_msg"
+        android:text="明月出天山，苍茫云海间"
+        android:textSize="25px"
         android:textColor="@color/white"
         android:layout_toLeftOf="@+id/iv_head"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
         android:layout_centerVertical="true"
+        android:padding="15px"
         android:background="@drawable/bg_send_transfer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    <ImageView
-        android:layout_centerVertical="true"
+    <com.yiyekeji.ui.view.CircleImageView
+        android:layout_marginLeft="20px"
         android:layout_alignParentRight="true"
         android:id="@+id/iv_head"
         style="@style/ImageView"
-        android:src="@mipmap/ic_head"
-        android:layout_width="50dp"
-        android:layout_height="50dp"/>
+        android:layout_width="60px"
+        android:layout_height="60px"/>
 
 </RelativeLayout>

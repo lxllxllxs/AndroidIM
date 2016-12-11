@@ -19,7 +19,7 @@ public class IMApp extends Application {
     public static UserInfo userInfo = new UserInfo();
     public static List<Activity> activityList = new ArrayList<>();
     public static Context context;
-
+    public static UserInfo otherSide;
     public static void clearAllCache(){
         userInfo = new UserInfo();//指向新对象
         linkManList.clear();

@@ -50,6 +50,11 @@ public  abstract  class BaseActivity extends AutoLayoutActivity implements View.
         startActivity(intent);
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+    }
+
     /**
      * 创建loadDialog
      *

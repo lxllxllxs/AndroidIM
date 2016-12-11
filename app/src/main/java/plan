@@ -5,3 +5,5 @@
 2016-12-09
 1.消息（会话列表）完善聊天类型
 2.为IMessage和ChatMessage都添加senderName，receiverName，用接口匹配InformationAdapter
+3.需要添加线程池确保 数据库相关操作 不影响UI加载
+4.需要添加本地的UseInfo表 缓存联系人及头像路径（网络和本地两个地址都要）

@@ -34,8 +34,11 @@ import butterknife.OnClick;
  */
 public class MainFragmentActivity extends BaseActivity {
 
-    ContactsFragment contactsFragment;
-    InformationFragment informationFragment;
+    /**
+     * 直接写静态
+     */
+    public static ContactsFragment contactsFragment;
+    public static  InformationFragment informationFragment;
     @InjectView(R.id.tv_contacts)
     TextView tvContacts;
     @InjectView(R.id.tv_info)
@@ -162,6 +165,7 @@ public class MainFragmentActivity extends BaseActivity {
             IMApp.removeAllActivity();
         }
     }
+
 
     /**
      * 在这里关闭service

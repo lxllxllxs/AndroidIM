@@ -14,17 +14,6 @@ public class ChatMessageHandler {
 
     public  static  UserInfo sender=IMApp.userInfo;
 
-    /*************************聊天信息****************************/
-    public final static String MESSAG_TYPE="messageType";
-    public final static String CONTENT="content";
-    public final static String JSON_ARRAY="jsonArray";
-    public final static String LinkList="LinkList";
-    public final static String SENDER="sender";
-    public final static String RECEIVER="receiver";
-    public final static String DATE="date";
-    public final static String SENDER_ID="senderId";
-    public final static String RECEIVER_ID="receiverID";
-
     /**
      * 普通单人文本信息
      * 这里就组装完全了

@@ -5,11 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yiyekeji.IMApp;
+import com.yiyekeji.bean.UserInfo;
 import com.yiyekeji.dao.ChatMessage;
 import com.yiyekeji.im.R;
+import com.yiyekeji.utils.PicassoUtil;
 
 import java.util.List;
 
@@ -23,10 +26,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     private LayoutInflater mInflater;
     private List<ChatMessage> messages;
-    private final int RECEIVER=0x123;
-    private final int SENDER=0x122;
+    private final int LEFT=0x123;
+    private final int RIGHT=0x122;
 
-    private String userId = IMApp.userInfo.getUserId();
+    private UserInfo userInfo = IMApp.userInfo;
+    private String selfId=userInfo.getUserId();
+    private final UserInfo otherSide= IMApp.otherSide;
     public ChatAdapter(Context context, List<ChatMessage> messages) {
         this.messages=messages;
         mInflater = LayoutInflater.from(context);
@@ -36,6 +41,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             super(arg0);
         }
         TextView tvContent;
+        ImageView iv_head;
     }
         @Override
         public int getItemCount()
@@ -50,23 +56,26 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int type) {
             ViewHolder viewHolder = null;
             switch (type){
-                case RECEIVER:
-                    viewHolder=setReceiverView(viewGroup);
+                case LEFT:
+                    viewHolder=setLeftView(viewGroup);
                     break;
-                case SENDER:
-                    viewHolder=setSenderView(viewGroup);
+                case RIGHT:
+                    viewHolder=setRightView(viewGroup);
                     break;
             }
             return viewHolder;
         }
 
 
+    boolean isLeft;
     @Override
     public int getItemViewType(int position) {
-        if (messages.get(position).getSenderId().equals(userId)){
-            return SENDER;
+        if (messages.get(position).getSenderId().equals(selfId)){
+            isLeft = false;
+            return RIGHT;
         }else {
-            return RECEIVER;
+            isLeft = true;
+            return LEFT;
         }
     }
 
@@ -77,6 +86,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         public void onBindViewHolder(final ViewHolder viewHolder, final int i)
         {
             viewHolder.tvContent.setText(messages.get(i).getContent());
+            if (isLeft) {
+                PicassoUtil.setBitmapToView(otherSide.getImgUrl(), viewHolder.iv_head);
+            } else {
+                PicassoUtil.setBitmapToView(userInfo.getImgUrl(), viewHolder.iv_head);
+            }
             if(mOnItemClickLitener!=null){
                 viewHolder.tvContent.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -87,20 +101,19 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             }
         }
 
-
-        private ViewHolder setSenderView(ViewGroup viewGroup){
-            View view = mInflater.inflate(R.layout.item_chat_adapter_sender, viewGroup, false);
+        private ViewHolder setRightView(ViewGroup viewGroup){
+            View view = mInflater.inflate(R.layout.item_chat_adapter_right, viewGroup, false);
             ViewHolder viewHolder = new ViewHolder(view);
             viewHolder.tvContent = (TextView) view.findViewById(R.id.tv_sender_msg);
-
+            viewHolder.iv_head = (ImageView) view.findViewById(R.id.iv_head);
             return viewHolder;
         }
 
-        private ViewHolder setReceiverView(ViewGroup viewGroup){
-            View view = mInflater.inflate(R.layout.item_chat_adapter_receiver, viewGroup, false);
+        private ViewHolder setLeftView(ViewGroup viewGroup){
+            View view = mInflater.inflate(R.layout.item_chat_adapter_left, viewGroup, false);
             ViewHolder viewHolder = new ViewHolder(view);
             viewHolder.tvContent = (TextView) view.findViewById(R.id.tv_sender_msg);
-
+            viewHolder.iv_head = (ImageView) view.findViewById(R.id.iv_head);
             return viewHolder;
         }
 

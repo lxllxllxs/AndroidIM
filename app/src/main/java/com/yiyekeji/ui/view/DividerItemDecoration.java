@@ -23,12 +23,19 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 	private Drawable mDivider;
 
 	private int mOrientation;
-
+	private int  addHeight=0;
 	public DividerItemDecoration(Context context, int orientation) {
 		final TypedArray a = context.obtainStyledAttributes(ATTRS);
 		mDivider = a.getDrawable(0);
 		a.recycle();
 		setOrientation(orientation);
+	}
+	public DividerItemDecoration(Context context, int orientation,int addHeight) {
+		final TypedArray a = context.obtainStyledAttributes(ATTRS);
+		mDivider = a.getDrawable(0);
+		a.recycle();
+		setOrientation(orientation);
+		this.addHeight=addHeight;
 	}
 
 	public void setOrientation(int orientation) {
@@ -61,7 +68,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 			final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
 					.getLayoutParams();
 			final int top = child.getBottom() + params.bottomMargin;
-			final int bottom = top + mDivider.getIntrinsicHeight();
+			final int bottom = top + mDivider.getIntrinsicHeight()+addHeight;
 			mDivider.setBounds(left, top, right, bottom);
 			mDivider.draw(c);
 		}

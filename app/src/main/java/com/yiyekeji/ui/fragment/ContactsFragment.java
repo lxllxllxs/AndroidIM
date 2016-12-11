@@ -15,7 +15,7 @@ import com.yiyekeji.im.R;
 import com.yiyekeji.ui.activity.ChatActivity;
 import com.yiyekeji.ui.adapter.ContactsAdapter;
 import com.yiyekeji.ui.view.DividerItemDecoration;
-import com.yiyekeji.utils.ConstantUtil;
+import com.yiyekeji.utils.LogUtil;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -54,8 +54,9 @@ public class ContactsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        LogUtil.d("onResume","ContactsFragment");
     }
+
 
     private void initView() {
         ca = new ContactsAdapter(getActivity(), IMApp.linkManList);
@@ -65,8 +66,8 @@ public class ContactsFragment extends Fragment {
         ca.setOnItemClickLitener(new ContactsAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, int position) {
+                IMApp.otherSide = IMApp.linkManList.get(position);
             Intent intent = new Intent(getActivity(), ChatActivity.class);
-            intent.putExtra(ConstantUtil.USER,IMApp.linkManList.get(position));
             startActivity(intent);
             }
         });

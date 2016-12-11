@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/rl_container"
               android:orientation="horizontal"
+                android:layout_marginBottom="1px"
+                android:background="@color/white"
               android:layout_width="match_parent"
               android:layout_height="110px">
 

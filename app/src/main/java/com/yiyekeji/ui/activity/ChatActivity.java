@@ -1,11 +1,13 @@
 package com.yiyekeji.ui.activity;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,15 +17,15 @@ import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.UserInfo;
 import com.yiyekeji.dao.ChatMessage;
 import com.yiyekeji.dao.DateComParator;
+import com.yiyekeji.db.DbUtil;
 import com.yiyekeji.handler.ChatMessageHandler;
 import com.yiyekeji.im.R;
 import com.yiyekeji.service.WebSocketService;
 import com.yiyekeji.ui.activity.base.BaseActivity;
 import com.yiyekeji.ui.adapter.ChatAdapter;
 import com.yiyekeji.ui.view.StatusBarCompat;
-import com.yiyekeji.utils.ConstantUtil;
-import com.yiyekeji.db.DbUtil;
 import com.yiyekeji.utils.LogUtil;
+import com.yiyekeji.utils.ThreadPools;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -53,9 +55,9 @@ public class ChatActivity extends BaseActivity {
     private ChatAdapter chatAdapter;
     private UserInfo receriver;
     ChatMessage chatMessage;
-    String receiverId;
-    final String senderId = IMApp.userInfo.getUserId();
 
+    String selfId = IMApp.userInfo.getUserId();
+    int color_bule;
     /**
      * 在这里获取系统的传感器
      */
@@ -73,37 +75,48 @@ public class ChatActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         //定制状态栏颜色使用此方法
         //StatusBarCompat.compat(this, 0xFFFF0000);
+        color_bule = ContextCompat.getColor(this, R.color.theme_blue);
+        edtContent.addTextChangedListener(tw);
         StatusBarCompat.compat(this);
-        getChatMessageFormDb();
         chatAdapter = new ChatAdapter(this, messageList);
         recylerView.setAdapter(chatAdapter);
         recylerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void initData() {
-        receriver = (UserInfo) getIntent().getParcelableExtra(ConstantUtil.USER);
+        receriver= IMApp.otherSide;
+        getChatMessageFormDb();
+        upDateSessionMsg();
         tvTitle.setText(receriver.getUserName());
         LogUtil.d("initData", receriver.toString());
     }
 
+    private void upDateSessionMsg() {
+        ThreadPools.addRunnable(new Runnable() {
+            @Override
+            public void run() {
+                DbUtil.upDataSessionRead(receriver.getUserId());
+            }
+        });
+    }
 
     private void getChatMessageFormDb() {
-        messageList.addAll(DbUtil.searchReceivedMsg());
-        messageList.addAll(DbUtil.searchAllSendMsg(receriver.getUserId()));
+        long start = System.currentTimeMillis();
+        messageList.addAll(DbUtil.searchAllMsg(receriver.getUserId()));
         Collections.sort(messageList, new DateComParator());
+        LogUtil.d("总共花费时间：", System.currentTimeMillis() - start);
         LogUtil.d("getChatMessageFormDb", messageList.size() + "");
     }
 
     /**
-     * 若要改此方法里面的字段，可能还需要改发红包界面里面的发送红包方法，多一个参数的为语音消息的秒数
+     * 若要改此方法里面的字段，
+     * 可能还需要改发红包界面里面的发送红包方法，多一个参数的为语音消息的秒数
      */
     private void sendTextMessage() {
         String content = edtContent.getText().toString();
-        upDateLocal(content);
-        WebSocketService.chat(ChatMessageHandler.sendTextMessage(content, receriver));//这里数据库保存
-    }
-
-    private void testTextMessage(String content) {
+        if (TextUtils.isEmpty(content)) {
+            return;
+        }
         upDateLocal(content);
         WebSocketService.chat(ChatMessageHandler.sendTextMessage(content, receriver));//这里数据库保存
     }
@@ -111,8 +124,10 @@ public class ChatActivity extends BaseActivity {
     private void upDateLocal(String content) {
         chatMessage = new ChatMessage();
         chatMessage.setContent(content);
-        chatMessage.setSenderId(senderId);
-        chatMessage.setReceiverId(receiverId);
+        chatMessage.setIsReceiver("0");
+        chatMessage.setSenderId(selfId);
+        chatMessage.setReceiverId(receriver.getUserId());
+        chatMessage.setReceiverName(receriver.getUserName());
         messageList.add(chatMessage);
         chatAdapter.notifyDataSetChanged();
     }
@@ -122,44 +137,33 @@ public class ChatActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.tv_send:
                 sendTextMessage();
-//                testSendTextMessage();
                 break;
-
         }
     }
 
-    private Handler handler = new Handler() {
+    @Override
+    public void finish() {
+        super.finish();
+        MainFragmentActivity.informationFragment.refreshSessionList();
+    }
+
+    TextWatcher tw=new TextWatcher() {
         @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 1:
-                    testTextMessage(senderId + msg.obj);
-                    break;
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (!TextUtils.isEmpty(s)) {
+                tvSend.setBackground(getResources().
+                        getDrawable(R.drawable.bg_bulesolid_6radius));
+            } else {
+                tvSend.setBackground(getResources().getDrawable(R.drawable.bg_graysolid_6raidus));
             }
         }
     };
-
-    private void testSendTextMessage() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 100; i++) {
-                    synchronized (this) {
-                        try {
-                            wait(2 * 1000);
-                            Message msg = new Message();
-                            msg.obj = i;
-                            handler.sendEmptyMessage(1);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        }).start();
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void receiverMessage(ChatMessageEvent event) {
         LogUtil.d("chatActivity", "已经收到信息");

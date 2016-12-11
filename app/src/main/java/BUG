@@ -1,2 +1,3 @@
-1.ChatMessage表中出现重复msgId
+1.ChatMessage表中出现重复msgId,关键是注意owner的筛选
 2.Information重绘时NumberView消失
+3.聊天处于右侧是不能显示头像

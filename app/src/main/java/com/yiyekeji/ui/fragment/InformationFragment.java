@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yiyekeji.Event.UnReceiveEvent;
+import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.UserInfo;
 import com.yiyekeji.db.DbUtil;
 import com.yiyekeji.handler.SysMessageHandler;
@@ -19,8 +20,6 @@ import com.yiyekeji.impl.IInformation;
 import com.yiyekeji.service.WebSocketService;
 import com.yiyekeji.ui.activity.ChatActivity;
 import com.yiyekeji.ui.adapter.InformAdapter;
-import com.yiyekeji.ui.view.DividerItemDecoration;
-import com.yiyekeji.utils.ConstantUtil;
 import com.yiyekeji.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -71,29 +70,25 @@ public class InformationFragment extends Fragment {
         hashMap = DbUtil.getAllSessionChatMap();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     private void initView() {
         adapter = new InformAdapter(getActivity(), hashMap);
         recylerView.setAdapter(adapter);
-        recylerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         adapter.setOnItemClickLitener(new InformAdapter.OnItemClickLitener() {
             @Override
             public void onItemClick(View view, UserInfo info) {
                 LogUtil.d("onItemClick", info.toString());
-                DbUtil.upDataSessionRead(info.getUserId());
+                IMApp.otherSide = info;
                 Intent intent = new Intent(getContext(), ChatActivity.class);
-                intent.putExtra(ConstantUtil.USER, info);
                 startActivity(intent);
             }
         });
         recylerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-
+    public void refreshSessionList(){
+        hashMap = DbUtil.getAllSessionChatMap();
+        adapter.setData(hashMap);
+    }
     /**
      * 重新从数据库读取
      * 或许以后可以优化 直接更新部分
@@ -103,8 +98,7 @@ public class InformationFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void unReceiMessage(UnReceiveEvent event) {
         LogUtil.d(TAG, event.getChatMap().size());
-        hashMap = DbUtil.getAllSessionChatMap();
-        adapter.setData(hashMap);
+        refreshSessionList();
         WebSocketService.chat(SysMessageHandler.feedBackUnRecieveMessage(event.getMsgIdList()));
     }
 

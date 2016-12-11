@@ -6,6 +6,8 @@
     android:clipToPadding="true"
     android:orientation="horizontal"
     android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_marginBottom="1px"
     android:layout_height="110px">
     <com.yiyekeji.ui.view.CircleImageView
         android:layout_marginLeft="20px"

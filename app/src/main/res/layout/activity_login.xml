@@ -12,7 +12,7 @@
         android:layout_width="500px"
         android:layout_height="wrap_content">
         <RelativeLayout
-            android:background="@drawable/bg_edit_white_white"
+            android:background="@drawable/bg_whitesolid_6radius_whitestroke"
             android:layout_width="match_parent"
             android:layout_height="70px">
             <ImageView
@@ -34,7 +34,7 @@
 
         <RelativeLayout
             android:layout_marginTop="30px"
-            android:background="@drawable/bg_edit_white_white"
+            android:background="@drawable/bg_whitesolid_6radius_whitestroke"
             android:layout_width="match_parent"
             android:layout_height="70px">
             <ImageView

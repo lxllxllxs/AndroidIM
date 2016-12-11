@@ -3,42 +3,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	android:orientation="vertical"
-    android:background="@color/white">
+	>
 
 	<include layout="@layout/include_toobar"/>
 
 	<android.support.v7.widget.RecyclerView
+		android:paddingTop="30px"
 		android:id="@+id/recylerView"
 		android:layout_weight="1"
 		android:layout_width="match_parent"
 		android:layout_height="0dp"/>
 
 	<LinearLayout
-
 		android:orientation="horizontal"
+		android:gravity="center_vertical"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		android:layout_height="90px"
+		android:paddingLeft="20px"
+		android:paddingRight="20px"
 		>
 		<EditText
-			android:background="@drawable/bg_edit_white_gray_solide"
+			android:background="@drawable/bg_whitesolid_6radius_whitestroke"
 			android:id="@+id/edt_content"
 			android:layout_weight="1"
-			android:textSize="13sp"
-			android:textColor="@color/black"
-			android:padding="2dp"
+			style="@style/editText"
 			android:layout_width="0dp"
-			android:layout_marginRight="5dp"
-			android:layout_marginLeft="5dp"
-			android:hint="请输入"
 			android:layout_height="wrap_content"/>
 
 		<TextView
 			android:id="@+id/tv_send"
 			android:text="发送"
 			style="@style/textview"
-			android:paddingLeft="5dp"
-			android:paddingRight="5dp"
+			android:textColor="@color/white"
+			android:paddingLeft="15px"
+			android:paddingRight="15px"
+			android:background="@drawable/bg_graysolid_6raidus"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"/>
+	</LinearLayout>
+	<LinearLayout
+		android:paddingLeft="20px"
+		android:paddingRight="20px"
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="60px">
+
+
 	</LinearLayout>
 </LinearLayout>

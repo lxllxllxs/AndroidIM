@@ -99,6 +99,9 @@ return hashMap;
                 .where(SessionDao.Properties.UserId.eq(userId),
                         SessionDao.Properties.Owner.eq(IMApp.userInfo.getUserId()))
                 .build();
+            if (query.list().size()<1){
+                return;
+            }
             Session session= (Session) query.list().get(0);
             session.setUnRead("0");
             sd.update(session);
@@ -197,10 +200,12 @@ return hashMap;
      * 两种情况 ：在会话列表时receiverId为自己
      * 在聊天主界面时receiveId 为对方
      */
-    public static ArrayList<ChatMessage> searchAllSendMsg(String receiverId) {
+    public static ArrayList<ChatMessage> searchAllMsg(String receiverId) {
         // Query 类代表了一个可以被重复执行的查询
         Query query = cmd.queryBuilder()
-                .where(ChatMessageDao.Properties.ReceiverId.eq(receiverId))
+                .whereOr(ChatMessageDao.Properties.ReceiverId.eq(receiverId),
+                        ChatMessageDao.Properties.SenderId.eq(receiverId))
+                .where(ChatMessageDao.Properties.Owner.eq(IMApp.userInfo.getUserId()))
                 .build();
         if (query.list().isEmpty()) {
             return new ArrayList<>();
@@ -210,15 +215,16 @@ return hashMap;
         return sendMessageList;
     }
 
-
-    /**
+/*
+    *//**
      * 查询接收聊天信息表
      * @return
-     */
+     *//*
     public static ArrayList<ChatMessage> searchReceivedMsg() {
         // Query 类代表了一个可以被重复执行的查询
         Query query = cmd.queryBuilder()
-                .where(ChatMessageDao.Properties.ReceiverId.eq(IMApp.userInfo.getUserId()))
+                .where(ChatMessageDao.Properties.ReceiverId.eq(IMApp.userInfo.getUserId()),
+                        ChatMessageDao.Properties.Owner.eq(IMApp.userInfo.getUserId()))
                 .build();
         if (query.list().isEmpty()) {
             return new ArrayList<>();
@@ -226,5 +232,5 @@ return hashMap;
         ArrayList<ChatMessage> receiveMessages = (ArrayList<ChatMessage>)query.list();
         LogUtil.d("searchReceivedMsg",receiveMessages.size());
         return receiveMessages;
-    }
+    }*/
 }
