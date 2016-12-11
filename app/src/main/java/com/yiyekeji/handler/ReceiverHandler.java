@@ -6,6 +6,7 @@ import com.yiyekeji.Event.LoginEvent;
 import com.yiyekeji.Event.UnReceiveEvent;
 import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
+import com.yiyekeji.utils.Convert;
 import com.yiyekeji.utils.DbUtil;
 import com.yiyekeji.utils.LogUtil;
 
@@ -39,7 +40,7 @@ public class ReceiverHandler {
                     LogUtil.d("ReceiverHandler","接收离线消息");
                     saveUnReceiveMessage(iMessage);
                     //这里应该用UnReceiveEvent
-                    UnReceiveEvent.setChatMessageMessage(DbUtil.IMessageToChatMessage(iMessage));
+                    UnReceiveEvent.setChatMessageMessage(Convert.IMessageToChatMessage(iMessage));
                     LogUtil.d("ReceiverHandler", iMessage.getSenderId());
                     if (iMessage.getSenderId().equals("end")) {
                         LogUtil.d("ReceiverHandler",UnReceiveEvent.chatMap.size());
@@ -54,7 +55,7 @@ public class ReceiverHandler {
             switch (iMessage.getSubType()){
                 case "0":
                     ChatMessageEvent cme = new ChatMessageEvent();
-                    cme.setChatMessage(DbUtil.IMessageToChatMessage(iMessage));
+                    cme.setChatMessage(Convert.IMessageToChatMessage(iMessage));
                     EventBus.getDefault().post(cme);
                     break;
                 case "1":

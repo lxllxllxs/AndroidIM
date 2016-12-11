@@ -24,6 +24,8 @@ public class ChatMessage implements Parcelable,Cloneable,IInformation {
     private String sendStatus;
     private String senderName;
     private String receiverName;
+    private String isReceiver;
+    private String owner;
 
     public ChatMessage() {
     }
@@ -32,7 +34,7 @@ public class ChatMessage implements Parcelable,Cloneable,IInformation {
         this.id = id;
     }
 
-    public ChatMessage(Long id, String msgId, String senderId, String receiverId, String groupId, String messageType, String content, String date, String sendStatus, String senderName, String receiverName) {
+    public ChatMessage(Long id, String msgId, String senderId, String receiverId, String groupId, String messageType, String content, String date, String sendStatus, String senderName, String receiverName, String isReceiver, String owner) {
         this.id = id;
         this.msgId = msgId;
         this.senderId = senderId;
@@ -44,6 +46,8 @@ public class ChatMessage implements Parcelable,Cloneable,IInformation {
         this.sendStatus = sendStatus;
         this.senderName = senderName;
         this.receiverName = receiverName;
+        this.isReceiver = isReceiver;
+        this.owner = owner;
     }
 
     public Long getId() {
@@ -104,22 +108,29 @@ public class ChatMessage implements Parcelable,Cloneable,IInformation {
 
     @Override
     public String getHead() {
-        return IMApp.getUserInfo(senderId).getImgUrl();
+        if (isReceiver.equals("1")){
+            return IMApp.getUserInfo(senderId).getImgUrl();
+        }else {
+            return IMApp.getUserInfo(receiverId).getImgUrl();
+        }
     }
 
     @Override
     public String getMain() {
         return content;
     }
-
     @Override
     public String getDate() {
         return date;
     }
 
     @Override
-    public String getSender() {
-        return senderId;
+    public String getOtherSide() {
+        if (isReceiver.equals("1")) {
+            return senderName;
+        } else {
+            return receiverName;
+        }
     }
 
     public void setDate(String date) {
@@ -150,6 +161,22 @@ public class ChatMessage implements Parcelable,Cloneable,IInformation {
         this.receiverName = receiverName;
     }
 
+    public String getIsReceiver() {
+        return isReceiver;
+    }
+
+    public void setIsReceiver(String isReceiver) {
+        this.isReceiver = isReceiver;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -168,6 +195,8 @@ public class ChatMessage implements Parcelable,Cloneable,IInformation {
         dest.writeString(this.sendStatus);
         dest.writeString(this.senderName);
         dest.writeString(this.receiverName);
+        dest.writeString(this.isReceiver);
+        dest.writeString(this.owner);
     }
 
     protected ChatMessage(Parcel in) {
@@ -182,6 +211,8 @@ public class ChatMessage implements Parcelable,Cloneable,IInformation {
         this.sendStatus = in.readString();
         this.senderName = in.readString();
         this.receiverName = in.readString();
+        this.isReceiver = in.readString();
+        this.owner = in.readString();
     }
 
     public static final Parcelable.Creator<ChatMessage> CREATOR = new Parcelable.Creator<ChatMessage>() {

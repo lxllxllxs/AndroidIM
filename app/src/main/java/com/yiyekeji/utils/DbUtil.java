@@ -9,6 +9,8 @@ import com.yiyekeji.dao.ChatMessage;
 import com.yiyekeji.dao.ChatMessageDao;
 import com.yiyekeji.dao.DaoMaster;
 import com.yiyekeji.dao.DaoSession;
+import com.yiyekeji.dao.Session;
+import com.yiyekeji.dao.SessionDao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +29,7 @@ public class DbUtil {
     private static DaoMaster daoMaster;
     private static DaoSession daoSession;
     private  static ChatMessageDao cmd;
+    private static SessionDao sd;
 
      static  {
          LogUtil.d("DbUtil","数据库操作工具类正在初始化");
@@ -35,6 +38,7 @@ public class DbUtil {
          daoMaster = new DaoMaster(db);
          daoSession = daoMaster.newSession();
          cmd = daoSession.getChatMessageDao();  //拿到这么个工具dao
+         sd = daoSession.getSessionDao();
          LogUtil.d("DbUtil","数据库操作工具类初始化完成");
     }
 
@@ -43,11 +47,34 @@ public class DbUtil {
      * @param iMessage
      */
     public static   void saveSendMessage(IMessageFactory.IMessage iMessage){
-        cmd.insert(IMessageToChatMessage(iMessage));
+        cmd.insert(Convert.IMessageToChatMessage(iMessage));
+        saveSession(iMessage.getReceiverId(), iMessage.getId());
+    }
+    /**
+     * 保存接收的聊天信息
+     * @param iMessage
+     */
+    public static   void saveReceiveChatMessage(IMessageFactory.IMessage iMessage){
+        cmd.insert(Convert.IMessageToChatMessage(iMessage));
+        saveSession(iMessage.getSenderId(), iMessage.getId());
     }
 
-    public static   void saveReceiveChatMessage(IMessageFactory.IMessage iMessage){
-        cmd.insert(IMessageToChatMessage(iMessage));
+    /**
+     * 由调用决定 userId,当自己为接收方时，userId为发送方
+     * @param msgId
+     * @param userId
+     */
+    public  static void saveSession(String msgId,String userId){
+        Query query = sd.queryBuilder()
+                .where(SessionDao.Properties.UserId.eq(msgId))
+                .build();
+        if (query.list().isEmpty()) {
+            sd.insert(Convert.createSessionFromMsg(msgId,userId));
+        }else {
+            Session session= (Session) query.list().get(0);
+            session.setMsgId(msgId);
+            sd.update(session);
+        }
     }
 
     /**
@@ -80,27 +107,6 @@ public class DbUtil {
         return false;
     }
 
-
-
-    /**
-     * 网络转本地
-     * @param iMessage
-     * @return
-     */
-    public static ChatMessage IMessageToChatMessage(IMessageFactory.IMessage iMessage) {
-        ChatMessage chatMessage = new ChatMessage();
-
-        chatMessage.setSenderId(iMessage.getSenderId());
-        chatMessage.setSenderName(iMessage.getSenderName());
-
-        chatMessage.setMsgId(iMessage.getId());
-        chatMessage.setContent(iMessage.getContent());
-        chatMessage.setDate(DateUtil.getTimeString());//也许可改为直接存日期
-
-        chatMessage.setReceiverId(iMessage.getReceiverId());//
-        chatMessage.setReceiverName(iMessage.getReceiverName());
-        return chatMessage;
-    }
 
 
     /**

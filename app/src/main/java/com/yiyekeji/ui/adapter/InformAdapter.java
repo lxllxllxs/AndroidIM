@@ -47,7 +47,7 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
         }
         RelativeLayout rlContainer;
         CircleImageView civHead;//图标、头像
-        TextView tvSender;//发送者
+        TextView tvOtherSide;//对方（不用发送者这类有相对意思的）
         TextView tvMain;//主要简略内容
         TextView tvDate;//消息日期
         NumberView numberView;//消息数
@@ -84,7 +84,7 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
 
         viewHolder.rlContainer=(RelativeLayout)view.findViewById(R.id.rl_container);
         viewHolder.civHead = (CircleImageView) view.findViewById(R.id.civ_head);
-        viewHolder.tvSender = (TextView) view.findViewById(R.id.tv_userName);
+        viewHolder.tvOtherSide = (TextView) view.findViewById(R.id.tv_userName);
         viewHolder.tvMain = (TextView) view.findViewById(R.id.tv_chatMessage);
         viewHolder.tvDate = (TextView) view.findViewById(R.id.tv_date);
         viewHolder.numberView=(NumberView)view.findViewById(R.id.numberview);
@@ -100,14 +100,14 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
         List<IInformation> iInformations = chatMap.get(keyList.get(i));
         final IInformation information = iInformations.get(iInformations.size() - 1);//获取最新
         PicassoUtil.setBitmapToView(information.getHead(),viewHolder.civHead);
-        viewHolder.tvSender.setText(information.getSender());
+        viewHolder.tvOtherSide.setText(information.getOtherSide());
         viewHolder.tvMain.setText(information.getMain());
         viewHolder.numberView.setNumber(iInformations.size()+"");
         if (mOnItemClickLitener != null) {
             viewHolder.rlContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickLitener.onItemClick(viewHolder.rlContainer,IMApp.getUserInfo(information.getSender()));
+                    mOnItemClickLitener.onItemClick(viewHolder.rlContainer,IMApp.getUserInfo(information.getOtherSide()));
                 }
             });
         }

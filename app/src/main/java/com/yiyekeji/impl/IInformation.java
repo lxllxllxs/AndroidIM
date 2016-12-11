@@ -7,5 +7,5 @@ public interface IInformation {
     String getHead();
     String getMain();
     String getDate();
-    String getSender();
+    String getOtherSide();
 }

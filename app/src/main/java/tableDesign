@@ -1,0 +1,4 @@
+2016-12-11
+ChatMessage表
+1.添加字段 isReceiver--相对自己
+2.添加字段 owner --避免多个账号带来的混乱

@@ -11,10 +11,9 @@ public class ExampleDaoGenerator {
     public static void main(String[] args) throws IOException, Exception {
         
         Schema schema = new Schema(1, "com.yiyekeji.dao");
-        Schema schema2 = new Schema(2, "com.yiyekeji.dao");
         addSendMessage(schema);
-        addSession(schema2);
-        new DaoGenerator().generateAll(schema, "D:\\DaoExample");
+        DaoGenerator daoGenerator= new DaoGenerator();
+        daoGenerator .generateAll(schema, "D:\\DaoExample");
     }
 
     /**
@@ -35,18 +34,20 @@ public class ExampleDaoGenerator {
         ChatMessage.addStringProperty("sendStatus");//发送状态
         ChatMessage.addStringProperty("senderName");//收件人姓名
         ChatMessage.addStringProperty("receiverName");//发件人姓名
-    }
 
-    /**
-     * 记录会话列表、
-     * 主要是非己，
-     */
-    private static void addSession(Schema schema2) {
-        Entity Session= schema2.addEntity("Session");
+        ChatMessage.addStringProperty("isReceiver");//判断 接收方
+        ChatMessage.addStringProperty("owner");//记录信息归属
+
+        /**
+         * 记录会话列表、
+         * 主要是非己，
+         */
+        Entity Session= schema.addEntity("Session");
         Session.addIdProperty();
         Session.addStringProperty("msgId");
         Session.addStringProperty("userId");
     }
+
 
 
 }
