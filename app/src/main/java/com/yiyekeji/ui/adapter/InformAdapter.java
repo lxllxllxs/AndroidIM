@@ -14,12 +14,10 @@ import com.yiyekeji.im.R;
 import com.yiyekeji.impl.IInformation;
 import com.yiyekeji.ui.view.CircleImageView;
 import com.yiyekeji.ui.view.NumberView;
-import com.yiyekeji.utils.LogUtil;
 import com.yiyekeji.utils.PicassoUtil;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,18 +30,18 @@ import java.util.Map;
 public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder> {
 
     private LayoutInflater mInflater;
-    private HashMap<String, ArrayList<IInformation>> chatMap;
-    private List<String> keyList = new ArrayList<>();
+    private Map<UserInfo, IInformation> chatMap;
+    private List<UserInfo> keyList = new ArrayList<>();
 
-    public InformAdapter(Context context, HashMap<String, ArrayList<IInformation>> hashMap) {
-        setData(hashMap);
+    public InformAdapter(Context context, Map<UserInfo, IInformation> hashMap) {
         mInflater = LayoutInflater.from(context);
+        setData(hashMap);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(View arg0) {
             super(arg0);
-            AutoUtils.autoSize(arg0);
+            AutoUtils.auto(arg0);
         }
         RelativeLayout rlContainer;
         CircleImageView civHead;//图标、头像
@@ -58,19 +56,14 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
         return keyList.size();
     }
 
-    public void setData(HashMap<String, ArrayList<IInformation>> hashMap) {
+    public void setData(Map<UserInfo, IInformation> hashMap) {
         this.chatMap = hashMap;
         keyList.clear();
         Iterator iterator = chatMap.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
-            keyList.add(entry.getKey().toString());
+            keyList.add((UserInfo) entry.getKey());
         }
-        notifyDataSetChanged();
-    }
-
-    public void setData(String data) {
-        LogUtil.d("setData",data);
         notifyDataSetChanged();
     }
 
@@ -97,17 +90,17 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
      */
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
-        List<IInformation> iInformations = chatMap.get(keyList.get(i));
-        final IInformation information = iInformations.get(iInformations.size() - 1);//获取最新
-        PicassoUtil.setBitmapToView(information.getHead(),viewHolder.civHead);
-        viewHolder.tvOtherSide.setText(information.getOtherSide());
-        viewHolder.tvMain.setText(information.getMain());
-        viewHolder.numberView.setNumber(iInformations.size()+"");
+        UserInfo userInfo = keyList.get(i);
+       final IInformation iInformations = chatMap.get(userInfo);
+        PicassoUtil.setBitmapToView(iInformations.getHead(),viewHolder.civHead);
+        viewHolder.tvOtherSide.setText(iInformations.getOtherSide());
+        viewHolder.tvMain.setText(iInformations.getMain());
+        viewHolder.numberView.setNumber(userInfo.getUnRead());//未读消息记录到用户字段里
         if (mOnItemClickLitener != null) {
             viewHolder.rlContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickLitener.onItemClick(viewHolder.rlContainer,IMApp.getUserInfo(information.getOtherSide()));
+                    mOnItemClickLitener.onItemClick(viewHolder.rlContainer,IMApp.getUserInfo(iInformations.getOtherSide()));
                 }
             });
         }

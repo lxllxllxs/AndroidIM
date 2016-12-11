@@ -10,9 +10,17 @@ public class UserInfo implements Parcelable {
     private  String userName;
     private String userId;
     private  String  imgUrl;
-
+    private  String unRead;
     public String getImgUrl() {
         return imgUrl;
+    }
+
+    public String getUnRead() {
+        return unRead;
+    }
+
+    public void setUnRead(String unRead) {
+        this.unRead = unRead;
     }
 
     public void setImgUrl(String imgUrl) {
@@ -39,6 +47,15 @@ public class UserInfo implements Parcelable {
     }
 
     @Override
+    public String toString() {
+        return "UserInfo{" +
+                "userName='" + userName + '\'' +
+                ", userId='" + userId + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                '}';
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -48,21 +65,14 @@ public class UserInfo implements Parcelable {
         dest.writeString(this.userName);
         dest.writeString(this.userId);
         dest.writeString(this.imgUrl);
+        dest.writeString(this.unRead);
     }
 
     protected UserInfo(Parcel in) {
         this.userName = in.readString();
         this.userId = in.readString();
         this.imgUrl = in.readString();
-    }
-
-    @Override
-    public String toString() {
-        return "UserInfo{" +
-                "userName='" + userName + '\'' +
-                ", userId='" + userId + '\'' +
-                ", imgUrl='" + imgUrl + '\'' +
-                '}';
+        this.unRead = in.readString();
     }
 
     public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {

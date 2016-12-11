@@ -34,6 +34,7 @@ public class LinkManEvent {
             userInfo.setUserId(user.getUserId());
             userInfo.setImgUrl(user.getImgUrl());
             userInfo.setUserName(user.getUsername());
+            userInfo.setUnRead("0");
             userInfoList.add(userInfo);
         }
         //不要直接赋值引用 需要改深拷贝?

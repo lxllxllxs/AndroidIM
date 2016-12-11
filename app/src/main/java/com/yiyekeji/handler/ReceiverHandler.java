@@ -7,7 +7,7 @@ import com.yiyekeji.Event.UnReceiveEvent;
 import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.utils.Convert;
-import com.yiyekeji.utils.DbUtil;
+import com.yiyekeji.db.DbUtil;
 import com.yiyekeji.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -39,11 +39,10 @@ public class ReceiverHandler {
                 case "2"://接受离线消息（离线消息？）    //A保存聊天类信息
                     LogUtil.d("ReceiverHandler","接收离线消息");
                     saveUnReceiveMessage(iMessage);
-                    //这里应该用UnReceiveEvent
+                    //这里应该用UnReceiveEvent 只要通知界面刷新就好
                     UnReceiveEvent.setChatMessageMessage(Convert.IMessageToChatMessage(iMessage));
                     LogUtil.d("ReceiverHandler", iMessage.getSenderId());
                     if (iMessage.getSenderId().equals("end")) {
-                        LogUtil.d("ReceiverHandler",UnReceiveEvent.chatMap.size());
                         UnReceiveEvent event=new UnReceiveEvent();
                         EventBus.getDefault().post(event);
                     }

@@ -4,7 +4,7 @@ import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.bean.UserInfo;
 import com.yiyekeji.utils.DateUtil;
-import com.yiyekeji.utils.DbUtil;
+import com.yiyekeji.db.DbUtil;
 import com.yiyekeji.utils.IMessageBuilder;
 
 /**

@@ -11,12 +11,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yiyekeji.Event.LinkManEvent;
 import com.yiyekeji.IMApp;
+import com.yiyekeji.handler.SysMessageHandler;
 import com.yiyekeji.im.R;
+import com.yiyekeji.service.WebSocketService;
 import com.yiyekeji.ui.activity.base.BaseActivity;
 import com.yiyekeji.ui.fragment.ContactsFragment;
 import com.yiyekeji.ui.fragment.InformationFragment;
 import com.yiyekeji.ui.view.StatusBarCompat;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -61,18 +68,10 @@ public class MainFragmentActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_fragment);
         ButterKnife.inject(this);
+        EventBus.getDefault().register(this);
         initView();
-        initViewPager();
-    }
-    /**
-     * 在这里关闭service
-     * 并清除所有缓存信息
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        stopService(LoginActivity.intent1);
-        IMApp.clearAllCache();
+        showLoadDialog("");
+        WebSocketService.chat(SysMessageHandler.getLinkManList());
     }
 
     @Override
@@ -138,6 +137,17 @@ public class MainFragmentActivity extends BaseActivity {
     }
 
     /**
+     * 接受完 联系人才进入
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateLinkManList(LinkManEvent event) {
+        getLoadDialog().dismiss();
+        initViewPager();
+    }
+
+
+    /**
      * 连续点击两次 关闭
      */
     long[] mHits = new long[2];
@@ -153,5 +163,15 @@ public class MainFragmentActivity extends BaseActivity {
         }
     }
 
-
+    /**
+     * 在这里关闭service
+     * 并清除所有缓存信息
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        stopService(LoginActivity.intent1);
+        IMApp.clearAllCache();
+    }
 }

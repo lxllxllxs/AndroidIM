@@ -1,11 +1,14 @@
 package com.yiyekeji.Event;
 
 import com.yiyekeji.dao.ChatMessage;
+import com.yiyekeji.db.DbUtil;
 import com.yiyekeji.impl.IInformation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用作通知信息列表里
@@ -15,12 +18,14 @@ public class UnReceiveEvent {
     HashMap<String, ArrayList<IInformation>> hashMap;
     public static HashMap<String, ArrayList<IInformation>> chatMap = new HashMap<>();
     private static List<String> msgIdList = new ArrayList<>();
-    /**
+
+    /**对信息进行归类
      * end作为结束符
      * @param chatMessage
      */
     public static void setChatMessageMessage(ChatMessage chatMessage) {
         if (chatMessage.getSenderId().equals("end")){
+            addUnReceiMessageToSession();
             return;
         }
         msgIdList.add(chatMessage.getMsgId());
@@ -29,6 +34,19 @@ public class UnReceiveEvent {
         }
         chatMap.get(chatMessage.getSenderId()).add(chatMessage);
     }
+
+    private static void addUnReceiMessageToSession() {
+        Iterator iterator=chatMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry  item= (Map.Entry) iterator.next();
+            String userId = (String) item.getKey();
+            List<ChatMessage> list = (List<ChatMessage>) item.getValue();
+            int msgListSize = list.size();
+            ChatMessage msg=list.get(msgListSize-1);//最新一条消息
+            DbUtil.upDataUnReceiSession(msg.getMsgId(),userId,msgListSize+"");
+        }
+    }
+
 
     public HashMap<String, ArrayList<IInformation>> getChatMap() {
         hashMap = new HashMap<>();

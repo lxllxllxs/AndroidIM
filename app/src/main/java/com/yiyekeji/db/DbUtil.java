@@ -1,4 +1,4 @@
-package com.yiyekeji.utils;
+package com.yiyekeji.db;
 
 import android.database.sqlite.SQLiteDatabase;
 
@@ -11,6 +11,9 @@ import com.yiyekeji.dao.DaoMaster;
 import com.yiyekeji.dao.DaoSession;
 import com.yiyekeji.dao.Session;
 import com.yiyekeji.dao.SessionDao;
+import com.yiyekeji.impl.IInformation;
+import com.yiyekeji.utils.Convert;
+import com.yiyekeji.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,18 +51,43 @@ public class DbUtil {
      */
     public static   void saveSendMessage(IMessageFactory.IMessage iMessage){
         cmd.insert(Convert.IMessageToChatMessage(iMessage));
-        saveSession(iMessage.getReceiverId(), iMessage.getId());
+        saveSession(iMessage.getId(),iMessage.getReceiverId());
     }
     /**
      * 保存接收的聊天信息
      * @param iMessage
+     *
      */
     public static   void saveReceiveChatMessage(IMessageFactory.IMessage iMessage){
         cmd.insert(Convert.IMessageToChatMessage(iMessage));
-        saveSession(iMessage.getSenderId(), iMessage.getId());
+        saveSession(iMessage.getId(),iMessage.getSenderId());
     }
 
-    /**
+
+    /**确定这里是每个用户对应有且一条ChatMessage
+     * 返回所有会话表
+     * @return
+     */
+    public static Map<UserInfo, IInformation> getAllSessionChatMap(){
+        Map<UserInfo, IInformation> hashMap = new HashMap<>();
+        Query query = sd.queryBuilder()
+                .build();
+        if (query.list().size()<1){
+            return new HashMap<>();
+        }
+        for (Session session:(List<Session>)query.list()){
+            UserInfo userInfo=IMApp.getUserInfo(session.getUserId());
+            ChatMessage chatMessage=queryChatMessageById(session.getMsgId());
+            if (!hashMap.containsKey(userInfo)){
+                hashMap.put(userInfo,chatMessage);
+            }else {
+                continue;
+            }
+        }
+        return hashMap;
+    }
+
+    /**增加包
      * 由调用决定 userId,当自己为接收方时，userId为发送方
      * @param msgId
      * @param userId
@@ -75,6 +103,39 @@ public class DbUtil {
             session.setMsgId(msgId);
             sd.update(session);
         }
+    }
+
+
+    /**
+     * 专为离线消息设置
+     * @param msgId 最新的一条消息id
+     * @param userId 聊天对象id
+     * @param unRead 未读信息数
+     */
+    public  static void upDataUnReceiSession(String msgId,String userId,String unRead){
+        Query query = sd.queryBuilder()
+                .where(SessionDao.Properties.UserId.eq(msgId))
+                .build();
+        if (query.list().isEmpty()) {
+            sd.insert(Convert.createSessionFromMsg(msgId,userId,unRead));
+        }else {
+            Session session= (Session) query.list().get(0);
+            session.setMsgId(msgId);
+            session.setUnRead(unRead);
+            sd.update(session);
+        }
+    }
+
+    /**
+     * 返回唯一ChatMessage
+     * @param msgId
+     * @return
+     */
+    public static ChatMessage queryChatMessageById(String msgId){
+        Query query = cmd.queryBuilder()
+                .where(ChatMessageDao.Properties.MsgId.eq(msgId))
+                .build();
+        return (ChatMessage) query.list().get(0);
     }
 
     /**
@@ -128,21 +189,6 @@ public class DbUtil {
         ArrayList<ChatMessage> sendMessageList = (ArrayList<ChatMessage>)query.list();
         LogUtil.d("searchSendMsg",sendMessageList.size());
         return sendMessageList;
-    }
-
-    /**
-     *接收者 或发送方
-     * 对聊天信息进行归类，userInfo:最新的ChatMessage
-     * @param receiverId
-     * @return
-     */
-    public static Map<UserInfo,ChatMessage> getSessionMap(String receiverId){
-        //原始数据 这里主要考虑不同账号保持独立信息
-        List<ChatMessage> chatMessageList=searchAllSendMsg(receiverId);
-        Map<String, List<ChatMessage>> hashMap = new HashMap<>();
-        for (ChatMessage chatMessage : chatMessageList) {
-        }
-        return null;
     }
 
 

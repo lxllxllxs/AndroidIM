@@ -10,21 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.yiyekeji.Event.LinkManEvent;
-import com.yiyekeji.bean.UserInfo;
-import com.yiyekeji.handler.SysMessageHandler;
+import com.yiyekeji.IMApp;
 import com.yiyekeji.im.R;
-import com.yiyekeji.service.WebSocketService;
 import com.yiyekeji.ui.activity.ChatActivity;
 import com.yiyekeji.ui.adapter.ContactsAdapter;
 import com.yiyekeji.ui.view.DividerItemDecoration;
 import com.yiyekeji.utils.ConstantUtil;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -36,13 +27,11 @@ public class ContactsFragment extends Fragment {
 
     private final String TAG = "ContactsFragment";
     ContactsAdapter ca;
-    ArrayList<UserInfo> userArrayList = new ArrayList<>();
     @InjectView(R.id.recylerView)
     RecyclerView recylerView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -56,15 +45,22 @@ public class ContactsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initData();
+        initView();
     }
 
     private void initData() {
-        WebSocketService.chat(SysMessageHandler.getLinkManList());
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (ca != null) {
+            ca.notifyDataSetChanged();
+        }
+    }
 
     private void initView() {
-        ca = new ContactsAdapter(getActivity(), userArrayList);
+        ca = new ContactsAdapter(getActivity(), IMApp.linkManList);
         recylerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recylerView.setAdapter(ca);
         recylerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL_LIST));
@@ -72,26 +68,11 @@ public class ContactsFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
             Intent intent = new Intent(getActivity(), ChatActivity.class);
-            intent.putExtra(ConstantUtil.USER,userArrayList.get(position));
+            intent.putExtra(ConstantUtil.USER,IMApp.linkManList.get(position));
             startActivity(intent);
             }
         });
     }
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void updateLinkManList(LinkManEvent event) {
-        userArrayList = event.getLinkManList();
-        if (userArrayList == null) {
-            return;
-        }
-        initView();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.reset(this);
-        EventBus.getDefault().unregister(this);
-    }
 }

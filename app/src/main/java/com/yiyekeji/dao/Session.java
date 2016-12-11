@@ -9,6 +9,7 @@ public class Session {
     private Long id;
     private String msgId;
     private String userId;
+    private String unRead;
 
     public Session() {
     }
@@ -17,10 +18,11 @@ public class Session {
         this.id = id;
     }
 
-    public Session(Long id, String msgId, String userId) {
+    public Session(Long id, String msgId, String userId, String unRead) {
         this.id = id;
         this.msgId = msgId;
         this.userId = userId;
+        this.unRead = unRead;
     }
 
     public Long getId() {
@@ -45,6 +47,14 @@ public class Session {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getUnRead() {
+        return unRead;
+    }
+
+    public void setUnRead(String unRead) {
+        this.unRead = unRead;
     }
 
 }

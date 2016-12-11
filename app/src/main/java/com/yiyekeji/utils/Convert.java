@@ -38,9 +38,13 @@ public class Convert  {
     }
 
     public static Session createSessionFromMsg(String msgId,String userId) {
+        return createSessionFromMsg(msgId,userId,"0");
+    }
+    public static Session createSessionFromMsg(String msgId,String userId,String unRead) {
         Session session = new Session();
         session.setMsgId(msgId);
         session.setUserId(userId);
+        session.setUnRead(unRead);
         return session;
     }
 

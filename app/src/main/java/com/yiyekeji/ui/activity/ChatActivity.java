@@ -22,7 +22,7 @@ import com.yiyekeji.ui.activity.base.BaseActivity;
 import com.yiyekeji.ui.adapter.ChatAdapter;
 import com.yiyekeji.ui.view.StatusBarCompat;
 import com.yiyekeji.utils.ConstantUtil;
-import com.yiyekeji.utils.DbUtil;
+import com.yiyekeji.db.DbUtil;
 import com.yiyekeji.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;

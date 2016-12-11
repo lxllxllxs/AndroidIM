@@ -14,7 +14,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.yiyekeji.Config;
 import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.handler.ReceiverHandler;
-import com.yiyekeji.utils.DbUtil;
+import com.yiyekeji.db.DbUtil;
 import com.yiyekeji.utils.LogUtil;
 import com.yiyekeji.utils.MessageQueue;
 

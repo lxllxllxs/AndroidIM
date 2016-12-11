@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.yiyekeji.Event.UnReceiveEvent;
 import com.yiyekeji.bean.UserInfo;
-import com.yiyekeji.dao.ChatMessage;
+import com.yiyekeji.db.DbUtil;
 import com.yiyekeji.handler.SysMessageHandler;
 import com.yiyekeji.im.R;
 import com.yiyekeji.impl.IInformation;
@@ -29,7 +29,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -42,7 +42,9 @@ public class InformationFragment extends Fragment {
     @InjectView(R.id.recylerView)
     RecyclerView recylerView;
     InformAdapter adapter;
-    List<ChatMessage> messageList = new ArrayList<>();
+
+    Map<UserInfo, IInformation> hashMap = new HashMap<>();
+
     private static HashMap<String, ArrayList<IInformation>> chatMap = new HashMap<>();
 
     public void onCreate(Bundle savedInstanceState) {
@@ -66,11 +68,12 @@ public class InformationFragment extends Fragment {
 
     private void initData() {
 //        WebSocketService.chat(SysMessageHandler.getUnRecieveMessage());
+        hashMap = DbUtil.getAllSessionChatMap();
     }
 
 
     private void initView() {
-        adapter = new InformAdapter(getActivity(), chatMap);
+        adapter = new InformAdapter(getActivity(), hashMap);
         recylerView.setAdapter(adapter);
         recylerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         adapter.setOnItemClickLitener(new InformAdapter.OnItemClickLitener() {
@@ -87,14 +90,16 @@ public class InformationFragment extends Fragment {
 
 
     /**
-     * 作为接收方需要发送人id
+     * 重新从数据库读取
+     * 或许以后可以优化 直接更新部分
      *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void unReceiMessage(UnReceiveEvent event) {
         LogUtil.d(TAG, event.getChatMap().size());
-        adapter.setData(event.getChatMap());
+        hashMap = DbUtil.getAllSessionChatMap();
+        adapter.setData(hashMap);
         WebSocketService.chat(SysMessageHandler.feedBackUnRecieveMessage(event.getMsgIdList()));
     }
 
