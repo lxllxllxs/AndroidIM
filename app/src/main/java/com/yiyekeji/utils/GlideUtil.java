@@ -5,25 +5,25 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.yiyekeji.IMApp;
 
 /**
  * Created by lxl on 2016/11/09.
  */
-public class PicassoUtil {
+public class GlideUtil {
 
 
     public static void setBitmapToView(String url, ImageView imageView) {
 
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        if (TextUtils.isEmpty(url)) {
+        if (TextUtils.isEmpty(url)||imageView==null) {
+            return;
         } else {
-            //听说用uri比较快
-            Picasso.with(IMApp.getContext())
+            Glide.with(IMApp.getContext())
                     .load(Uri.parse(url))
-                    .placeholder(new ColorDrawable())
                     .error(new ColorDrawable())
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .into(imageView);
         }
     }

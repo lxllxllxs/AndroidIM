@@ -99,6 +99,7 @@ public class ReceiverHandler {
             IMApp.isLogin=true;
             IMApp.userInfo.setUserId(iMessage.getUser(0).getUserId());
             IMApp.userInfo.setUserName(iMessage.getUser(0).getUsername());
+            IMApp.userInfo.setImgUrl(iMessage.getUser(0).getImgUrl());
         }else {
             loginEvent.setSuccess(false);
         }

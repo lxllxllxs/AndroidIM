@@ -13,7 +13,7 @@ import com.yiyekeji.im.R;
 import com.yiyekeji.impl.IInformation;
 import com.yiyekeji.ui.view.CircleImageView;
 import com.yiyekeji.ui.view.NumberView;
-import com.yiyekeji.utils.PicassoUtil;
+import com.yiyekeji.utils.GlideUtil;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.ArrayList;
@@ -91,7 +91,7 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         final UserInfo userInfo = keyList.get(i);
         final IInformation iInformations = chatMap.get(userInfo);
-        PicassoUtil.setBitmapToView(userInfo.getImgUrl(),viewHolder.civHead);
+        GlideUtil.setBitmapToView(userInfo.getImgUrl(),viewHolder.civHead);
         viewHolder.tvOtherSide.setText(iInformations.getOtherSide());
         viewHolder.tvMain.setText(iInformations.getMain());
         viewHolder.numberView.setNumber(userInfo.getUnRead());//未读消息记录到用户字段里

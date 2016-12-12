@@ -11,7 +11,7 @@
         android:text="明月出天山，苍茫云海间"
         android:textSize="25px"
         android:textColor="@color/white"
-        android:layout_toLeftOf="@+id/iv_head"
+        android:layout_toLeftOf="@+id/iv_head_right"
         android:layout_centerVertical="true"
         android:padding="15px"
         android:background="@drawable/bg_send_transfer"
@@ -20,7 +20,7 @@
     <com.yiyekeji.ui.view.CircleImageView
         android:layout_marginLeft="20px"
         android:layout_alignParentRight="true"
-        android:id="@+id/iv_head"
+        android:id="@+id/iv_head_right"
         style="@style/ImageView"
         android:layout_width="60px"
         android:layout_height="60px"/>

@@ -12,7 +12,8 @@ import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.UserInfo;
 import com.yiyekeji.dao.ChatMessage;
 import com.yiyekeji.im.R;
-import com.yiyekeji.utils.PicassoUtil;
+import com.yiyekeji.utils.GlideUtil;
+import com.yiyekeji.utils.LogUtil;
 
 import java.util.List;
 
@@ -79,17 +80,18 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
     }
 
-    /**
+        /**
          * 设置布局控件内容
          */
         @Override
         public void onBindViewHolder(final ViewHolder viewHolder, final int i)
         {
+            LogUtil.d("onBindViewHolder", userInfo);
             viewHolder.tvContent.setText(messages.get(i).getContent());
             if (isLeft) {
-                PicassoUtil.setBitmapToView(otherSide.getImgUrl(), viewHolder.iv_head);
+                GlideUtil.setBitmapToView(otherSide.getImgUrl(), viewHolder.iv_head);
             } else {
-                PicassoUtil.setBitmapToView(userInfo.getImgUrl(), viewHolder.iv_head);
+                GlideUtil.setBitmapToView(userInfo.getImgUrl(), viewHolder.iv_head);
             }
             if(mOnItemClickLitener!=null){
                 viewHolder.tvContent.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +107,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             View view = mInflater.inflate(R.layout.item_chat_adapter_right, viewGroup, false);
             ViewHolder viewHolder = new ViewHolder(view);
             viewHolder.tvContent = (TextView) view.findViewById(R.id.tv_sender_msg);
-            viewHolder.iv_head = (ImageView) view.findViewById(R.id.iv_head);
+            viewHolder.iv_head = (ImageView) view.findViewById(R.id.iv_head_right);
             return viewHolder;
         }
 
@@ -113,7 +115,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             View view = mInflater.inflate(R.layout.item_chat_adapter_left, viewGroup, false);
             ViewHolder viewHolder = new ViewHolder(view);
             viewHolder.tvContent = (TextView) view.findViewById(R.id.tv_sender_msg);
-            viewHolder.iv_head = (ImageView) view.findViewById(R.id.iv_head);
+            viewHolder.iv_head = (ImageView) view.findViewById(R.id.iv_head_left);
             return viewHolder;
         }
 
@@ -133,6 +135,5 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener) {
             this.mOnItemClickLitener = mOnItemClickLitener;
         }
-
 
 }

@@ -137,6 +137,7 @@ public class ChatActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.tv_send:
                 sendTextMessage();
+                edtContent.setText("");
                 break;
         }
     }
