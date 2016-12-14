@@ -130,6 +130,7 @@ public class ChatActivity extends BaseActivity {
         chatMessage.setReceiverName(receriver.getUserName());
         messageList.add(chatMessage);
         chatAdapter.notifyDataSetChanged();
+        scrollToBottom();
     }
 
     @OnClick({R.id.tv_send})
@@ -140,6 +141,10 @@ public class ChatActivity extends BaseActivity {
                 edtContent.setText("");
                 break;
         }
+    }
+
+    private void scrollToBottom() {
+        recylerView.scrollToPosition(recylerView.getAdapter().getItemCount()-1);
     }
 
     @Override
@@ -171,6 +176,7 @@ public class ChatActivity extends BaseActivity {
         ChatMessage chatMessage = event.getChatMessage();
         messageList.add(chatMessage);
         chatAdapter.notifyDataSetChanged();
+        scrollToBottom();
     }
 
 

@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="20px"
-                android:paddingRight="20px"
-                android:layout_marginBottom="30px"
-    >
+    android:paddingRight="20px"
+    android:layout_marginTop="15px"
+    android:layout_marginBottom="15px">
     <com.yiyekeji.ui.view.CircleImageView
         android:layout_alignParentLeft="true"
         android:id="@+id/iv_head_left"

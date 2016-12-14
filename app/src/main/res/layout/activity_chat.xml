@@ -8,7 +8,6 @@
 	<include layout="@layout/include_toobar"/>
 
 	<android.support.v7.widget.RecyclerView
-		android:paddingTop="30px"
 		android:id="@+id/recylerView"
 		android:layout_weight="1"
 		android:layout_width="match_parent"
