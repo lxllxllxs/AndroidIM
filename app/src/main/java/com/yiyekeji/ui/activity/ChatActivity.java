@@ -1,6 +1,9 @@
 package com.yiyekeji.ui.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +13,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yiyekeji.Event.ChatMessageEvent;
@@ -52,12 +56,29 @@ public class ChatActivity extends BaseActivity {
     TextView tvTitle;
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
+    @InjectView(R.id.ll_select_img)
+    LinearLayout llSelectImg;
+    @InjectView(R.id.ll_take_photo)
+    LinearLayout llTakePhoto;
+    @InjectView(R.id.ll_red_pocket)
+    LinearLayout llRedPocket;
+    @InjectView(R.id.ll_record)
+    LinearLayout llRecord;
+    @InjectView(R.id.ll_emoji)
+    LinearLayout llEmoji;
+    @InjectView(R.id.ll_more)
+    LinearLayout llMore;
     private ChatAdapter chatAdapter;
     private UserInfo receriver;
     ChatMessage chatMessage;
 
     String selfId = IMApp.userInfo.getUserId();
     int color_bule;
+
+    private final int REQUEST_LOAD_IMAGE=0x123;
+
+
+
     /**
      * 在这里获取系统的传感器
      */
@@ -84,7 +105,7 @@ public class ChatActivity extends BaseActivity {
     }
 
     private void initData() {
-        receriver= IMApp.otherSide;
+        receriver = IMApp.otherSide;
         getChatMessageFormDb();
         upDateSessionMsg();
         tvTitle.setText(receriver.getUserName());
@@ -133,33 +154,83 @@ public class ChatActivity extends BaseActivity {
         scrollToBottom();
     }
 
-    @OnClick({R.id.tv_send})
+
+    @OnClick({R.id.tv_send,R.id.ll_select_img, R.id.ll_take_photo, R.id.ll_red_pocket, R.id.ll_record, R.id.ll_emoji, R.id.ll_more})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_send:
                 sendTextMessage();
                 edtContent.setText("");
                 break;
+            case R.id.ll_select_img:
+                selectImg();
+                break;
+            case R.id.ll_take_photo:
+                break;
+            case R.id.ll_red_pocket:
+                break;
+            case R.id.ll_record:
+                break;
+            case R.id.ll_emoji:
+                break;
+            case R.id.ll_more:
+                break;
         }
     }
 
-    private void scrollToBottom() {
-        recylerView.scrollToPosition(recylerView.getAdapter().getItemCount()-1);
+    public void selectImg(){
+        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(i, REQUEST_LOAD_IMAGE);
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        switch (requestCode){
+            case REQUEST_LOAD_IMAGE:
+                Uri selectedImage = data.getData();
+                WebSocketService.chat(ChatMessageHandler.sendImgMessage(selectedImage,receriver));
+                break;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private void scrollToBottom() {
+        recylerView.scrollToPosition(recylerView.getAdapter().getItemCount() - 1);
+    }
     @Override
     public void finish() {
         super.finish();
         MainFragmentActivity.informationFragment.refreshSessionList();
     }
 
-    TextWatcher tw=new TextWatcher() {
+    TextWatcher tw = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
+
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
         }
+
         @Override
         public void afterTextChanged(Editable s) {
             if (!TextUtils.isEmpty(s)) {
@@ -170,6 +241,7 @@ public class ChatActivity extends BaseActivity {
             }
         }
     };
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void receiverMessage(ChatMessageEvent event) {
         LogUtil.d("chatActivity", "已经收到信息");
