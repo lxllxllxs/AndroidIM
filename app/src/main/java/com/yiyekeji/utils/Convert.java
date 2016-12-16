@@ -33,6 +33,8 @@ public class Convert  {
         chatMessage.setIsReceiver(iMessage.getReceiverId().equals(IMApp.userInfo.getUserId())?"1":"0");
         //记录归属
         chatMessage.setOwner(IMApp.userInfo.getUserId());
+        //设置聊天信息类型
+        chatMessage.setMessageType(iMessage.getSubType());
 
         return chatMessage;
     }

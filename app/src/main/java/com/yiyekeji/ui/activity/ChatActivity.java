@@ -138,12 +138,13 @@ public class ChatActivity extends BaseActivity {
         if (TextUtils.isEmpty(content)) {
             return;
         }
-        upDateLocal(content);
+        upDateLocal(content,"0");
         WebSocketService.chat(ChatMessageHandler.sendTextMessage(content, receriver));//这里数据库保存
     }
 
-    private void upDateLocal(String content) {
+    private void upDateLocal(String content,String type) {
         chatMessage = new ChatMessage();
+        chatMessage.setMessageType(type);
         chatMessage.setContent(content);
         chatMessage.setIsReceiver("0");
         chatMessage.setSenderId(selfId);
@@ -151,6 +152,7 @@ public class ChatActivity extends BaseActivity {
         chatMessage.setReceiverName(receriver.getUserName());
         messageList.add(chatMessage);
         chatAdapter.notifyDataSetChanged();
+        //滚动到底部
         scrollToBottom();
     }
 
@@ -194,6 +196,8 @@ public class ChatActivity extends BaseActivity {
             case REQUEST_LOAD_IMAGE:
                 Uri selectedImage = data.getData();
                 WebSocketService.chat(ChatMessageHandler.sendImgMessage(selectedImage,receriver));
+                upDateLocal(selectedImage.toString(),"1");
+
                 break;
         }
     }
@@ -251,6 +255,11 @@ public class ChatActivity extends BaseActivity {
         scrollToBottom();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        scrollToBottom();
+    }
 
     @Override
     protected void onDestroy() {

@@ -1,6 +1,7 @@
 package com.yiyekeji.ui.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
         TextView tvContent;
         ImageView iv_head;
+        ImageView ivContent;
     }
         @Override
         public int getItemCount()
@@ -87,7 +89,23 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         public void onBindViewHolder(final ViewHolder viewHolder, final int i)
         {
             LogUtil.d("onBindViewHolder", userInfo);
-            viewHolder.tvContent.setText(messages.get(i).getContent());
+            ChatMessage message=messages.get(i);
+            switch (message.getMessageType()){
+                case "0":
+                    if (viewHolder.tvContent.getVisibility() != View.VISIBLE) {
+                        viewHolder.tvContent.setVisibility(View.VISIBLE);
+                    }
+                    viewHolder.ivContent.setVisibility(View.GONE);
+                    viewHolder.tvContent.setText(message.getContent());
+                    break;
+                case "1":
+                    viewHolder.tvContent.setVisibility(View.GONE);
+                    if (viewHolder.ivContent.getVisibility() != View.VISIBLE) {
+                        viewHolder.ivContent.setVisibility(View.VISIBLE);
+                    }
+                    viewHolder.ivContent.setImageURI(Uri.parse(message.getContent()));
+                    break;
+            }
             if (isLeft) {
                 GlideUtil.setBitmapToView(otherSide.getImgUrl(), viewHolder.iv_head);
             } else {
@@ -106,7 +124,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         private ViewHolder setRightView(ViewGroup viewGroup){
             View view = mInflater.inflate(R.layout.item_chat_adapter_right, viewGroup, false);
             ViewHolder viewHolder = new ViewHolder(view);
-            viewHolder.tvContent = (TextView) view.findViewById(R.id.tv_sender_msg);
+            viewHolder.tvContent = (TextView) view.findViewById(R.id.tv_content);
+            viewHolder.ivContent = (ImageView) view.findViewById(R.id.iv_contant);
             viewHolder.iv_head = (ImageView) view.findViewById(R.id.iv_head_right);
             return viewHolder;
         }
@@ -114,7 +133,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         private ViewHolder setLeftView(ViewGroup viewGroup){
             View view = mInflater.inflate(R.layout.item_chat_adapter_left, viewGroup, false);
             ViewHolder viewHolder = new ViewHolder(view);
-            viewHolder.tvContent = (TextView) view.findViewById(R.id.tv_sender_msg);
+            viewHolder.tvContent = (TextView)view.findViewById(R.id.tv_sender_msg);
             viewHolder.iv_head = (ImageView) view.findViewById(R.id.iv_head_left);
             return viewHolder;
         }

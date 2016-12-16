@@ -55,11 +55,11 @@ public class ImageUtils {
 			path = uri.getPath();
 		}
 		File file = new File(path);
-		InputStream inputFile =context.getResources().openRawResource(R.raw.pic);
+		InputStream inputFile =context.getResources().openRawResource(R.raw.bg_login);
     	byte[] buffer = new byte[inputFile.available()];
     	inputFile.read(buffer);
     	String result = Base64.encodeToString(buffer,Base64.DEFAULT);
-
+		LogUtil.d("toBase64", result.length());
 		inputFile.close();
     	
     	return result;
