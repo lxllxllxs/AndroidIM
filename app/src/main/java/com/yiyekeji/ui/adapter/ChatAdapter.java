@@ -133,7 +133,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         private ViewHolder setLeftView(ViewGroup viewGroup){
             View view = mInflater.inflate(R.layout.item_chat_adapter_left, viewGroup, false);
             ViewHolder viewHolder = new ViewHolder(view);
-            viewHolder.tvContent = (TextView)view.findViewById(R.id.tv_sender_msg);
+            viewHolder.tvContent = (TextView)view.findViewById(R.id.tv_content);
+            viewHolder.ivContent = (ImageView) view.findViewById(R.id.iv_contant);
             viewHolder.iv_head = (ImageView) view.findViewById(R.id.iv_head_left);
             return viewHolder;
         }

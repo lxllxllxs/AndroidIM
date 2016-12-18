@@ -42,6 +42,7 @@ public class InformationFragment extends Fragment {
     RecyclerView recylerView;
     InformAdapter adapter;
 
+    //用来当做是快速缓存当前会话人及最新消息
     Map<UserInfo, IInformation> hashMap = new HashMap<>();
 
     private static HashMap<String, ArrayList<IInformation>> chatMap = new HashMap<>();
@@ -99,7 +100,6 @@ public class InformationFragment extends Fragment {
     public void unReceiMessage(UnReceiveEvent event) {
         LogUtil.d(TAG, event.getChatMap().size());
         refreshSessionList();
-        WebSocketService.chat(SysMessageHandler.feedBackUnRecieveMessage(event.getMsgIdList()));
     }
 
     @Override

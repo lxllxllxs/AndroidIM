@@ -3,11 +3,10 @@ package com.yiyekeji.handler;
 import com.yiyekeji.Event.ChatMessageEvent;
 import com.yiyekeji.Event.LinkManEvent;
 import com.yiyekeji.Event.LoginEvent;
-import com.yiyekeji.Event.UnReceiveEvent;
 import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
-import com.yiyekeji.utils.Convert;
 import com.yiyekeji.db.DbUtil;
+import com.yiyekeji.utils.Convert;
 import com.yiyekeji.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,10 +35,10 @@ public class ReceiverHandler {
                     linkManEvent.addLinkMan(iMessage);
                     EventBus.getDefault().post(linkManEvent);
                     break;
-                case "2"://接受离线消息（离线消息？）    //A保存聊天类信息
+                case "2"://接受离线消息（离线消息？）
                     LogUtil.d("ReceiverHandler","接收离线消息");
                     //这里应该用UnReceiveEvent 只要通知界面刷新就好
-                    LogUtil.d("ReceiverHandler", iMessage.getSenderId());
+                /*    LogUtil.d("ReceiverHandler", iMessage.getSenderId());
                     if (!iMessage.getSenderId().equals("end")) {
                         UnReceiveEvent.setChatMessageMessage(Convert.IMessageToChatMessage(iMessage));
                         DbUtil.saveReceiveChatMessage(iMessage);
@@ -47,7 +46,7 @@ public class ReceiverHandler {
                     }
                     UnReceiveEvent.addUnReceiMessageToSession();
                     UnReceiveEvent event=new UnReceiveEvent();
-                    EventBus.getDefault().post(event);
+                    EventBus.getDefault().post(event);*/
                     break;
             }
         }else if(iMessage.getMainType().equals("1")){

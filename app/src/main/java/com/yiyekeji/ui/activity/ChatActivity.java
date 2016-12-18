@@ -29,7 +29,6 @@ import com.yiyekeji.ui.activity.base.BaseActivity;
 import com.yiyekeji.ui.adapter.ChatAdapter;
 import com.yiyekeji.ui.view.StatusBarCompat;
 import com.yiyekeji.utils.LogUtil;
-import com.yiyekeji.utils.ThreadPools;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -113,12 +112,7 @@ public class ChatActivity extends BaseActivity {
     }
 
     private void upDateSessionMsg() {
-        ThreadPools.addRunnable(new Runnable() {
-            @Override
-            public void run() {
-                DbUtil.upDataSessionRead(receriver.getUserId());
-            }
-        });
+        DbUtil.upDataSessionRead(receriver.getUserId());
     }
 
     private void getChatMessageFormDb() {
@@ -250,6 +244,7 @@ public class ChatActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        IMApp.otherSide=null;//退出后置空
         ButterKnife.reset(this);
         EventBus.getDefault().unregister(this);
     }

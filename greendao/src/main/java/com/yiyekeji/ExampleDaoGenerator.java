@@ -10,9 +10,8 @@ public class ExampleDaoGenerator {
 
     public static void main(String[] args) throws IOException, Exception {
         
-//        Schema schema = new Schema(1, "com.yiyekeji.dao");
-        Schema schema = new Schema(1, "com.yiyekeji.bean");
-        addStudent(schema);
+        Schema schema = new Schema(1, "com.yiyekeji.dao");
+        addSendMessage(schema);
         DaoGenerator daoGenerator= new DaoGenerator();
         daoGenerator .generateAll(schema, "D:\\DaoExample");
     }
@@ -45,10 +44,10 @@ public class ExampleDaoGenerator {
          */
         Entity Session= schema.addEntity("Session");
         Session.addIdProperty();
-        Session.addStringProperty("msgId");
-        Session.addStringProperty("userId");
-        Session.addStringProperty("unRead");
-        Session.addStringProperty("owner");//记录信息归属
+        Session.addStringProperty("msgId");//最新的一条聊天信息id
+        Session.addStringProperty("userId");//聊天对象
+        Session.addIntProperty("unRead");//记录未读的消息数 应该用int类型
+        Session.addStringProperty("owner");//记录信息归属 防止多个用户登录 信息混乱
     }
 
 

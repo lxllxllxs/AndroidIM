@@ -60,6 +60,7 @@ public class DbUtil {
      */
     public static   void saveReceiveChatMessage(IMessageFactory.IMessage iMessage){
         cmd.insert(Convert.IMessageToChatMessage(iMessage));
+
         saveSession(iMessage.getId(),iMessage.getSenderId());
     }
 
@@ -79,7 +80,7 @@ public class DbUtil {
         for (Session session:(List<Session>)query.list()){
             UserInfo userInfo=IMApp.getUserInfo(session.getUserId());
             //将数据中的读到变量里 在点击进入聊天界面后清除
-            userInfo.setUnRead(session.getUnRead());
+            userInfo.setUnRead(session.getUnRead()+"");
     ChatMessage chatMessage=queryChatMessageById(session.getMsgId());
     if (!hashMap.containsKey(userInfo)){
         hashMap.put(userInfo,chatMessage);
@@ -91,7 +92,7 @@ return hashMap;
         }
 
     /**
-     * 点击进去后置了“0”
+     * 点击进去后所有信息被阅读，置了“0”
      * @param userId
      */
     public  static void upDataSessionRead(String userId){
@@ -103,7 +104,7 @@ return hashMap;
                 return;
             }
             Session session= (Session) query.list().get(0);
-            session.setUnRead("0");
+            session.setUnRead(0);
             sd.update(session);
     }
 
@@ -121,18 +122,23 @@ return hashMap;
             sd.insert(Convert.createSessionFromMsg(msgId,userId));
         }else {
             Session session= (Session) query.list().get(0);
+            //未读消息数 每次加1
+            session.setUnRead(session.getUnRead()+1);
             session.setMsgId(msgId);
             sd.update(session);
         }
     }
 
+/*
 
-    /**
+    */
+/**《这条可以被废除》
      * 专为离线消息设置
      * @param msgId 最新的一条消息id
      * @param userId 聊天对象id
      * @param unRead 未读信息数
-     */
+     *//*
+
     public  static void upDataUnReceiSession(String msgId,String userId,String unRead){
         Query query = sd.queryBuilder()
                 .where(SessionDao.Properties.UserId.eq(userId),
@@ -147,6 +153,7 @@ return hashMap;
             sd.update(session);
         }
     }
+*/
 
     /**
      * 返回唯一ChatMessage
