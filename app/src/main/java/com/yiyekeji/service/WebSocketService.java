@@ -175,6 +175,20 @@ public class WebSocketService extends Service {
         handler.postDelayed(runnable2,5*1000);
     }
 
+    /**
+     * 这里不会加入消息队列
+     * @param msgId
+     */
+    public static void sendHaveReceivdeMsgId(@NonNull String msgId){
+        if(!isConnected()) {
+            Log.d("WebSocketService", "服务断开，发送失败");
+            connect(context);
+            return;
+        }
+        Log.d("WebSocketService", "正在反馈接收成功的信息id:"+msgId);
+        connection.sendTextMessage(msgId);
+    }
+
 
     @Override
     public void onDestroy() {

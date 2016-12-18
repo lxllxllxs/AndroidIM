@@ -1,28 +1,19 @@
 package com.yiyekeji.Event;
 
-import com.yiyekeji.dao.ChatMessage;
-import com.yiyekeji.db.DbUtil;
-import com.yiyekeji.impl.IInformation;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 /**
+ * 该类将被废弃
  * 用作通知信息列表里
  * Created by Administrator on 2016/11/1.
  */
 public class UnReceiveEvent {
-    HashMap<String, ArrayList<IInformation>> hashMap;
+  /*  HashMap<String, ArrayList<IInformation>> hashMap;
     public static HashMap<String, ArrayList<IInformation>> chatMap = new HashMap<>();
     private static List<String> msgIdList = new ArrayList<>();
 
-    /**对信息进行归类
+    *//**对信息进行归类
      * end作为结束符
      * @param chatMessage
-     */
+     *//*
     public static void setChatMessageMessage(ChatMessage chatMessage) {
         msgIdList.add(chatMessage.getMsgId());
         if (!chatMap.containsKey(chatMessage.getSenderId())){
@@ -52,5 +43,5 @@ public class UnReceiveEvent {
     }
     public List<String> getMsgIdList() {
         return msgIdList;
-    }
+    }*/
 }

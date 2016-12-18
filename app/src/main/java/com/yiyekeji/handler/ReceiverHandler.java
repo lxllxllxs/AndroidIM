@@ -3,9 +3,11 @@ package com.yiyekeji.handler;
 import com.yiyekeji.Event.ChatMessageEvent;
 import com.yiyekeji.Event.LinkManEvent;
 import com.yiyekeji.Event.LoginEvent;
+import com.yiyekeji.Event.UnReceiveEvent;
 import com.yiyekeji.IMApp;
 import com.yiyekeji.bean.IMessageFactory;
 import com.yiyekeji.db.DbUtil;
+import com.yiyekeji.service.WebSocketService;
 import com.yiyekeji.utils.Convert;
 import com.yiyekeji.utils.LogUtil;
 
@@ -52,11 +54,22 @@ public class ReceiverHandler {
         }else if(iMessage.getMainType().equals("1")){
             //A保存聊天类信息
             DbUtil.saveReceiveChatMessage(iMessage);
+            //接收成功信息反馈
+            WebSocketService.sendHaveReceivdeMsgId(iMessage.getId());
             switch (iMessage.getSubType()){
                 case "0":
-                    ChatMessageEvent cme = new ChatMessageEvent();
-                    cme.setChatMessage(Convert.IMessageToChatMessage(iMessage));
-                    EventBus.getDefault().post(cme);
+                    /**
+                     * otherSide不为空 则在聊天界面 直接送到聊天界面的ChatMessageList中 更新 不用再从数据库中
+                     * 否则在主界面中 通知InformaticaFragment刷新未读消息显示
+                     */
+                    if (IMApp.otherSide != null) {
+                        ChatMessageEvent cme = new ChatMessageEvent();
+                        cme.setChatMessage(Convert.IMessageToChatMessage(iMessage));
+                        EventBus.getDefault().post(cme);
+                    }else {
+                        EventBus.getDefault().post(new UnReceiveEvent());
+                    }
+
                     break;
                 case "1":
                     break;

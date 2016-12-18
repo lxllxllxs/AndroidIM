@@ -97,8 +97,7 @@ public class InformationFragment extends Fragment {
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void unReceiMessage(UnReceiveEvent event) {
-        LogUtil.d(TAG, event.getChatMap().size());
+    public void refreshUi(UnReceiveEvent event) {
         refreshSessionList();
     }
 

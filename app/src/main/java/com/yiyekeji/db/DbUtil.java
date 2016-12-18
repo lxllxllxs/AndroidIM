@@ -60,7 +60,6 @@ public class DbUtil {
      */
     public static   void saveReceiveChatMessage(IMessageFactory.IMessage iMessage){
         cmd.insert(Convert.IMessageToChatMessage(iMessage));
-
         saveSession(iMessage.getId(),iMessage.getSenderId());
     }
 
@@ -122,8 +121,10 @@ return hashMap;
             sd.insert(Convert.createSessionFromMsg(msgId,userId));
         }else {
             Session session= (Session) query.list().get(0);
-            //未读消息数 每次加1
-            session.setUnRead(session.getUnRead()+1);
+            //未读消息数 每次加1 如果是正是聊天对象 则不用喜加1
+            if (!IMApp.otherSide.getUserId().equals(userId)) {
+                session.setUnRead(session.getUnRead() + 1);
+            }
             session.setMsgId(msgId);
             sd.update(session);
         }

@@ -39,10 +39,16 @@ public class Convert  {
         return chatMessage;
     }
 
+    /**
+     * 这里的未读消息应该有误 未考虑到在外接收时
+     * @param msgId
+     * @param userId
+     * @return
+     */
     public static Session createSessionFromMsg(String msgId,String userId) {
-        return createSessionFromMsg(msgId,userId,"0");
+        return createSessionFromMsg(msgId,userId,0);
     }
-    public static Session createSessionFromMsg(String msgId,String userId,String unRead) {
+    public static Session createSessionFromMsg(String msgId,String userId,int unRead) {
         Session session = new Session();
         session.setMsgId(msgId);
         session.setUserId(userId);
