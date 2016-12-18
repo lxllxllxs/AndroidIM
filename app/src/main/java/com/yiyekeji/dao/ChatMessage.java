@@ -124,6 +124,11 @@ public class ChatMessage implements Parcelable,Cloneable,IInformation {
         }
     }
 
+    @Override
+    public String getType() {
+        return getMessageType();
+    }
+
     public void setDate(String date) {
         this.date = date;
     }

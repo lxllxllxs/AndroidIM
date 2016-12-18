@@ -203,20 +203,6 @@ public class ChatActivity extends BaseActivity {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private void scrollToBottom() {
         recylerView.scrollToPosition(recylerView.getAdapter().getItemCount() - 1);
     }

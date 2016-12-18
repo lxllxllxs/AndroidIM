@@ -93,7 +93,14 @@ public class InformAdapter extends RecyclerView.Adapter<InformAdapter.ViewHolder
         final IInformation iInformations = chatMap.get(userInfo);
         GlideUtil.setBitmapToView(userInfo.getImgUrl(),viewHolder.civHead);
         viewHolder.tvOtherSide.setText(iInformations.getOtherSide());
-        viewHolder.tvMain.setText(iInformations.getMain());
+        switch (iInformations.getType()){
+            case "0":
+                viewHolder.tvMain.setText(iInformations.getMain());
+                break;
+            case "1":
+                viewHolder.tvMain.setText("[图片]");
+                break;
+        }
         viewHolder.numberView.setNumber(userInfo.getUnRead());//未读消息记录到用户字段里
         if (mOnItemClickLitener != null) {
             viewHolder.rlContainer.setOnClickListener(new View.OnClickListener() {
