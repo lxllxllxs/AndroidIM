@@ -72,6 +72,17 @@ public class ReceiverHandler {
 
                     break;
                 case "1":
+                    /**
+                     * otherSide不为空 则在聊天界面 直接送到聊天界面的ChatMessageList中 更新 不用再从数据库中
+                     * 否则在主界面中 通知InformaticaFragment刷新未读消息显示
+                     */
+                    if (IMApp.otherSide != null) {
+                        ChatMessageEvent cme = new ChatMessageEvent();
+                        cme.setChatMessage(Convert.IMessageToChatMessage(iMessage));
+                        EventBus.getDefault().post(cme);
+                    }else {
+                        EventBus.getDefault().post(new UnReceiveEvent());
+                    }
                     break;
                 case "2":
                     break;

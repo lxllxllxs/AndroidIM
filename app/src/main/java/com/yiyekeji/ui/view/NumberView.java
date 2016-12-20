@@ -20,19 +20,16 @@ public class NumberView extends View {
     public NumberView(Context context) {
         super(context);
         this.context=context;
-        init();
     }
 
     public NumberView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context=context;
-        init();
     }
 
     public NumberView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context=context;
-        init();
     }
 
     @Override
@@ -66,6 +63,7 @@ public class NumberView extends View {
         if (number.equals("0")){
             return;
         }
+        init();//在这里重新初始化
         int width = this.getWidth();
         int height = this.getHeight();
         if (width != height) {

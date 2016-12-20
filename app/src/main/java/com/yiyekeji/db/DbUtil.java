@@ -121,9 +121,10 @@ return hashMap;
             sd.insert(Convert.createSessionFromMsg(msgId,userId));
         }else {
             Session session= (Session) query.list().get(0);
-            //未读消息数 每次加1 如果是正是聊天对象 则不用喜加1
-            if (!IMApp.otherSide.getUserId().equals(userId)) {
+            //未读消息数 如果是非正是聊天对象或没有聊天对象 则喜加1
+            if (IMApp.otherSide == null||(!IMApp.otherSide.getUserId().equals(userId))) {
                 session.setUnRead(session.getUnRead() + 1);
+            } else {
             }
             session.setMsgId(msgId);
             sd.update(session);

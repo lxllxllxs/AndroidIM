@@ -103,7 +103,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                     if (viewHolder.ivContent.getVisibility() != View.VISIBLE) {
                         viewHolder.ivContent.setVisibility(View.VISIBLE);
                     }
-                    viewHolder.ivContent.setImageURI(Uri.parse(message.getContent()));
+                    //如果是自己发出的 从本地加载，否则从网络加载
+                    if (message.getSenderId().equals(userInfo.getUserId())) {
+                        viewHolder.ivContent.setImageURI(Uri.parse(message.getContent()));
+                    } else {
+                        LogUtil.d("asReceiver",message.getContent());
+                        GlideUtil.setBitmapToView(message.getContent(), viewHolder.ivContent);
+                    }
                     break;
             }
             if (isLeft) {
